@@ -1,12 +1,13 @@
-from Flask import Flask
-from sqlalchemy import SQLAlchemy
+from flask import Flask, render_template
+from flask_sqlalchemy import SQLAlchemy
 
+# My app
 app = Flask(__name__) 
 
-app.route('/')
+# Home page route
+@app.route('/')
 def index():
-	return 'Hello, Flask!'
+	return render_template("index.html")
 
 if __name__ == '__main__':
 	app.run(debug=True)
-	print("Hello World")
