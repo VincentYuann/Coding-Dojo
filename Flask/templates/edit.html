@@ -7,7 +7,7 @@
 
     <!-- Form for editing an existing task syntax(function name, placeholder = task.id)-->
     <form action="{{ url_for('update', id = task.id) }}" method="post">
-        <input type="text" name="content" id="content">
+        <input type="text" name="content" id="content" value="{{ task.content }}">
         <input type="submit" value="Update" id="btn_Add">
     </form>
 {% endblock %}

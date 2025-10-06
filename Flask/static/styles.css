@@ -1,3 +1,79 @@
 body {
-    background-color: aquamarine;
+    background-color: lightsalmon;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+table {
+    width: 100%;
+    margin-top: 20px;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+    background-color: crimson;
+    padding: 6px 12px;
+    margin-right: 5px; 
+    border-radius: 4px;
+    border-spacing: 6px 10px;
+    display: block;
+    width: 50px; 
+}
+
+#btn_Add {
+    color: white;
+    background-color: crimson;
+    padding: 6px 12px;
+    margin-right: 5px; 
+    border-radius: 4px;
+    border-spacing: 6px 10px;
+    width: 100px; 
+}
+
+.roomy-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 14px 10px;
+    margin-top: 20px;
+}
+
+.roomy-table thead th {
+    background: #f3f4f6;
+    font-weight: 700;
+    padding: 12px 18px;
+    text-align: left;
+    border: 1px solid rgba(0,0,0,0.06);
+    border-radius: 6px;
+}
+
+.roomy-table th,
+.roomy-table td {
+    padding: 12px 18px;
+    text-align: left;
+    background: #ffffff;
+    border: 1px solid rgba(0,0,0,0.06);
+}
+
+.roomy-table tbody tr:nth-child(odd) td {
+    background: #fbfbfb;
+}
+
+.roomy-table tbody tr:hover td {
+    background: #eef6ff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+}
+
+.content {
+    width: 80%;
+    margin: auto;
+    padding: 20px;
+    background-color: wheat;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }

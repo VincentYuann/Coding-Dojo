@@ -5,6 +5,7 @@ from datetime import datetime
 # My app
 app = Flask(__name__) 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 # Database model for row of data
@@ -16,6 +17,10 @@ class Tasks(db.Model):
 
 	def __repr__(self) -> str:
 		return f"{self.id}"
+	
+with app.app_context():
+	db.create_all()
+
 
 # Home page route
 @app.route('/', methods = ['GET', 'POST'])
@@ -66,7 +71,4 @@ def update(id):
 		return render_template('edit.html', task = task)
 
 if __name__ == '__main__':
-	with app.app_context():
-		db.create_all()
-
-	app.run(debug=True)
+	app.run()

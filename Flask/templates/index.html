@@ -13,7 +13,7 @@
     {% if tasks | length < 1 %}
         <h3>There are no tasks</h3>
     {% else %}
-        <table>
+    <table class="roomy-table">
             <tr>
                 <th>Task</th>
                 <th>Added</th>
@@ -35,7 +35,7 @@
 
     <form action="/" method="post">
         <input type="text" name="content" id="content">
-        <input type="submit" value="Add Yes! " id="btn_Add">
+        <input type="submit" value="Add" id="btn_Add">
     </form>
 
     <footer>
