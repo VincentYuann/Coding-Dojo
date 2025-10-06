@@ -21,7 +21,6 @@ class Tasks(db.Model):
 with app.app_context():
 	db.create_all()
 
-
 # Home page route
 @app.route('/', methods = ['GET', 'POST'])
 def index():
