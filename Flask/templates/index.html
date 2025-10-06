@@ -1,20 +1,18 @@
 {% extends "base.html" %}
 
 {% block head %}
-<title>Task Add</title>
+    <title>Task Add</title>
 {% endblock %}
 
 {% block body %}
-<header>
-    <h1>Welcome to My Flask Project</h1>
-</header>
+    <header>
+        <h1>Welcome to My Flask Project</h1>
+    </header>
 
-<main>
-    <div class="content">
-        <h1>To do list</h1>
-        {% if tasks | length < 1 %}
+    <h1>To do list</h1>
+    {% if tasks | length < 1 %}
         <h3>There are no tasks</h3>
-        {% else %}
+    {% else %}
         <table>
             <tr>
                 <th>Task</th>
@@ -22,25 +20,25 @@
                 <th>Action</th>
             </tr>
             {% for task in tasks %}
-            <tr>
-                <td>{{task.content}}</td>
-                <td>{{task.created}}</td>
-                <td>
-                    <a href="/delete/{{task.id}}" id="btn_Del">Delete</a>
-                    <br>
-                    <a href="/update/{{task.id}}">Edit</a>
-                </td>
-            </tr>
+                <tr>
+                    <td>{{ task.content }}</td>
+                    <td>{{ task.created.strftime("%D") }}</td>
+                    <td>
+                        <a href="{{ url_for('delete', id = task.id) }}" id="btn_Del">Delete</a>
+                        <br>
+                        <a href="{{ url_for('update', id = task.id) }}">Edit</a>
+                    </td>
+                </tr>
             {% endfor %}
         </table>
-        {% endif %}
+    {% endif %}
 
-        <form action="/" method="post">
-            <input type="text" name="content" id="content">
-            <input type="submit" value="Add Yes! " id="btn_Add">
-        </form>
-    </div>
-</main>
+    <form action="/" method="post">
+        <input type="text" name="content" id="content">
+        <input type="submit" value="Add Yes! " id="btn_Add">
+    </form>
 
-<footer><p>&copy; Vincent Yuan</p></footer>
+    <footer>
+        <p>&copy; Vincent Yuan</p>
+    </footer>
 {% endblock %}

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block body %}
+    <header>
+        <h1>Edit or this</h1>
+    </header>    
+
+    <!-- Form for editing an existing task syntax(function name, placeholder = task.id)-->
+    <form action="{{ url_for('update', id = task.id) }}" method="post">
+        <input type="text" name="content" id="content">
+        <input type="submit" value="Update" id="btn_Add">
+    </form>
+{% endblock %}
