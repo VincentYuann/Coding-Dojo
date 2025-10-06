@@ -27,7 +27,7 @@ def index():
 		try:
 			db.session.add(newTask)
 			db.session.commit()
-			return redirect('/')
+			return redirect(url_for('index'))
 		except Exception as e:	
 			print(f"Error: {e}")
 			return "Error: {e}"
@@ -35,6 +35,35 @@ def index():
 	else:
 		tasks = Tasks.query.order_by(Tasks.created).all()
 		return render_template("index.html", tasks = tasks)
+
+# Delete task
+@app.route('/delete/<int:id>')
+def delete(id):
+	deleteTask = Tasks.query.get_or_404(id)
+	try:
+		db.session.delete(deleteTask)
+		db.session.commit()
+		return redirect(url_for('index'))
+	except Exception as e:
+		print(f"Error: {e}")
+		return "Error: {e}"
+
+# Update task
+@app.route('/update/<int:id>', methods=['GET', 'POST'])
+def update(id):
+	task = Tasks.query.get_or_404(id)
+	print(request.method)
+	if request.method == 'POST':
+		task.content = request.form['content']
+		try:
+			db.session.commit()
+			return redirect(url_for('index'))
+		except Exception as e:
+			print(f"Error: {e}")
+			return "Error: {e}"
+	# By clicking <a> link, you always "get", so you will land in the edit page
+	else:
+		return render_template('edit.html', task = task)
 
 if __name__ == '__main__':
 	with app.app_context():
