@@ -4,7 +4,7 @@ from datetime import datetime
 
 # My app
 app = Flask(__name__) 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///toDoListDatabase.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
@@ -56,7 +56,6 @@ def delete(id):
 @app.route('/update/<int:id>', methods=['GET', 'POST'])
 def update(id):
 	task = Tasks.query.get_or_404(id)
-	print(request.method)
 	if request.method == 'POST':
 		task.content = request.form['content']
 		try:
