@@ -32,6 +32,8 @@ def index():
 			db.session.add(newTask)
 			db.session.commit()
 			return redirect(url_for('index'))
+		# Exception is a base class for all built-in exceptions in Python 
+		# as e assigns the actual exception object to e, so you can see the error message or inspect it.
 		except Exception as e:	
 			print(f"Error: {e}")
 			return "Error: {e}"
