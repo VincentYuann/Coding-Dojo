@@ -25,12 +25,12 @@ def get_courses():
 
 @course_bp.route('/<int:id>', methods=['GET'])
 def get_course(id):
-    course = Course.query.get_oror_404(id)
+    course = Course.query.get_or_404(id)
 
     return jsonify(course.to_dict())
     
 
-@course_bp.route('/<int:id>', methods=['GET'])
+@course_bp.route('/<int:id>', methods=['DELETE'])
 def delete_course(id):
     course = Course.query.get_or_404(id)
     

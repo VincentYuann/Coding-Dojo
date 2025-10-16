@@ -6,7 +6,7 @@ from .routes.course_routes import course_bp
 import os
 
 def create_app():
-    app = Flask(__name__)
+    app = Flask(__name__, instance_relative_config=True)
     basedir = os.path.abspath(os.path.dirname(__file__))
 
     # --- Configuration ---
