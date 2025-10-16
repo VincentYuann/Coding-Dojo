@@ -13,7 +13,7 @@ def add_course():
     db.session.add(new_course)
     db.session.commit()
 
-    return jsonify({'message': 'Course added successfully!'}), 201
+    return jsonify(new_course.to_dict()), 201
 
 
 @course_bp.route('/', methods=['GET'])
