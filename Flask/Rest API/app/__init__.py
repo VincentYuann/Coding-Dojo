@@ -1,5 +1,5 @@
 from flask import Flask
-from models import db  # Assuming db = SQLAlchemy() is in extensions.py
+from .models import db
 from .routes.main_route import main_bp
 from .routes.student_routes import student_bp
 from .routes.course_routes import course_bp
