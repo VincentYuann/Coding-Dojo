@@ -35,7 +35,7 @@ class Student(db.Model):
 class Course(db.Model):
     __tablename__ = 'courses'
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), unique=True, nullable=False)
+    title = db.Column(db.String(100), nullable=False)
     number = db.Column(db.Integer, nullable=False)
     students = db.relationship('Student',  back_populates="courses", secondary='enrollments')
 

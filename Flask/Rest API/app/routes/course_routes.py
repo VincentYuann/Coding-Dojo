@@ -20,7 +20,7 @@ def add_course():
 def get_courses():
     courses = Course.query.all()
 
-    return jsonify([courses.to_dict() for course in courses])
+    return jsonify([course.to_dict() for course in courses])
 
 
 @course_bp.route('/<int:id>', methods=['GET'])

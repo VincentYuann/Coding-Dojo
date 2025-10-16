@@ -45,7 +45,7 @@ def update_student(id):
     return jsonify(student.to_dict())
 
 
-@student_bp.route('/<int:id>', methods=['GET'])
+@student_bp.route('/<int:id>', methods=['DELETE'])
 def delete_student(id):
     student = Student.query.get_or_404(id)
     
