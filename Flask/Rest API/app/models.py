@@ -44,7 +44,7 @@ class Course(db.Model):
             'id': self.id, 
             'title': self.title, 
             'number': self.number,
-            'students': [student.to_dict() for student in self.students]
+            'students': [student.to_dict_simple() for student in self.students]
             }
     
     def to_dict_simple(self):
