@@ -1,7 +1,8 @@
 from ..models import db, Student, Course
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify
 
 enroll_bp = Blueprint('enroll', __name__)
+
 
 @enroll_bp.route('/<int:student_id>/courses/<int:course_id>', methods=['POST'])
 def enroll_student_in_course(student_id, course_id):

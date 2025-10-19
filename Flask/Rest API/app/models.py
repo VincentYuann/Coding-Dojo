@@ -5,8 +5,8 @@ db = SQLAlchemy()
 # Table models for many-to-many relationships
 # Students can enroll in multiple courses and courses can have multiple students
 db.Table('enrollments',
-    db.Column('student_id', db.Integer, db.ForeignKey('students.id')),
-    db.Column('course_id', db.Integer, db.ForeignKey('courses.id'))
+    db.Column('student_id', db.Integer, db.ForeignKey('students.id'), primary_key=True),
+    db.Column('course_id', db.Integer, db.ForeignKey('courses.id'), primary_key=True)
 )
 
 
