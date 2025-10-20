@@ -1,0 +1,1 @@
+This is a restful API for students and courses. You can add students, courses, and link them together in API endpoints through an API testing website like "Postman". The endpoints are in the routes folder.
