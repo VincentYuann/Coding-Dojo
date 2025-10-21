@@ -33,7 +33,7 @@ class Tasks(db.Model):
 	content = db.Column(db.String(100), nullable=False)
 	complete = db.Column(db.Integer, default=0)
 	created = db.Column(db.DateTime, default=datetime.utcnow)
-	users_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+	user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 	
 	users = db.relationship('User', back_populates='tasks')
 
@@ -53,17 +53,17 @@ def index():
 	return render_template('login.html')
 
 
-@app.route('/login', methods = ['POST'])
+@app.route('/login', methods = ['GET','POST'])
 def login():
-	username = request.form['username']
-	password = request.form['password']
+	username = request.form.get('username')
+	password = request.form.get('password')
 	user = User.query.filter_by(username=username).first()
-	
+
 	if user and user.check_password(password):
 		session['username'] = username
 		return redirect(url_for('home'))
 	else:
-		return render_template('login.html', error="Invalid username or password")
+			return render_template('login.html', error="Invalid username or password")
 
 
 # Register route
@@ -94,10 +94,15 @@ def logout():
 # Home page route
 @app.route('/home', methods = ['GET', 'POST'])
 def home():
+	user = User.query.filter_by(username=session['username']).first()
+	if not user:
+		return redirect(url_for('logout'))
+	
 	# Add task
 	if request.method == 'POST':
 		currentTask = request.form['content']
 		newTask = Tasks(content=currentTask)
+		user.tasks.append(newTask)
 		try:
 			db.session.add(newTask)
 			db.session.commit()
@@ -109,7 +114,7 @@ def home():
 			return "Error: {e}"
 	# See current tasks
 	else:
-		tasks = Tasks.query.order_by(Tasks.created).all()
+		tasks = Tasks.query.filter_by(user=user).order_by(Tasks.created).all()
 		return render_template("home.html", tasks=tasks)
 
 
