@@ -38,6 +38,8 @@
     <form action="{{ url_for('home') }}" method="post">
         <input type="text" name="content" id="content">
         <input type="submit" value="Add" id="btn_Add">
+        <br>
+        <a href="{{ url_for('logout') }}">Logout</a>
     </form>
 
     <footer>
