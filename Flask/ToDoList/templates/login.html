@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <title>Login</title>
+{% endblock %}
+
+{% block body %}
+    <header>
+        <h1>Login page to Your To-Do List</h1>
+    </header>
+
+    {% if error %}
+        <p>{{ error }}</p>
+    {% endif %}
+
+    <!-- Form for logging in -->
+    <form id="form">
+        <label for="username">Username:</label>
+        <input type="text" name="username" id="username" placeholder="Username">
+        <br>
+        <label for="password">Password:</label>
+        <input type="password" name="password" id="password" placeholder="Password">
+        <br>
+        <input type="submit" value="Login" id="btn_login" onclick="setActionForm(this.value)"/>
+        <input type="button" value="Register" id="btn_register" onclick="setActionForm(this.value)"/>
+    </form>
+
+    <script>   
+        function setActionForm(action) {
+            let form = document.querySelector('form');
+            
+            if (action.toLowerCase() == "register") {
+                form.action = "{{ url_for('register') }}";
+                form.method = "POST";
+                form.submit();
+            }
+            else if (action.toLowerCase() == "login") {
+                form.action = "{{ url_for('login') }}";
+                form.method = "POST"; 
+                form.submit();
+            }
+        }
+    </script>
+{% endblock %}
