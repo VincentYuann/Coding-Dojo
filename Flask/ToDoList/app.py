@@ -15,60 +15,60 @@ db = SQLAlchemy(app)
 
 # --- DATABASE MODELS ---
 class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(25), nullable=False, unique=True)
-    password_hash = db.Column(db.String(150), nullable=False)
-    
-    # Points to the owner attribute on the Task model
-    tasks = db.relationship('Task', back_populates='owner')
+	id = db.Column(db.Integer, primary_key=True)
+	username = db.Column(db.String(25), nullable=False, unique=True)
+	password_hash = db.Column(db.String(150), nullable=False)
+	
+	# Points to the owner attribute on the Task model
+	tasks = db.relationship('Task', back_populates='owner', cascade="all, delete-orphan")
 
-    def set_password(self, password):
-        self.password_hash = generate_password_hash(password)
+	def set_password(self, password):
+		self.password_hash = generate_password_hash(password)
 
-    def check_password(self, password):
-        return check_password_hash(self.password_hash, password)
-    
+	def check_password(self, password):
+		return check_password_hash(self.password_hash, password)
+	
 
 class Task(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    content = db.Column(db.String(100), nullable=False)
-    complete = db.Column(db.Integer, default=0)
-    created = db.Column(db.DateTime, default=datetime.utcnow)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    
-    # A Task has one owner, which points back to the tasks attribute list on the User model
-    owner = db.relationship('User', back_populates='tasks')
+	id = db.Column(db.Integer, primary_key=True)
+	content = db.Column(db.String(100), nullable=False)
+	complete = db.Column(db.Integer, default=0)
+	created = db.Column(db.DateTime, default=datetime.utcnow)
+	user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+	
+	# A Task has one owner, which points back to the tasks attribute list on the User model
+	owner = db.relationship('User', back_populates='tasks')
 
-    def __repr__(self) -> str:
-        return f"{self.id}"
-    
+	def __repr__(self) -> str:
+		return f"{self.id}"
+	
 
 with app.app_context():
-    db.create_all()
+	db.create_all()
 
 # ---------------------------------- ROUTES ---------------------------------- #
 @app.route('/', methods=['GET'])
 def index():
-    if "username" in session:
-        return redirect(url_for('home'))
-    users = User.query.all()
-    return render_template('login.html', users=users)
+	if "username" in session:
+		return redirect(url_for('home'))
+	users = User.query.all()
+	return render_template('login.html', users=users)
 
 
 # Login route
 @app.route('/login', methods=['POST'])
 def login():
-    username = request.form.get('username')
-    password = request.form.get('password')
-    user = User.query.filter_by(username=username).first()
+	username = request.form.get('username')
+	password = request.form.get('password')
+	user = User.query.filter_by(username=username).first()
 
-    if user and user.check_password(password):
-        session['username'] = username
-        return redirect(url_for('home'))
-    else:
-        # Flash an error message and redirect to prevent reload bug.
-        flash("Invalid username or password")
-        return redirect(url_for('index'))
+	if user and user.check_password(password):
+		session['username'] = username
+		return redirect(url_for('home'))
+	else:
+		# Flash an error message and redirect to prevent reload bug.
+		flash("Invalid username or password")
+		return redirect(url_for('index'))
 
 
 # Register route
@@ -100,39 +100,39 @@ def register():
 # logoout route
 @app.route('/logout')
 def logout():
-    session.pop("username", None)
-    # Redirect to the main page
-    return redirect(url_for('index'))
+	session.pop("username", None)
+	# Redirect to the main page
+	return redirect(url_for('index'))
 
 
 # Home page route
 @app.route('/home', methods=['GET', 'POST'])
 def home():
-    if 'username' not in session:
-        return redirect(url_for('index'))
+	if 'username' not in session:
+		return redirect(url_for('index'))
 
-    user = User.query.filter_by(username=session['username']).first()
-    if not user:
-        # If user was deleted or session is invalid, log out
-        return redirect(url_for('logout'))
-    
-    # Add task
-    if request.method == 'POST':
-        currentTask = request.form['content']
-        # Associate the task with the user (owner)
-        newTask = Task(content=currentTask, owner=user)
-        try:
-            db.session.add(newTask)
-            db.session.commit()
-            return redirect(url_for('home'))
-        except Exception as e:  
-            print(f"Error: {e}")
-            return "Error: {e}"
-    # See current tasks
-    else:
-        # Filter the tasks to only show those owned by the logged in current user
-        tasks = Task.query.filter_by(owner=user).order_by(Task.created).all()
-        return render_template("home.html", tasks=tasks, username=session['username'])
+	user = User.query.filter_by(username=session['username']).first()
+	if not user:
+		# If user was deleted or session is invalid, log out
+		return redirect(url_for('logout'))
+	
+	# Add task
+	if request.method == 'POST':
+		currentTask = request.form['content']
+		# Associate the task with the user (owner)
+		newTask = Task(content=currentTask, owner=user)
+		try:
+			db.session.add(newTask)
+			db.session.commit()
+			return redirect(url_for('home'))
+		except Exception as e:  
+			print(f"Error: {e}")
+			return "Error: {e}"
+	# See current tasks
+	else:
+		# Filter the tasks to only show those owned by the logged in current user
+		tasks = Task.query.filter_by(owner=user).order_by(Task.created).all()
+		return render_template("home.html", tasks=tasks, username=session['username'], user=user)
 
 
 # Delete task
@@ -153,29 +153,51 @@ def delete(id):
     except Exception as e:
         print(f"Error: {e}")
         return "Error: {e}"
+	
+
+@app.route('/delete_user', methods=['POST'])
+def delete_user():
+    if 'username' not in session:
+        return redirect(url_for('index'))
+
+    try:
+        user_to_delete = User.query.filter_by(username=session['username']).first()
+        
+        if user_to_delete:
+            db.session.delete(user_to_delete)
+            db.session.commit()
+
+            # Log them out
+            session.pop("username", None)
+            
+        return redirect(url_for('index'))
+            
+    except Exception as e:
+        print(f"Error deleting user: {e}")
+        db.session.rollback()
+        return "Error deleting account.", 500
 
 
 # Update task
 @app.route('/update/<int:id>', methods=['GET', 'POST'])
 def update(id):
-    # Ensure the task belongs to the current user before updating
-    user = User.query.filter_by(username=session['username']).first()
-    task = Task.query.get_or_404(id)
+	user = User.query.filter_by(username=session['username']).first()
+	task = Task.query.get_or_404(id)
 
-    if task.owner != user:
-        return "Unauthorized", 403
+	# Ensure the task belongs to the current user before updating
+	if task.owner != user:
+		return "Unauthorized", 403
 
-    if request.method == 'POST':
-        task.content = request.form['content']
-        try:
-            db.session.commit()
-            return redirect(url_for('home'))
-        except Exception as e:
-            print(f"Error: {e}")
-            return "Error: {e}"
-    else:
-        return render_template('edit.html', task=task)
-
+	if request.method == 'POST':
+		task.content = request.form['content']
+		try:
+			db.session.commit()
+			return redirect(url_for('home'))
+		except Exception as e:
+			print(f"Error: {e}")
+			return "Error: {e}"
+	else:
+		return render_template('edit.html', task=task)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+	app.run(debug=True)
