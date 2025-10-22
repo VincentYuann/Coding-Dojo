@@ -37,10 +37,18 @@
     <form action="{{ url_for('home') }}" method="post">
         <input type="text" name="content" id="content">
         <button id="btn_Add">Add</button>
-        <br>
-        <a href="{{ url_for('logout') }}">Logout</a>
-        <a href="{{ url_for('delete_user') }}">Delete User</a>
     </form>
+
+    <hr>
+
+    <form action="{{ url_for('delete_user') }}" method="POST">
+        <button type="submit" 
+        onclick="return confirm('Are you sure you want to delete your account? This will delete all your tasks and cannot be undone.')">
+        Delete My Account
+        </button>
+    </form>
+    <br>
+    <a href="{{ url_for('logout') }}">Logout</a>
 
     <footer>
         <p>&copy; Vincent Yuan</p>
