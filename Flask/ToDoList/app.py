@@ -51,7 +51,8 @@ with app.app_context():
 def index():
     if "username" in session:
         return redirect(url_for('home'))
-    return render_template('login.html')
+    users = User.query.all()
+    return render_template('login.html', users=users)
 
 
 # Login route

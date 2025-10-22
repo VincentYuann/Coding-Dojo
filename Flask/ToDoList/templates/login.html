@@ -6,7 +6,7 @@
 
 {% block body %}
     <header>
-        <h1>Login page to Your To-Do List</h1>
+        <h1>To-Do List</h1>
     </header>
 
     {% with messages = get_flashed_messages() %}
@@ -24,9 +24,20 @@
         <input type="password" name="password" id="password" placeholder="Password" required>
         <input type="checkbox" onclick="togglePassword()">
         <br>
-        <input type="button" value="Login" id="btn_login" onclick="setActionForm(this.value)"/>
-        <input type="button" value="Register" id="btn_register" onclick="setActionForm(this.value)"/>
+        <button id="btn_login" value="Login" onclick="setActionForm(this.value)">Login</button>
+        <button id="btn_register" value="Register" onclick="setActionForm(this.value)">Register</button>
     </form>
+
+    <hr>   
+
+    <label for="saved_users">Saved users</label>
+    <select name="saved_users" id="saved_users" onchange="fillBlanks(this)">
+        <option selected disabled>-- Choose a saved login --</option>
+        {% for user in users %}
+            <option value="{{ user.username  }}">{{ user.username }}</option>
+        {% endfor %}
+    </select>
+    <br>
 
     <script>   
         function setActionForm(action) {
@@ -52,6 +63,13 @@
             } else {
                 passwordInput.type = "password";
             }
+        }
+
+        function fillBlanks(selectElement) {
+            let selectedUser = selectElement.value;
+
+            document.querySelector('#username').value = selectedUser;
+            document.querySelector('#password').value = "";
         }
     </script>
 {% endblock %}

@@ -6,10 +6,9 @@
 
 {% block body %}
     <header>
-        <h1>Welcome {{ username }}</h1>
+        <h1>Welcome to your to-do list, <strong>{{ username }}</strong></h1>
     </header>
 
-    <h2>To do list</h2>
     {% if tasks | length < 1 %}
         <h3>There are no tasks</h3>
     {% else %}
@@ -25,7 +24,7 @@
                     <td>{{ task.created.strftime("%D") }}</td>
                     <td>
                         <form action="{{ url_for('delete', id=task.id) }}" method="POST">
-                            <input type="submit" value="Delete" id="btn_Del">
+                            <button id="btn_Del">Delete</button>
                         </form>
                         <br>
                         <a href="{{ url_for('update', id = task.id) }}">Edit</a>
@@ -37,7 +36,7 @@
 
     <form action="{{ url_for('home') }}" method="post">
         <input type="text" name="content" id="content">
-        <input type="submit" value="Add" id="btn_Add">
+        <button id="btn_Add">Add</button>
         <br>
         <a href="{{ url_for('logout') }}">Logout</a>
     </form>
