@@ -1,0 +1,1 @@
+This is a To-Do List application built with Flask and SQLAlchemy that allows users to register, log in, and manage their own personal tasks. The app features full CRUD (Create, Read, Update, Delete) functionality for tasks and secure account management with password hashing.

@@ -1,0 +1,1 @@
+This is a RESTful API built with Flask and SQLAlchemy to manage students, courses, and their enrollments using a blueprint structure. It features full CRUD endpoints for both students and courses, along with functionality to manage their many-to-many enrollment relationship.
