@@ -51,8 +51,13 @@ with app.app_context():
 def index():
 	if "username" in session:
 		return redirect(url_for('home'))
-	users = User.query.all()
-	return render_template('login.html', users=users)
+	else:
+		submitted_username = session.pop('submitted_username', None)
+		if not submitted_username:
+			submitted_username = ''
+		
+		users = User.query.all()
+		return render_template('login.html', users=users, submitted_username=submitted_username)
 
 
 # Login route
@@ -68,6 +73,7 @@ def login():
 	else:
 		# Flash an error message and redirect to prevent reload bug.
 		flash("Invalid username or password")
+		session['submitted_username'] = username
 		return redirect(url_for('index'))
 
 
@@ -77,30 +83,26 @@ def register():
 	username = request.form.get('username', '').strip()
 	password = request.form.get('password', '').strip()
 
-	if not username or not password:
-		flash("Username and password cannot be empty")
+	user = User.query.filter_by(username=username).first()
+	if user:
+		# Flash an error message and redirect.
+		flash("Username already exists")
 		return redirect(url_for('index'))
-	
-	else:
-		user = User.query.filter_by(username=username).first()
-		if user:
-			# Flash an error message and redirect.
-			flash("Username already exists")
-			return redirect(url_for('index'))
 
-		else:
-			new_user = User(username=username)
-			new_user.set_password(password)
-			db.session.add(new_user)
-			db.session.commit()
-			session['username'] = username
-			return redirect(url_for('home'))
+	else:
+		new_user = User(username=username)
+		new_user.set_password(password)
+		db.session.add(new_user)
+		db.session.commit()
+		session['username'] = username
+		return redirect(url_for('home'))
 
 
 # logoout route
 @app.route('/logout')
 def logout():
-	session.pop("username", None)
+	user = session.pop("username", None)
+	flash(f"You have been logged out, <strong>{user}</strong>")
 	# Redirect to the main page
 	return redirect(url_for('index'))
 
@@ -132,50 +134,51 @@ def home():
 	else:
 		# Filter the tasks to only show those owned by the logged in current user
 		tasks = Task.query.filter_by(owner=user).order_by(Task.created).all()
-		return render_template("home.html", tasks=tasks, username=session['username'], user=user)
+		return render_template("home.html", tasks=tasks, username=f"<strong>{session['username']}</strong>")
 
 
 # Delete task
 @app.route('/delete/<int:id>', methods=['POST'])
 def delete(id):
-    # Ensure the task belongs to the current user before deleting
-    user = User.query.filter_by(username=session['username']).first()
-    deleteTask = Task.query.get_or_404(id)
-    
-    if deleteTask.owner != user:
-        # If someone tries to delete a task that isn't theirs, abort.
-        return "Unauthorized", 403
-
-    try:
-        db.session.delete(deleteTask)
-        db.session.commit()
-        return redirect(url_for('home'))
-    except Exception as e:
-        print(f"Error: {e}")
-        return "Error: {e}"
+	# Ensure the task belongs to the current user before deleting
+	user = User.query.filter_by(username=session['username']).first()
+	deleteTask = Task.query.get_or_404(id)
 	
+	if deleteTask.owner != user:
+		# If someone tries to delete a task that isn't theirs, abort.
+		return "Unauthorized", 403
 
+	try:
+		db.session.delete(deleteTask)
+		db.session.commit()
+		return redirect(url_for('home'))
+	except Exception as e:
+		print(f"Error: {e}")
+		return "Error: {e}"
+	
+# Delete user account
 @app.route('/delete_user', methods=['POST'])
 def delete_user():
-    if 'username' not in session:
-        return redirect(url_for('index'))
+	if 'username' not in session:
+		return redirect(url_for('index'))
 
-    try:
-        user_to_delete = User.query.filter_by(username=session['username']).first()
-        
-        if user_to_delete:
-            db.session.delete(user_to_delete)
-            db.session.commit()
+	try:
+		user_to_delete = User.query.filter_by(username=session['username']).first()
+		
+		if user_to_delete:
+			db.session.delete(user_to_delete)
+			db.session.commit()
 
-            # Log them out
-            session.pop("username", None)
-            
-        return redirect(url_for('index'))
-            
-    except Exception as e:
-        print(f"Error deleting user: {e}")
-        db.session.rollback()
-        return "Error deleting account.", 500
+			# Log them out
+			deleted_user = session.pop("username", None)
+			flash(f"Account <strong>'{deleted_user}'</strong> deleted successfully.")
+			
+		return redirect(url_for('index'))
+			
+	except Exception as e:
+		print(f"Error deleting user: {e}")
+		db.session.rollback()
+		return "Error deleting account.", 500
 
 
 # Update task
