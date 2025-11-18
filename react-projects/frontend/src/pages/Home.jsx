@@ -1,4 +1,4 @@
-import { getTopAnimes, searchAnimes } from '../services/jikanAPI';
+import { getTopAnimes, searchAnimes, getRecentAnimeRecommendations } from '../services/jikanAPI';
 import { useEffect, useState } from 'react';
 import AnimeCard from '../components/AnimeCard';
 
@@ -8,16 +8,23 @@ function Home() {
     const [error, setError] = useState(null); 
     const [loading, setLoading] = useState(true);
 
+    // Pagination states 
+    const [currentPage, setCurrentPage] = useState(1);
+    const [hasNextPage, setHasNextPage] = useState(false);
+
     useEffect(() => {
         const loadPopularAnimes = async () => {
+            setLoading(true);
+            setError(null);
             try {
-                const popularAnimes = await getTopAnimes();
-                setAnimes(popularAnimes);
+                const result = await getTopAnimes();
+                setAnimes(result.data);
+                setHasNextPage(result.pagination.has_next_page);
+                setCurrentPage(1);
             } catch (err) {
                 console.error("Error fetching top animes:", err);
                 setError(err);
-            } 
-            finally {
+            } finally {
                 setLoading(false);
             }
         };
