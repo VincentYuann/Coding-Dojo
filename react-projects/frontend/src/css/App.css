@@ -1,42 +1,165 @@
+/* src/css/App.css */
+
+/* --- Main App Layout --- */
 #root {
+  width: 100%;
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 0 2rem 2rem;
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.main-content {
+  padding-top: 2rem;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* --- NavBar.jsx --- */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border-color);
+  background-color: var(--bg-primary); /* Keeps it flush with body */
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.navbar .brand {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-decoration: none;
+}
+.navbar .brand:hover {
+  color: var(--accent-primary);
 }
 
-.card {
-  padding: 2em;
+.navbar-links {
+  display: flex;
+  gap: 1.5rem;
 }
 
-.read-the-docs {
-  color: #888;
+.navbar .nav-link {
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--text-secondary);
+}
+
+.navbar .nav-link:hover,
+.navbar .nav-link.active {
+  /* Add 'active' class logic with NavLink for this */
+  color: var(--text-primary);
+}
+
+/* --- Home.jsx --- */
+.search-form {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 2.5rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.search-input {
+  flex-grow: 1; /* Input takes up most of the space */
+}
+
+.search-button {
+  background-color: var(--accent-primary);
+  color: white;
+  font-weight: 600;
+}
+.search-button:hover {
+  background-color: var(--accent-primary-hover);
+  border-color: var(--accent-primary-hover);
+}
+
+.animes-grid {
+  display: grid;
+  /* Responsive grid: Fills with cards ~220px wide */
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+/* --- AnimeCard.jsx --- */
+.anime-card {
+  background-color: var(--bg-secondary);
+  border-radius: 8px;
+  overflow: hidden; /* Ensures image respects border-radius */
+  text-align: left;
+  box-shadow: 0 4px 12px var(--shadow-color);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.anime-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px var(--shadow-color);
+}
+
+.anime-poster {
+  position: relative;
+}
+
+.anime-poster img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 2 / 3; /* Common poster aspect ratio */
+  object-fit: cover; /* Prevents image stretching */
+  display: block;
+}
+
+.anime-overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0.5rem;
+}
+
+.favorite {
+  background-color: rgba(0, 0, 0, 0.6);
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  font-size: 1.25rem;
+  line-height: 1;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.favorite:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.anime-info {
+  padding: 1rem;
+}
+
+.anime-info h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  /* Truncate long titles */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 0.5rem;
+}
+
+.anime-info p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+/* --- Favorites.jsx --- */
+.favorite-empty {
+  color: var(--text-secondary);
+  font-size: 1.2rem;
+  padding: 4rem 0;
 }
