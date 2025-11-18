@@ -1,26 +1,45 @@
+import { getTopAnimes, searchAnimes } from '../services/jikanAPI';
+import { useEffect, useState } from 'react';
 import AnimeCard from '../components/AnimeCard';
-import {useState} from 'react';
 
 function Home() {
     const [searchQuery, setSearchQuery] = useState("");
+    const [animes, setAnimes] = useState([]); 
+    const [error, setError] = useState(null); 
+    const [loading, setLoading] = useState(true);
 
-    const animes = [
-        {id: 1, title: "Naruto", release_date: "2005"},
-        {id: 2, title: "One Piece", release_date: "1999"},
-        {id: 3, title: "Attack on Titan", release_date: "2013"},
-        {id: 4, title: "Demon Slayer", release_date: "2019"},
-        {id: 5, title: "Jujutsu Kaisen", release_date: "2020"},
-        {id: 6, title: "Death Note", release_date: "2006"},
-        {id: 7, title: "Fullmetal Alchemist: Brotherhood", release_date: "2009"},
-        {id: 8, title: "Hunter x Hunter", release_date: "2011"},
-        {id: 9, title: "My Hero Academia", release_date: "2016"},
-        {id: 10, title: "Chainsaw Man", release_date: "2022"}
-    ];
+    useEffect(() => {
+        const loadPopularAnimes = async () => {
+            try {
+                const popularAnimes = await getTopAnimes();
+                setAnimes(popularAnimes);
+            } catch (err) {
+                console.error("Error fetching top animes:", err);
+                setError(err);
+            } 
+            finally {
+                setLoading(false);
+            }
+        };
 
-    const handleSearch = (e) => {
+        loadPopularAnimes(); 
+    }, []);
+
+    const handleSearch = async (e) => {
         e.preventDefault();
-        alert(`Searching for: ${searchQuery}`);
-        setSearchQuery("");
+        
+        setLoading(true);
+        setError(null);
+
+        try {
+            const searchResults = await searchAnimes(searchQuery);
+            setAnimes(searchResults);
+        } catch (err) {
+            console.error("Error searching animes:", err);
+            setError(err);
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -37,10 +56,10 @@ function Home() {
             </form>
 
             <div className="animes-grid">
-                {animes.map(
-                    (anime) => 
-                        anime.title.toLowerCase().startsWith(searchQuery) &&
-                        (<AnimeCard key={anime.id} anime={anime} />)
+                {loading && <p>Loading anime...</p>}
+                {error && <p>Error loading anime. Please try again.</p>}
+                {!loading && animes.map(
+                    anime => <AnimeCard key={anime.mal_id} anime={anime} />
                 )}
             </div>
         </div>

@@ -10,16 +10,21 @@ function AnimeCard({anime}) {
     return (
     <div className="anime-card">
         <div className="anime-poster">
-            <img src={anime.url} alt={anime.title} />
+            <a href={anime.url} target="_blank" rel="noopener noreferrer">
+                <img src={anime.images.jpg.image_url} alt={anime.title_english} />
+            </a>
             <div className="anime-overlay">
                 <button className="favorite" onClick={handleFavoriteClick}>
                     {isFavorite ? '❤️' : '🤍'}
                 </button>
             </div>
         </div>
+
         <div className="anime-info">
-            <h3>{anime.title}</h3> 
-            <p>{anime.release_date}</p>
+            <h3>{anime.title_english}</h3> 
+            <p>Aired: {anime.aired.prop.from.year}</p>
+            <p>Score: {anime.score}⭐</p>
+            <p>Type: {anime.type}</p>
         </div>
     </div>
   );
