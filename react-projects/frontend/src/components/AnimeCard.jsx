@@ -21,7 +21,7 @@ function AnimeCard({anime}) {
         </div>
 
         <div className="anime-info">
-            <h3>{anime.title_english}</h3> 
+            <h3>{anime.title_english || anime.title || anime.titles[0].title}</h3> 
             <p>Aired: {anime.aired.prop.from.year}</p>
             <p>Score: {anime.score}⭐</p>
             <p>Type: {anime.type}</p>

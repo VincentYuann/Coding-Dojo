@@ -34,6 +34,5 @@ export const getRecentAnimeRecommendations = async () => {
     return data;
 };
 
-
 getTopAnimes();
 
