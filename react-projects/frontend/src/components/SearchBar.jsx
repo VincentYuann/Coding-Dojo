@@ -1,21 +1,11 @@
-import { searchAnimes } from '../services/jikanAPI';
+import { useState } from 'react';
 
 function SearchBar({ onSearch }) {
+    const [text, setText] = useState("");
+
     const handleSearch = async (e) => {
         e.preventDefault();
-        
-        setLoading(true);
-        setError(null);
-
-        try {
-            const searchResults = await searchAnimes(searchQuery);
-            setAnimes(searchResults);
-        } catch (err) {
-            console.error("Error searching animes:", err);
-            setError(err);
-        } finally {
-            setLoading(false);
-        }
+        onSearch(text);
     };
     
     return (
@@ -24,8 +14,8 @@ function SearchBar({ onSearch }) {
                 type="text" 
                 placeholder="Search for animes..." 
                 className="search-input" 
-                value={searchQuery}
-                onChange={(e) => onSearch(e.target.value)}
+                value={text}
+                onChange={(e) => setText(e.target.value)}
             />
             <button type="submit" className="search-button">Search</button>
         </form>

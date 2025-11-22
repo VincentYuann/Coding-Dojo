@@ -6,7 +6,9 @@ function NavBar({ onSearch }) {
         <nav className="navbar">
             <Link to="/" className="brand">AnimeY</Link>
 
-            <SearchBar onSearch={onSearch} />
+            <div className="search-bar">
+                <SearchBar onSearch={onSearch} />
+            </div>
 
             <div className="navbar-links">
                 <Link to="/" className="nav-link">Home</Link>
