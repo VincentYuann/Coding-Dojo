@@ -8,6 +8,7 @@ function NavBar({ onSearch }) {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (text.trim()) {
+            onSearch(text);
             navigate(`/search?q=${text}`);
             setText("");
         }
