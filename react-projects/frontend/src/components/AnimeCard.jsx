@@ -11,7 +11,7 @@ function AnimeCard({anime}) {
     <div className="anime-card">
         <div className="anime-poster">
             <a href={anime.url} target="_blank" rel="noopener noreferrer">
-                <img src={anime.images.jpg.image_url} alt={anime.title_english} />
+                <img src={anime.images.webp.large_image_url} alt={anime.title_english} />
             </a>
             <div className="anime-overlay">
                 <button className="favorite" onClick={handleFavoriteClick}>

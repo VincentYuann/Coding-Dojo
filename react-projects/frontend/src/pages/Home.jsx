@@ -4,29 +4,11 @@ import AnimeCard from '../components/AnimeCard';
 import Pagination from '../components/PaginationCard';
 
 function Home({ onSearch }) {
-    const [animes, setAnimes] = useState([]);
     const [topAnimes, setTopAnimes] = useState([]); 
     const [recommendedAnimes, setRecommendedAnimes] = useState([]);
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null); 
-
-    const handleSearch = async (e) => {
-        e.preventDefault();
-        
-        setLoading(true);
-        setError(null);
-
-        try {
-            const searchResults = await searchAnimes(onSearch);
-            setAnimes(searchResults);
-        } catch (err) {
-            console.error("Error searching animes:", err);
-            setError(err);
-        } finally {
-            setLoading(false);
-        }
-    };
 
     useEffect(() => {
         const loadPopularAnimes = async () => {
@@ -35,7 +17,7 @@ function Home({ onSearch }) {
            
             try {
                 const result = await getTopAnimes();
-                setAnimes(result.data);
+                setTopAnimes(result.data);
             } catch (err) {
                 console.error("Error fetching top animes:", err);
                 setError(err);
@@ -66,18 +48,28 @@ function Home({ onSearch }) {
 
     return (
         <div className="home">
-            <div className="animes-grid">
-                {loading && <p>Loading anime...</p>}
-                {error && <p>Error loading anime. Please try again.</p>}
-                {!loading && animes
-                    .filter(anime => {
-                        if (!onSearch) return true;
+            <div className="top-animes-section">
+                <div className="messages">
+                    {loading && <p>Loading anime...</p>}
+                    <br />
+                    {error && <p>Error loading anime. Please try again.</p>}
+                </div>
 
-                        const titleMatch = anime.title_english || anime.title || anime.titles[0].title;
-                        return titleMatch.toLowerCase().startsWith(onSearch.toLowerCase());
-                    })
-                    .map(anime => <AnimeCard key={anime.mal_id} anime={anime} />)
+                {!loading && topAnimes.map(
+                    anime => 
+                        <AnimeCard 
+                            key={anime.mal_id} 
+                            anime={anime} />
+                )
                 }
+            </div>
+
+            <div className="recommended-animes-section">
+                <div className="messages">
+                    <h2>Recent Anime Recommendations</h2>
+                    {loading && <p>Loading recommendations...</p>}
+                    {error && <p>Error loading recommendations. Please try again.</p>}
+                </div>
             </div>
 
             <div className="pagination">

@@ -1,7 +1,7 @@
 function Favorites() {
     return (
-        <div className="favorite-empty">
-            <p>Start adding movies to your favorites</p>
+        <div className="favorites">
+            <p>Your Favorite Animes...</p>
         </div>
     );
 }

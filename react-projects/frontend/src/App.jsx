@@ -1,9 +1,10 @@
 import { Routes, Route } from 'react-router-dom';
 import { useState } from 'react';
 import './css/App.css';
+import NavBar from './components/NavBar';
 import Home from './pages/Home';
 import Favorites from './pages/Favorites';
-import NavBar from './components/NavBar';
+import SearchResults from './pages/SearchResults';
 
 function App() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -17,8 +18,9 @@ function App() {
 
       <main className="main-content">
         <Routes>
-          <Route path='/' element={<Home onSearch={searchQuery} />} />
+          <Route path='/' element={<Home />} />
           <Route path='/favorites' element={<Favorites />} />
+          <Route path='/search' element={<SearchResults onSearch={searchQuery} />} />
         </Routes>
       </main>
 

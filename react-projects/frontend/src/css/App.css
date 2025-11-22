@@ -3,7 +3,7 @@
 /* --- Main App Layout --- */
 #root {
   width: 100%;
-  max-width: 1280px;
+  max-width: 1440px;
   margin: 0 auto;
   padding: 0 2rem 2rem;
   text-align: center;
@@ -78,10 +78,10 @@
   border-color: var(--accent-primary-hover);
 }
 
-.animes-grid {
+.top-animes-section, .recommended-animes-section, .search-results {
   display: grid;
   /* Responsive grid: Fills with cards ~220px wide */
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
   gap: 1.5rem;
 }
 
