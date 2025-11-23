@@ -54,17 +54,17 @@ function Home({ onSearch }) {
                 {error && <p>Error loading anime. Please try again.</p>}
             </div>
 
-            <div className="top-animes-section">
+            <div className="top-anime-list">
                 {!loading && !error && topAnimes.map(
                     anime => 
                         <AnimeCard 
                             key={anime.mal_id} 
-                            anime={anime} />
-                )
-                }
+                            anime={anime} 
+                        />
+                )}
             </div>
 
-            <div className="recommended-animes-section">
+            <div className="recommended-anime-list">
                 <h2>Recent Anime Recommendations</h2>
             </div>
 

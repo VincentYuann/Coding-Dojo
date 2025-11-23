@@ -46,7 +46,8 @@ function SearchResults({ onSearch }) {
                     anime => 
                         <AnimeCard 
                             key={anime.mal_id} 
-                            anime={anime} />
+                            anime={anime} 
+                        />
                 )}
             </div>
         </div>

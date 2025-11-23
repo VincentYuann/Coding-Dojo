@@ -6,12 +6,12 @@ import Home from './pages/Home';
 import Favorites from './pages/Favorites';
 import SearchResults from './pages/SearchResults';
 
+// Create a context data for favorites and pass it down to the ANimeCard component
 export const favoritesContext = createContext();
 
 function App() {
   const [searchQuery, setSearchQuery] = useState("");
   const [favorites, setFavorites] = useState([]);
-  console.log("Current favorites:", favorites);
 
   return (
     <>
