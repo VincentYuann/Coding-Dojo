@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
-function NavBar({ onSearch }) {
+export default function NavBar( {onSearch} ) {
     const [text, setText] =  useState("");
     const navigate = useNavigate();
     
@@ -36,5 +36,3 @@ function NavBar({ onSearch }) {
         </nav>
     );
 }
-
-export default NavBar;

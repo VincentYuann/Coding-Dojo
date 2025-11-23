@@ -1,10 +1,19 @@
-import {useState} from 'react';
+import { useContext } from 'react';
+import { favoritesContext } from '../App';
 
-function AnimeCard({anime}) {
-    const [isFavorite, setIsFavorite] = useState(false);
+function AnimeCard({ anime }) {
+    const [favorites, setFavorites] = useContext(favoritesContext);
+
+    const isFavorite = favorites.some(fav => fav.mal_id === anime.mal_id);
 
     function handleFavoriteClick() {
-        setIsFavorite(inbox => !inbox);
+        if (isFavorite) {
+            // Remove from favorites
+            setFavorites(favorites.filter(fav => fav.mal_id !== anime.mal_id));
+        } else {
+            // Add the new 'anime' to favorites
+            setFavorites(previousFavorites => [...previousFavorites, anime]);
+        }
     }
 
     return (

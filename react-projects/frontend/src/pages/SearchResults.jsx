@@ -37,8 +37,12 @@ function SearchResults({ onSearch }) {
                 {error && <p>Error searching animes. Please try again.</p>}
             </div>
 
+            <div className="filters">
+                {/* Future filter options can be added here */}
+            </div>
+
             <div className="search-results">
-                {!loading && animes.map(
+                {!loading && !error && animes.map(
                     anime => 
                         <AnimeCard 
                             key={anime.mal_id} 

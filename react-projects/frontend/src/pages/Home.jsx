@@ -48,14 +48,14 @@ function Home({ onSearch }) {
 
     return (
         <div className="home">
-            <div className="top-animes-section">
-                <div className="messages">
-                    {loading && <p>Loading anime...</p>}
-                    <br />
-                    {error && <p>Error loading anime. Please try again.</p>}
-                </div>
+            <div className="messages">
+                {loading && <p>Loading anime...</p>}
+                <br />
+                {error && <p>Error loading anime. Please try again.</p>}
+            </div>
 
-                {!loading && topAnimes.map(
+            <div className="top-animes-section">
+                {!loading && !error && topAnimes.map(
                     anime => 
                         <AnimeCard 
                             key={anime.mal_id} 
@@ -65,11 +65,7 @@ function Home({ onSearch }) {
             </div>
 
             <div className="recommended-animes-section">
-                <div className="messages">
-                    <h2>Recent Anime Recommendations</h2>
-                    {loading && <p>Loading recommendations...</p>}
-                    {error && <p>Error loading recommendations. Please try again.</p>}
-                </div>
+                <h2>Recent Anime Recommendations</h2>
             </div>
 
             <div className="pagination">
