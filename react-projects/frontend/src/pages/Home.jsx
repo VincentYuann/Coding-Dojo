@@ -65,7 +65,7 @@ function Home({ onSearch }) {
             </div>
 
             <div className="random-anime-list">
-                <h2>Recent Anime Recommendations</h2>
+                <h2>Random Animes</h2>
                 {!loading && !error && randomAnimes.map(
                     anime => 
                         <AnimeCard 
