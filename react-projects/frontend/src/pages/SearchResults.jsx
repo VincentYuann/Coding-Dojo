@@ -15,8 +15,13 @@ function SearchResults({ onSearch }) {
             setError(null);
 
             try {
-                const searchResults = await searchAnimes(onSearch);
-                setAnimes(searchResults);
+                const results = await searchAnimes(onSearch);
+                // Remove duplicate animes based on 'mal_id' with AI solution
+                const uniqueResults = [
+                    ...new Map(results.map(item => [item.mal_id, item])).values()
+                ];
+                
+                setAnimes(uniqueResults);
             } catch (err) {
                 console.error("Error searching animes:", err);
                 setError(err);
