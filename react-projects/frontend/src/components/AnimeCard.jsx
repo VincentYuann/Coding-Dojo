@@ -10,11 +10,9 @@ function AnimeCard({ anime }) {
         if (isFavorite) {
             // Remove from favorites
             setFavorites(favorites.filter(fav => fav.mal_id !== anime.mal_id));
-            console.log("Removed from favorites:", anime.title_english || anime.title || anime.titles[0].title);
         } else {
             // Add the new 'anime' to favorites
             setFavorites(previousFavorites => [...previousFavorites, anime]);
-            console.log("Added to favorites:", anime.title_english || anime.title || anime.titles[0].title);
         }
     }
 
@@ -34,7 +32,7 @@ function AnimeCard({ anime }) {
         <div className="anime-info">
             <h3>{anime.title_english || anime.title || anime.titles[0].title}</h3> 
             <p>Aired: {anime.aired.prop.from.year}</p>
-            <p>Score: {anime.score}⭐</p>
+            <p>Score: {anime.score || "N/A"}⭐</p>
             <p>Type: {anime.type}</p>
         </div>
     </div>

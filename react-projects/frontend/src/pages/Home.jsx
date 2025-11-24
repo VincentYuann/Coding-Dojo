@@ -1,17 +1,17 @@
-import { getTopAnimes, searchAnimes, getRecentAnimeRecommendations } from '../services/jikanAPI';
+import { getTopAnimes, getRandomAnimes } from '../services/jikanAPI';
 import { useEffect, useState } from 'react';
 import AnimeCard from '../components/AnimeCard';
-import Pagination from '../components/PaginationCard';
+import Pagination from '../components/Pagination';
 
 function Home({ onSearch }) {
+    const [randomAnimes, setRandomAnimes] = useState([]);
     const [topAnimes, setTopAnimes] = useState([]); 
-    const [recommendedAnimes, setRecommendedAnimes] = useState([]);
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null); 
 
     useEffect(() => {
-        const loadPopularAnimes = async () => {
+        const fetchPopularAnimes = async () => {
             setLoading(true);
             setError(null);
            
@@ -25,14 +25,14 @@ function Home({ onSearch }) {
                 setLoading(false);
             }
         };
-/*
-        const getRecentAnimeRecommendations = async () => {
+
+        const fetchRandomAnimes = async () => {
             setLoading(true);
             setError(null);
 
             try {
-                const result = await getRecentAnimeRecommendations();
-                setAnimes(result.data);
+                const result = await getRandomAnimes();
+                setRandomAnimes(result);
             } catch (err) {
                 console.error("Error fetching recent anime recommendations:", err);
                 setError(err);
@@ -41,9 +41,8 @@ function Home({ onSearch }) {
             }
         };
     
-        getRecentAnimeRecommendations(); 
-*/
-        loadPopularAnimes(); 
+        fetchPopularAnimes(); 
+        fetchRandomAnimes(); 
     }, []);
 
     return (
@@ -55,6 +54,7 @@ function Home({ onSearch }) {
             </div>
 
             <div className="top-anime-list">
+                <h2>Top 10 Animes</h2>
                 {!loading && !error && topAnimes.map(
                     anime => 
                         <AnimeCard 
@@ -64,8 +64,15 @@ function Home({ onSearch }) {
                 )}
             </div>
 
-            <div className="recommended-anime-list">
+            <div className="random-anime-list">
                 <h2>Recent Anime Recommendations</h2>
+                {!loading && !error && randomAnimes.map(
+                    anime => 
+                        <AnimeCard 
+                            key={anime.mal_id} 
+                            anime={anime} 
+                        />
+                )}
             </div>
 
             <div className="pagination">

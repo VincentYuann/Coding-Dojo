@@ -78,7 +78,7 @@
   border-color: var(--accent-primary-hover);
 }
 
-.top-anime-list, .recommended-anime-list, .search-results, .favorite-anime-list {
+.top-anime-list, .random-anime-list, .search-results, .favorite-anime-list {
   display: grid;
   /* Responsive grid: Fills with cards ~220px wide */
   grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));

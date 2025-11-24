@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { searchAnimes } from '../services/jikanAPI';
 import AnimeCard from '../components/AnimeCard';
+import FilterBar from '../components/FilterBar';
 
 function SearchResults({ onSearch }) {
     const [animes, setAnimes] = useState([]);
@@ -27,7 +28,6 @@ function SearchResults({ onSearch }) {
         fetchSearchResults();
     }, [onSearch]);
 
-  
     return (
         <div className="search">
             <div className="messages">
@@ -37,9 +37,7 @@ function SearchResults({ onSearch }) {
                 {error && <p>Error searching animes. Please try again.</p>}
             </div>
 
-            <div className="filters">
-                {/* Future filter options can be added here */}
-            </div>
+            <FilterBar />
 
             <div className="search-results">
                 {!loading && !error && animes.map(
