@@ -13,13 +13,13 @@ export const searchAnimes = async (query, page=1, filters) => {
 
     // Loop through filters and append to params if value exists
     Object.entries(filters).forEach(([key, value]) => {
-        if (value) {
+        if (value && value.length !== 0) {
+            console.log(`Appending filter: ${key}=${value}`);
             params.append(key, value);
         }
     });
 
     // Generate the full URL with query parameters
-    console.log(`${BASE_URL}/anime?${params.toString()}`);
     const response = await fetch(`${BASE_URL}/anime?${params.toString()}`);
     
     if (!response.ok) throw new Error(`API request failed: ${response.status}`);

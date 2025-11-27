@@ -11,8 +11,12 @@ export default function NavBar() {
         e.preventDefault();
         if (text.trim()) {
             setSearchQuery(text);
-            navigate(`/search?q=${text}`);
             setText("");
+            navigate(`/search?q=${text}`);
+        } else {
+            setSearchQuery("");
+            setText("");
+            navigate("/search");
         }
     };
 
@@ -21,6 +25,7 @@ export default function NavBar() {
             <Link to="/" className="brand">AnimeY</Link>
 
             <form onSubmit={handleSubmit} className="search-form">
+                <span className="search-icon">🔍</span>
                 <input 
                     type="text" 
                     placeholder="Search for animes..." 
@@ -28,7 +33,9 @@ export default function NavBar() {
                     value={text}
                     onChange={(e) => setText(e.target.value)}
                 />
-                <button type="submit" className="search-button">Search</button>
+                <button type="button" className="filter-button" onClick={handleSubmit}>
+                    ▼Filter
+                </button>
             </form>
 
             <div className="navbar-links">

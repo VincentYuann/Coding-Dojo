@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import { searchAnimes } from '../services/jikanAPI';
 import { searchContext } from '../App';
+import { useSearchParams } from 'react-router-dom';
 import AnimeCard from '../components/AnimeCard';
 import FilterBar from '../components/FilterBar';
 
