@@ -1,26 +1,8 @@
 const BASE_URL = 'https://api.jikan.moe/v4';
 
-// Search animes with query and optional filters
 // Max 25 results per page
-export const searchAnimes = async (query, page=1, filters) => {
-    // Create the object instance
-    const params = new URLSearchParams();
-    
-    // Add fixed parameters
-    params.append('q', query);
-    params.append('limit', 25);
-    params.append('page', page);
-
-    // Loop through filters and append to params if value exists
-    Object.entries(filters).forEach(([key, value]) => {
-        if (value && value.length !== 0) {
-            console.log(`Appending filter: ${key}=${value}`);
-            params.append(key, value);
-        }
-    });
-
-    // Generate the full URL with query parameters
-    const response = await fetch(`${BASE_URL}/anime?${params.toString()}`);
+export const searchAnimes = async (filterUrl, page=1) => {
+    const response = await fetch(`${BASE_URL}/anime?&limit=25${filterUrl}`);
     
     if (!response.ok) throw new Error(`API request failed: ${response.status}`);
     const data = await response.json();
