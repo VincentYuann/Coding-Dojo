@@ -6,8 +6,9 @@ import Home from './pages/Home';
 import Favorites from './pages/Favorites';
 import SearchResults from './pages/SearchResults';
 
-// Create a context data for favorites and pass it down to the ANimeCard component
+// Create a context data for the grandchild component
 export const favoritesContext = createContext();
+export const searchContext = createContext();
 
 function App() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -15,19 +16,21 @@ function App() {
 
   return (
     <>
-      <header className="header">
-        <NavBar onSearch={setSearchQuery} />
-      </header>
+      <searchContext.Provider value={[searchQuery, setSearchQuery]}>
+        <header className="header">
+          <NavBar />
+        </header>
 
-      <favoritesContext.Provider value={[favorites, setFavorites]}>
-        <main className="main-content">
-          <Routes>
-            <Route path='/' element={<Home />} />
-            <Route path='/favorites' element={<Favorites />} />
-            <Route path='/search' element={<SearchResults onSearch={searchQuery} />} />
-          </Routes>
-        </main>
-      </favoritesContext.Provider>
+        <favoritesContext.Provider value={[favorites, setFavorites]}>
+          <main className="main-content">
+            <Routes>
+              <Route path='/' element={<Home />} />
+              <Route path='/favorites' element={<Favorites />} />
+              <Route path='/search' element={<SearchResults />} />
+            </Routes>
+          </main>
+        </favoritesContext.Provider>
+      </searchContext.Provider>
 
       <footer className="footer">
         <p>© 2025 AnimeY - Vincent Yuan.</p>

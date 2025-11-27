@@ -1,14 +1,16 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { searchContext } from '../App';
 
-export default function NavBar({ onSearch }) {
+export default function NavBar() {
     const [text, setText] =  useState("");
+    const [,setSearchQuery] = useContext(searchContext);
     const navigate = useNavigate();
     
     const handleSubmit = (e) => {
         e.preventDefault();
         if (text.trim()) {
-            onSearch(text);
+            setSearchQuery(text);
             navigate(`/search?q=${text}`);
             setText("");
         }

@@ -1,24 +1,37 @@
 const BASE_URL = 'https://api.jikan.moe/v4';
 
-export const searchAnimes = async (query, page=1) => {
-    const response = await fetch(`${BASE_URL}/anime?q=${query}&limit=25&page=${page}`);
+// Search animes with query and optional filters
+// Max 25 results per page
+export const searchAnimes = async (query, page=1, filters) => {
+    // Create the object instance
+    const params = new URLSearchParams();
     
-    if (!response.ok) {
-        throw new Error(`API request failed: ${response.status}`);
-    }
+    // Add fixed parameters
+    params.append('q', query);
+    params.append('limit', 25);
+    params.append('page', page);
+
+    // Loop through filters and append to params if value exists
+    Object.entries(filters).forEach(([key, value]) => {
+        if (value) {
+            params.append(key, value);
+        }
+    });
+
+    // Generate the full URL with query parameters
+    console.log(`${BASE_URL}/anime?${params.toString()}`);
+    const response = await fetch(`${BASE_URL}/anime?${params.toString()}`);
     
+    if (!response.ok) throw new Error(`API request failed: ${response.status}`);
     const data = await response.json();
     return data.data; 
 };
 
+// Max 10 top animes
 export const getTopAnimes = async () => {
-    // Max is 25 animes per page from the Jikan API
     const response = await fetch(`${BASE_URL}/top/anime?limit=10&`);
     
-    if (!response.ok) {
-        throw new Error(`API request failed: ${response.status}`);
-    }
-    
+    if (!response.ok) throw new Error(`API request failed: ${response.status}`);
     const data = await response.json();
     return data;
 };
@@ -31,8 +44,8 @@ export const getRandomAnimes = async (count=10) => {
         if (response.ok) {
             const data = await response.json();
             animes.push(data.data);
-            console.log("Fetched random anime:", data.data.title);
-        }
+        } else throw new Error(`API request failed: ${response.status}`);
     }
+
     return animes;
 };

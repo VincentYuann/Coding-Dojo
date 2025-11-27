@@ -1,16 +1,10 @@
-function Pagination({ loading, hasNextPage, onLoadMore }) {
-    
-    if (loading || !hasNextPage) {
-        return null; // Don't render anything
-    }
-
+function Pagination() {
     return (
         <button 
-            onClick={onLoadMore} 
             className="load-more-button"
-            disabled={loading}
+            disabled="loading"
         >
-            {loading ? "Loading..." : "Load More"}
+            "Loading..." : "Load More"
         </button>
     );
 }

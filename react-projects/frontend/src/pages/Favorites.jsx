@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useContext } from "react";
 import { favoritesContext } from "../App";
 import AnimeCard from "../components/AnimeCard";
 
