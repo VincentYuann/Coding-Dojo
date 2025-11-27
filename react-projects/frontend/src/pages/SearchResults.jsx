@@ -1,14 +1,13 @@
 import { useState, useEffect, useContext, use } from 'react';
 import { searchAnimes } from '../services/jikanAPI';
 import { searchContext } from '../App';
-import { useSearchParams } from 'react-router-dom';
 import AnimeCard from '../components/AnimeCard';
 import FilterBar from '../components/FilterBar';
 
 function SearchResults() {
     const [animes, setAnimes] = useState([]);
     const [searchQuery] = useContext(searchContext);
-    const [searchParams] = useSearchParams();
+    const [filterUrl, setFilterUrl] = useState("");
     
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null); 
@@ -19,7 +18,7 @@ function SearchResults() {
             setError(null);
 
             try {
-                const results = await searchAnimes(filterUrl);
+                const results = await searchAnimes(searchQuery, filterUrl);
                 // Remove duplicate animes based on 'mal_id' with AI solution
                 const uniqueResults = [
                     ...new Map(results.map(item => [item.mal_id, item])).values()
@@ -43,7 +42,7 @@ function SearchResults() {
                 <h2>Search Results Page</h2>
             </div>
 
-            <FilterBar setFilterParametors={setFilterParametors}/>
+            <FilterBar setFilterUrl={setFilterUrl}/>
 
             <div className="search-results">
                 {loading && <p>Searching for animes...</p>}

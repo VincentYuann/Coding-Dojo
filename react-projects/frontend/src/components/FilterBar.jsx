@@ -2,7 +2,7 @@ import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { searchContext } from "../App";
 
-function FilterBar({ setFilterParametors }) {
+function FilterBar({ setFilterUrl }) {
     const [searchQuery, setSearchQuery] = useContext(searchContext);
     const [filterSearchQuery, setFilterSearchQuery] = useState(searchQuery);
     const [filterParametors, setFilterParametors] = useState({
@@ -33,19 +33,22 @@ function FilterBar({ setFilterParametors }) {
         e.preventDefault();
         const params = new URLSearchParams();
 
-        Object.entries(setFilterParametors).forEach(([key, value]) => {
+        Object.entries(filterParametors).forEach(([key, value]) => {
             if (value && value.length !== 0) {
                 params.append(key, value);
             }
         });
-        
-        console.log(params.toString());
+        const filterUrl = params.toString();
+        console.log("Filter URL:", filterUrl); // This is for debugging, delete it later
+
         if (filterSearchQuery.trim()) {
             setSearchQuery(filterSearchQuery);
-            navigate(`/search?q=${filterSearchQuery}${params.toString()}`);
+            setFilterUrl(filterUrl);
+            navigate(`/search?${filterUrl}`);
         } else {
             setSearchQuery("");
-            navigate(`/search${params.toString()}`);
+            setFilterUrl("");
+            navigate(`/search?${filterUrl}`);
         }
     };
 
