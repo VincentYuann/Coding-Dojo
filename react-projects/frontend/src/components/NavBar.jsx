@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useState, useContext } from 'react';
 import { searchContext } from '../App';
+import { createQueryUrl } from '../utils/creatQueryUrl';
 
 export default function NavBar() {
     const [,setSearchQuery] = useContext(searchContext);
@@ -10,12 +11,12 @@ export default function NavBar() {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (text.trim()) {
+            setText("");
             setSearchQuery(text);
-            setText("");
-            navigate(`/search?q=${text}`);
+            navigate(`/search?${createQueryUrl({q: text})}`);
         } else {
-            setSearchQuery("");
             setText("");
+            setSearchQuery("");
             navigate("/search");
         }
     };

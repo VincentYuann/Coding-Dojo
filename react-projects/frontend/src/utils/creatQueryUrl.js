@@ -6,7 +6,6 @@ export const createQueryUrl = (filterObject) => {
     const params = new URLSearchParams();
 
     Object.entries(filterObject).forEach(([key, value]) => {
-        console.log(key, value);
         if (value && value.length !== 0) {
             params.append(toUnderScore(key), value);
         }

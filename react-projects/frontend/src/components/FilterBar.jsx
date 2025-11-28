@@ -37,7 +37,12 @@ function FilterBar({ setFilterUrl }) {
     const handleFilterSubmit = (e) => {
         e.preventDefault();
 
-        const filterUrl = createQueryUrl(filterObject);
+        const currentParams = {
+            ...filterObject,
+            q: filterSearchQuery 
+        };
+
+        const filterUrl = createQueryUrl(currentParams);
 
         if (filterSearchQuery.trim()) {
             setFilterUrl(filterUrl);

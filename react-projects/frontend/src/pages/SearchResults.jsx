@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext, use } from 'react';
 import { searchAnimes } from '../services/jikanAPI';
 import { searchContext } from '../App';
+import { createQueryUrl } from "../utils/creatQueryUrl";
 import AnimeCard from '../components/AnimeCard';
 import FilterBar from '../components/FilterBar';
 
@@ -18,7 +19,7 @@ function SearchResults() {
             setError(null);
 
             try {
-                const results = await searchAnimes(searchQuery);
+                const results = await searchAnimes(filterUrl);
                 // Remove duplicate animes based on 'mal_id' with AI solution
                 const uniqueResults = [
                     ...new Map(results.map(item => [item.mal_id, item])).values()
