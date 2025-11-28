@@ -3,8 +3,8 @@ import { useState, useContext } from 'react';
 import { searchContext } from '../App';
 
 export default function NavBar() {
-    const [text, setText] =  useState("");
     const [,setSearchQuery] = useContext(searchContext);
+    const [text, setText] =  useState("");
     const navigate = useNavigate();
     
     const handleSubmit = (e) => {

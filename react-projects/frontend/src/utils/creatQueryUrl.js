@@ -1,0 +1,20 @@
+const toUnderScore = (str) => {
+    return str.replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`);
+}
+
+export const createQueryUrl = (filterObject) => {
+    const params = new URLSearchParams();
+
+    Object.entries(filterObject).forEach(([key, value]) => {
+        console.log(key, value);
+        if (value && value.length !== 0) {
+            params.append(toUnderScore(key), value);
+        }
+    });
+    console.log("----- Created Query URL -----");
+    console.log("URL string:" + params.toString());
+    console.log("------------------------------");
+    console.log("");
+
+    return params.toString();
+}

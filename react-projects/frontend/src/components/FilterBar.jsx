@@ -1,25 +1,26 @@
 import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { searchContext } from "../App";
+import { createQueryUrl } from "../utils/creatQueryUrl";
 
 function FilterBar({ setFilterUrl }) {
     const [searchQuery, setSearchQuery] = useContext(searchContext);
     const [filterSearchQuery, setFilterSearchQuery] = useState(searchQuery);
-    const [filterParametors, setFilterParametors] = useState({
+    const [filterObject, setFilterObject] = useState({
         q: searchQuery,
         type: "",
-        min_score: "",
-        max_sore: "",
+        minScore: "",
+        maxSore: "",
         status: "",
         rating: "",
         sfw: false, //Filter out Adult entries
         genres: [], //Filter by genre(s) IDs. Can pass multiple with a comma as a delimiter. e.g 1,2,3
-        genres_exclude: [], //Exclude genre(s) IDs. Can pass multiple with a comma as a delimiter. e.g 1,2,3
-        order_by: "",
+        genresExclude: [], //Exclude genre(s) IDs. Can pass multiple with a comma as a delimiter. e.g 1,2,3
+        orderBy: "",
         sort: "",
         letter: "",
-        start_date: "",
-        end_date: "",
+        startDate: "",
+        endDate: "",
         page: 1
     });
     const navigate = useNavigate();
@@ -27,33 +28,30 @@ function FilterBar({ setFilterUrl }) {
     // Sync local filter search query with global search query
     useEffect(() => {
         setFilterSearchQuery(searchQuery);
+        setFilterObject(prev => ({
+            ...prev,
+            q: searchQuery
+        }));
     }, [searchQuery]);
     
     const handleFilterSubmit = (e) => {
         e.preventDefault();
-        const params = new URLSearchParams();
 
-        Object.entries(filterParametors).forEach(([key, value]) => {
-            if (value && value.length !== 0) {
-                params.append(key, value);
-            }
-        });
-        const filterUrl = params.toString();
-        console.log("Filter URL:", filterUrl); // This is for debugging, delete it later
+        const filterUrl = createQueryUrl(filterObject);
 
         if (filterSearchQuery.trim()) {
-            setSearchQuery(filterSearchQuery);
             setFilterUrl(filterUrl);
+            setSearchQuery(filterSearchQuery);
             navigate(`/search?${filterUrl}`);
         } else {
-            setSearchQuery("");
             setFilterUrl("");
+            setSearchQuery("");
             navigate(`/search?${filterUrl}`);
         }
     };
 
-    const handleFilterChange = (e) => {
-        setFilterParametors(prev => ({
+    const updateFilterObject = (e) => {
+        setFilterObject(prev => ({
             ...prev,
             [e.target.name]: e.target.type === 'checkbox' ? e.target.checked : e.target.value
         }));
@@ -75,7 +73,7 @@ function FilterBar({ setFilterUrl }) {
                 <h3>Filter by Type:</h3>
                 <div className="filters">
                     <div className="filter-group">
-                        <select name="type" onChange={handleFilterChange}>
+                        <select name="type" onChange={updateFilterObject}>
                             <option selected disabled hidden>Type</option>
                             <option value="tv">Tv</option>
                             <option value="movie">Movie</option>
@@ -92,7 +90,7 @@ function FilterBar({ setFilterUrl }) {
                     <div className="filter-group">
                         <input 
                             id="min-score" 
-                            name="min-score"
+                            name="minScore"
                             placeholder="Min score (0.0-10.0)" 
                             type="number" 
                             min="0"
@@ -101,11 +99,11 @@ function FilterBar({ setFilterUrl }) {
                                 if (e.target.value > 10) e.target.value = 10;
                                 if (e.target.value < 0) e.target.value = 0;
                             }}
-                            onChange={handleFilterChange}
+                            onChange={updateFilterObject}
                         />
                         <input 
                             id="max-score"
-                            name="max_score"
+                            name="maxScore"
                             placeholder="Max score (0.0-10.0)" 
                             type="number"
                             min="0"
@@ -114,12 +112,12 @@ function FilterBar({ setFilterUrl }) {
                                 if (e.target.value > 10) e.target.value = 10;
                                 if (e.target.value < 0) e.target.value = 0;
                             }}
-                            onChange={handleFilterChange}
+                            onChange={updateFilterObject}
                         />
                     </div>
                     
                     <div className="filter-group">
-                        <select name="status" onChange={handleFilterChange}>
+                        <select name="status" onChange={updateFilterObject}>
                             <option selected disabled hidden>Status</option>
                             <option value="airing">Airing</option>
                             <option value="complete">Completed</option>
@@ -128,7 +126,7 @@ function FilterBar({ setFilterUrl }) {
                     </div>
                     
                     <div className="filter-group">
-                        <select name="rating" onChange={handleFilterChange}>
+                        <select name="rating" onChange={updateFilterObject}>
                             <option selected disabled hidden>Ratings</option>
                             <option value="g">G - All ages</option>
                             <option value="pg">PG - Children</option>
@@ -145,15 +143,21 @@ function FilterBar({ setFilterUrl }) {
                                 id="sfw"
                                 name="sfw" 
                                 type="checkbox" 
-                                onChange={handleFilterChange}/>
+                                onChange={updateFilterObject}/>
                         </label>
                     </div>
 
-                    <div className="filter-group">
-                        <button type="submit" className="apply-filters-button">
+                    <div className="filter-button-inputs">
+                        <button 
+                            type="submit" 
+                            className="apply-filters-button"
+                        >
                             Filter
                         </button>
-                        <button type="reset" className="clear-filters-button">
+                        <button 
+                            type="reset" 
+                            className="clear-filters-button"
+                        >
                             Clear
                         </button>
                     </div>

@@ -5,9 +5,9 @@ import AnimeCard from '../components/AnimeCard';
 import FilterBar from '../components/FilterBar';
 
 function SearchResults() {
-    const [animes, setAnimes] = useState([]);
     const [searchQuery] = useContext(searchContext);
     const [filterUrl, setFilterUrl] = useState("");
+    const [animes, setAnimes] = useState([]);
     
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null); 
@@ -18,7 +18,7 @@ function SearchResults() {
             setError(null);
 
             try {
-                const results = await searchAnimes(searchQuery, filterUrl);
+                const results = await searchAnimes(searchQuery);
                 // Remove duplicate animes based on 'mal_id' with AI solution
                 const uniqueResults = [
                     ...new Map(results.map(item => [item.mal_id, item])).values()
@@ -34,7 +34,7 @@ function SearchResults() {
         };
 
         fetchSearchResults();
-    }, [searchQuery]);
+    }, [searchQuery, filterUrl]);
 
     return (
         <div className="search">
