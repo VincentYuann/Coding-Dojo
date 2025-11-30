@@ -1,7 +1,10 @@
+import { createQueryUrl } from "../utils/createQueryUrl";
+
 const BASE_URL = 'https://api.jikan.moe/v4';
 
 // Max 25 results per page
-export const searchAnimes = async (queryUrl) => {
+export const searchAnimes = async (filterObject = {}) => {
+    const queryUrl = createQueryUrl(filterObject);
     const response = await fetch(`${BASE_URL}/anime?&limit=25&${queryUrl}`);
     console.log("Fetching", `${BASE_URL}/anime?&limit=25&${queryUrl}`);
 

@@ -1,17 +1,17 @@
-import { useState, useEffect, useContext, use } from 'react';
+import { useState, useEffect } from 'react';
 import { searchAnimes } from '../services/jikanAPI';
-import { searchContext } from '../App';
-import { createQueryUrl } from "../utils/creatQueryUrl";
 import AnimeCard from '../components/AnimeCard';
 import FilterBar from '../components/FilterBar';
+import { useSearchParams } from 'react-router-dom';
 
 function SearchResults() {
-    const [searchQuery] = useContext(searchContext);
-    const [filterUrl, setFilterUrl] = useState("");
+    const [searchParams, setSearchParams] = useSearchParams();
+
     const [animes, setAnimes] = useState([]);
-    
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null); 
+
+    const currentQueryFilters = Object.fromEntries([...searchParams]);
 
     useEffect(() => {
         const fetchSearchResults = async () => {
@@ -19,7 +19,7 @@ function SearchResults() {
             setError(null);
 
             try {
-                const results = await searchAnimes(filterUrl);
+                const results = await searchAnimes(currentQueryFilters);
                 // Remove duplicate animes based on 'mal_id' with AI solution
                 const uniqueResults = [
                     ...new Map(results.map(item => [item.mal_id, item])).values()
@@ -35,7 +35,7 @@ function SearchResults() {
         };
 
         fetchSearchResults();
-    }, [searchQuery, filterUrl]);
+    }, [searchParams]);
 
     return (
         <div className="search">
@@ -43,18 +43,19 @@ function SearchResults() {
                 <h2>Search Results Page</h2>
             </div>
 
-            <FilterBar setFilterUrl={setFilterUrl}/>
+            <FilterBar filters={currentQueryFilters}/>
 
             <div className="search-results">
-                {loading && <p>Searching for animes...</p>}
-                {error && <p>Error searching animes. Please try again.</p>}
-                {!loading && !error && animes.map(
-                    anime => 
-                        <AnimeCard 
-                            key={anime.mal_id} 
-                            anime={anime} 
-                        />
+                {loading && <p>Searching...</p>}
+                {error && <p className="error-msg">{error}</p>}
+
+                {!loading && !error && animes.length === 0 && (
+                    <p>No results found. Try adjusting filters.</p>
                 )}
+
+                {!loading && !error && animes.map(anime => (
+                        <AnimeCard key={anime.mal_id} anime={anime} />
+                ))}
             </div>
         </div>
     )

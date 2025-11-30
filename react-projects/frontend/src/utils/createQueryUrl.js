@@ -10,10 +10,6 @@ export const createQueryUrl = (filterObject) => {
             params.append(toUnderScore(key), value);
         }
     });
-    console.log("----- Created Query URL -----");
-    console.log("URL string:" + params.toString());
-    console.log("------------------------------");
-    console.log("");
-
+    
     return params.toString();
 }
