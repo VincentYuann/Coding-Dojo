@@ -5,9 +5,8 @@ export const searchAnimes = async (filterObject = {}) => {
     const queryString = filterObject.toString();
 
     const response = await fetch(`${BASE_URL}/anime?&limit=25&${queryString}`);
-    console.log("Fetching", `${BASE_URL}/anime?&limit=25&${queryString}`);
-
     if (!response.ok) throw new Error(`API request failed: ${response.status}`);
+    
     const data = await response.json();
     return data.data; 
 };

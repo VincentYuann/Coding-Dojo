@@ -42,7 +42,7 @@ function SearchResults() {
                 <h2>Search Results Page</h2>
             </div>
 
-            <FilterBar filters={searchQuery} />
+            <FilterBar searchQuery={searchQuery} />
 
             <div className="search-results">
                 {loading && <p>Searching...</p>}

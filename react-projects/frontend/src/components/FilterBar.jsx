@@ -19,17 +19,17 @@ function FilterBar({ searchQuery }) {
         letter: "",
         startDate: "",
         endDate: "",
-        page: 1
-    });
+    }); 
 
-    // Sync local filter search query with global search query
+    // Sync the navBar search query with the filterBar search query
     useEffect(() => {
         setFilterObject(prev => ({
             ...prev,
             q: searchQuery
         }));
     }, [searchQuery]);
-    
+
+    // Creates a URL using the filterobject, passing it to the searchResults page to fetch anime API data    
     const handleFilterSubmit = (e) => {
         e.preventDefault();
 
