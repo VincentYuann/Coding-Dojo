@@ -1,10 +1,11 @@
+import { useSearchParams, useNavigate, useLocation, createSearchParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { createQueryUrl } from "../utils/createQueryUrl";
+import { toUnderScore } from "../utils/toUnderScore";
 
 function FilterBar({ filters }) {
+    const [, setSearchParams] = useSearchParams();
     const [filterObject, setFilterObject] = useState({
-        q: filters.q || "",
+        q: "",
         type: "",
         minScore: "",
         maxScore: "",
@@ -20,7 +21,6 @@ function FilterBar({ filters }) {
         endDate: "",
         page: 1
     });
-    const navigate = useNavigate();
 
     // Sync local filter search query with global search query
     useEffect(() => {
@@ -32,8 +32,16 @@ function FilterBar({ filters }) {
     
     const handleFilterSubmit = (e) => {
         e.preventDefault();
-        const queryUrl = createQueryUrl(filterObject);
-        navigate(queryUrl ? `/search?&${queryUrl}` : "/search");
+
+        const params = new URLSearchParams();
+
+        Object.entries(filterObject).forEach(([key, value]) => {
+            if (value && value.length !== 0) {
+                params.append(toUnderScore(key), value);
+            }
+        });
+
+        setSearchParams(params);
     };
 
     const updateFilterObject = (e) => {

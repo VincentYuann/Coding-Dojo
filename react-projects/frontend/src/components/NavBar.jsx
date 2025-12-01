@@ -1,6 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { useState, useContext } from 'react';
-import { createQueryUrl } from '../utils/createQueryUrl';
+import { useState } from 'react';
 
 export default function NavBar() {
     const [text, setText] =  useState("");
@@ -8,8 +7,7 @@ export default function NavBar() {
     
     const handleSubmit = (e) => {
         e.preventDefault();
-        const queryUrl = createQueryUrl({q: text});
-        navigate(text ? `/search?${queryUrl}` : "/search");
+        navigate(text ? `/search?q=${text}` : "/search");
         setText("");
     };
 

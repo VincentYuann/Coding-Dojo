@@ -5,13 +5,12 @@ import FilterBar from '../components/FilterBar';
 import { useSearchParams } from 'react-router-dom';
 
 function SearchResults() {
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [searchParams] = useSearchParams();
+    const currentQueryFilters = Object.fromEntries([...searchParams]);
 
     const [animes, setAnimes] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null); 
-
-    const currentQueryFilters = Object.fromEntries([...searchParams]);
 
     useEffect(() => {
         const fetchSearchResults = async () => {
@@ -19,7 +18,7 @@ function SearchResults() {
             setError(null);
 
             try {
-                const results = await searchAnimes(currentQueryFilters);
+                const results = await searchAnimes(searchParams);
                 // Remove duplicate animes based on 'mal_id' with AI solution
                 const uniqueResults = [
                     ...new Map(results.map(item => [item.mal_id, item])).values()
@@ -50,7 +49,7 @@ function SearchResults() {
                 {error && <p className="error-msg">{error}</p>}
 
                 {!loading && !error && animes.length === 0 && (
-                    <p>No results found. Try adjusting filters.</p>
+                    <p>No results found.</p>
                 )}
 
                 {!loading && !error && animes.map(anime => (
