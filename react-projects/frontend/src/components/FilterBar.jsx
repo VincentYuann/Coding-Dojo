@@ -2,7 +2,7 @@ import { useSearchParams, useNavigate, useLocation, createSearchParams } from "r
 import { useState, useEffect } from "react";
 import { toUnderScore } from "../utils/toUnderScore";
 
-function FilterBar({ filters }) {
+function FilterBar({ searchQuery }) {
     const [, setSearchParams] = useSearchParams();
     const [filterObject, setFilterObject] = useState({
         q: "",
@@ -26,9 +26,9 @@ function FilterBar({ filters }) {
     useEffect(() => {
         setFilterObject(prev => ({
             ...prev,
-            q: filters.q || ""
+            q: searchQuery
         }));
-    }, [filters]);
+    }, [searchQuery]);
     
     const handleFilterSubmit = (e) => {
         e.preventDefault();

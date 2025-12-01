@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, createSearchParams } from 'react-router-dom';
 import { useState } from 'react';
 
 export default function NavBar() {
@@ -6,8 +6,10 @@ export default function NavBar() {
     const navigate = useNavigate();
     
     const handleSubmit = (e) => {
+        const searchQuery = createSearchParams({q: text}).toString();
+        console.log("Navigating to:", `/search?${searchQuery}`);
         e.preventDefault();
-        navigate(text ? `/search?q=${text}` : "/search");
+        navigate(`/search?${searchQuery}`);
         setText("");
     };
 

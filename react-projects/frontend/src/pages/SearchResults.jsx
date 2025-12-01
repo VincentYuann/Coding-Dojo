@@ -6,7 +6,7 @@ import { useSearchParams } from 'react-router-dom';
 
 function SearchResults() {
     const [searchParams] = useSearchParams();
-    const currentQueryFilters = Object.fromEntries([...searchParams]);
+    const searchQuery = searchParams.get("q") || "";
 
     const [animes, setAnimes] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -42,7 +42,7 @@ function SearchResults() {
                 <h2>Search Results Page</h2>
             </div>
 
-            <FilterBar filters={currentQueryFilters}/>
+            <FilterBar filters={searchQuery} />
 
             <div className="search-results">
                 {loading && <p>Searching...</p>}
