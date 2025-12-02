@@ -2,35 +2,32 @@
 
 :root {
   /* Fonts */
-  font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  line-height: 1.6;
 
-  /* Animekai Dark Theme Palette */
-  --bg-body: #0b0c15;         /* Very deep blue-black */
-  --bg-card: #151621;         /* Slightly lighter for cards */
-  --bg-overlay: rgba(11, 12, 21, 0.85); /* Glass effect background */
+  /* Deep Space Theme Palette */
+  --bg-body: #09090b;           /* Darker, cleaner black */
+  --bg-surface: #18181b;        /* Slightly lighter for cards */
+  --bg-surface-hover: #27272a;  /* Lighter still for hovers */
   
-  --text-primary: #ffffff;
-  --text-secondary: #a0a0b0;
+  /* Text */
+  --text-primary: #f4f4f5;
+  --text-secondary: #a1a1aa;
+  --text-muted: #52525b;
+
+  /* Neon Accents - Cyberpunk Violet & Pink */
+  --accent-primary: #8b5cf6;    /* Violet-500 */
+  --accent-glow: #a78bfa;       /* Violet-400 */
+  --accent-secondary: #ec4899;  /* Pink-500 (for Favorites/Hearts) */
   
-  /* Neon Accents */
-  --accent-primary: #7000ff;  /* Vibrant Violet */
-  --accent-glow: #bc00dd;     /* Neon Pink/Purple for hovers */
-  --accent-text: #e0e0ff;
+  --border-color: rgba(255, 255, 255, 0.1);
   
-  --border-color: #2a2b3d;
-  --shadow-card: 0 8px 20px rgba(0, 0, 0, 0.5);
-  --shadow-glow: 0 0 15px rgba(112, 0, 255, 0.3);
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+  --shadow-neon: 0 0 20px rgba(139, 92, 246, 0.15); /* Subtle glow */
 
   color-scheme: dark;
-  color: var(--text-primary);
-  background-color: var(--bg-body);
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Reset */
@@ -43,8 +40,13 @@
 body {
   min-width: 320px;
   min-height: 100vh;
-  background-image: radial-gradient(circle at top center, #1b1c2e 0%, var(--bg-body) 60%);
+  background-color: var(--bg-body);
+  /* Subtle mesh gradient background */
+  background-image: 
+      radial-gradient(at 0% 0%, rgba(139, 92, 246, 0.15) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, rgba(236, 72, 153, 0.15) 0px, transparent 50%);
   background-attachment: fixed;
+  color: var(--text-primary);
 }
 
 /* --- Global Elements --- */
@@ -67,7 +69,7 @@ button {
   font-size: 1em;
   font-weight: 600;
   font-family: inherit;
-  background-color: var(--bg-card);
+  background-color: var(--bg-surface);
   color: var(--text-primary);
   cursor: pointer;
   transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);

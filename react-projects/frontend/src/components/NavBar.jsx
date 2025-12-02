@@ -27,7 +27,7 @@ export default function NavBar() {
                     onChange={(e) => setText(e.target.value)}
                 />
                 <button type="button" className="filter-button" onClick={handleSubmit}>
-                    ▼Filter
+                    Search
                 </button>
             </form>
 
