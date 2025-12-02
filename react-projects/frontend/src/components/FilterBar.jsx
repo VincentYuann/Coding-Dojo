@@ -31,6 +31,16 @@ function FilterBar({ searchQuery }) {
         }));
     }, [searchQuery]);
 
+    const updateFilterObject = (e) => {
+        const { name, value, type, checked } = e.target;
+
+        setFilterObject(prev => ({
+            ...prev,
+            [name]: type === 'checkbox' ? checked : value
+        }));
+        console.log(e.target.name, e.target.value)
+    };
+
     // Creates a URL using the filterobject, passing it to the searchResults page to fetch anime API data    
     const handleFilterSubmit = (e) => {
         e.preventDefault();
@@ -46,18 +56,10 @@ function FilterBar({ searchQuery }) {
         setSearchParams(params);
     };
 
-    const updateFilterObject = (e) => {
-        const { name, value, type, checked } = e.target;
-
-        setFilterObject(prev => ({
-            ...prev,
-            [name]: type === 'checkbox' ? checked : value
-        }));
-        console.log(e.target.name, e.target.value)
-    };
-
-    const handleFilterReset = () => {
+    const handleFilterReset = (e) => {
+        e.preventDefault();
         setFilterObject(INITIAL_FILTER_STATE);
+        console.log(filterObject);
     };
     
     return (
