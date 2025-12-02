@@ -2,24 +2,26 @@ import { useSearchParams, useNavigate, useLocation, createSearchParams } from "r
 import { useState, useEffect } from "react";
 import { toUnderScore } from "../utils/toUnderScore";
 
+const INITIAL_FILTER_STATE = {
+    q: "",
+    type: "",
+    minScore: "",
+    maxScore: "",
+    status: "",
+    rating: "",
+    sfw: false, //Filter out Adult entries
+    genres: [], //Filter by genre(s) IDs. Can pass multiple with a comma as a delimiter. e.g 1,2,3
+    genresExclude: [], //Exclude genre(s) IDs. Can pass multiple with a comma as a delimiter. e.g 1,2,3
+    orderBy: "",
+    sort: "",
+    letter: "",
+    startDate: "",
+    endDate: "",
+};
+
 function FilterBar({ searchQuery }) {
     const [, setSearchParams] = useSearchParams();
-    const [filterObject, setFilterObject] = useState({
-        q: "",
-        type: "",
-        minScore: "",
-        maxScore: "",
-        status: "",
-        rating: "",
-        sfw: false, //Filter out Adult entries
-        genres: [], //Filter by genre(s) IDs. Can pass multiple with a comma as a delimiter. e.g 1,2,3
-        genresExclude: [], //Exclude genre(s) IDs. Can pass multiple with a comma as a delimiter. e.g 1,2,3
-        orderBy: "",
-        sort: "",
-        letter: "",
-        startDate: "",
-        endDate: "",
-    }); 
+    const [filterObject, setFilterObject] = useState(INITIAL_FILTER_STATE);
 
     // Sync the navBar search query with the filterBar search query
     useEffect(() => {
@@ -53,10 +55,14 @@ function FilterBar({ searchQuery }) {
         }));
         console.log(e.target.name, e.target.value)
     };
+
+    const handleFilterReset = () => {
+        setFilterObject(INITIAL_FILTER_STATE);
+    };
     
     return (
         <div className="filter-bar">
-            <form onSubmit={handleFilterSubmit} className="search-form">
+            <form onSubmit={handleFilterSubmit} onReset={handleFilterReset} className="search-form">
                 <div className="filter-search-input">
                     <input 
                         type="text" 
@@ -72,7 +78,7 @@ function FilterBar({ searchQuery }) {
                 <div className="filters">
                     <div className="filter-group">
                         <select name="type" value={filterObject.type} onChange={updateFilterObject}>
-                            <option selected disabled hidden>Type</option>
+                            <option value="" selected disabled hidden>Type</option>
                             <option value="tv">Tv</option>
                             <option value="movie">Movie</option>
                             <option value="ova">OVA</option>
@@ -127,8 +133,8 @@ function FilterBar({ searchQuery }) {
                     </div>
                     
                     <div className="filter-group">
-                        <select name="status" onChange={updateFilterObject}>
-                            <option selected disabled hidden>Status</option>
+                        <select name="status" value={filterObject.status} onChange={updateFilterObject}>
+                            <option value="" selected disabled hidden>Status</option>
                             <option value="airing">Airing</option>
                             <option value="complete">Completed</option>
                             <option value="upcoming">Upcoming</option>
@@ -136,8 +142,8 @@ function FilterBar({ searchQuery }) {
                     </div>
                     
                     <div className="filter-group">
-                        <select name="rating" onChange={updateFilterObject}>
-                            <option selected disabled hidden>Ratings</option>
+                        <select name="rating" value={filterObject.rating} onChange={updateFilterObject}>
+                            <option value="" selected disabled hidden>Ratings</option>
                             <option value="g">G - All ages</option>
                             <option value="pg">PG - Children</option>
                             <option value="pg13">PG-13 - Teens 13+</option>
@@ -153,6 +159,7 @@ function FilterBar({ searchQuery }) {
                                 id="sfw"
                                 name="sfw" 
                                 type="checkbox" 
+                                checked={filterObject.sfw}
                                 onChange={updateFilterObject}
                             />
                             No Adult Entries
