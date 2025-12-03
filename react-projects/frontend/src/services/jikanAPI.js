@@ -33,3 +33,12 @@ export const getRandomAnimes = async (count=5) => {
 
     return animes;
 };
+
+export const getAnimeGenres = async () => {
+    const response = await fetch(`${BASE_URL}/genres/anime`);
+    
+    if (!response.ok) throw new Error(`API request failed: ${response.status}`);
+    
+    const data = await response.json();
+    return data.data;
+}

@@ -1,6 +1,7 @@
-import { useSearchParams, useNavigate, useLocation, createSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { toUnderScore } from "../utils/toUnderScore";
+import { getAnimeGenres } from "../services/jikanAPI";
 
 const INITIAL_FILTER_STATE = {
     q: "",
@@ -19,6 +20,8 @@ const INITIAL_FILTER_STATE = {
     endDate: "",
 };
 
+let ANIME_GENRES;
+
 function FilterBar({ searchQuery }) {
     const [, setSearchParams] = useSearchParams();
     const [filterObject, setFilterObject] = useState(INITIAL_FILTER_STATE);
@@ -31,6 +34,18 @@ function FilterBar({ searchQuery }) {
         }));
     }, [searchQuery]);
 
+    useEffect(() => {
+        const fetchGenres = async () => {
+            try {
+                ANIME_GENRES = await getAnimeGenres();
+            } catch (err) {
+                console.error("Error fetching anime genres:", err);
+            }
+        };
+
+        fetchGenres();
+    }, []);
+                
     const updateFilterObject = (e) => {
         const { name, value, type, checked } = e.target;
 
