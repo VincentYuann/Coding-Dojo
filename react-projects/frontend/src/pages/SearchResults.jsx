@@ -15,7 +15,7 @@ function SearchResults() {
 
             <FilterBar searchQuery={searchQuery} />
 
-            <div className="search-results">
+            <div className="search-results-grid">
                 <QueryWraper loadingMessage="Loading search results...">
                     <SearchResultsContent searchQueryObject={searchParams} />
                 </QueryWraper>

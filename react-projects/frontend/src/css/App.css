@@ -1,9 +1,25 @@
 /* src/css/App.css */
 
+/* --- Animations --- */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
 /* --- Main Layout --- */
 #root {
   width: 100%;
-  max-width: 2000px; 
+  max-width: 1600px;
   margin: 0 auto;
   padding: 0 2rem 4rem;
   text-align: center;
@@ -16,13 +32,12 @@
 
 /* --- Headers --- */
 h2 {
-  font-size: 1.8rem;
+  font-size: 2rem;
   font-weight: 800;
   margin-bottom: 2rem;
   text-align: left;
   text-transform: uppercase;
   letter-spacing: -0.02em;
-  /* Neon accent line on the left */
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -36,7 +51,7 @@ h2::before {
   height: 2rem;
   background: var(--accent-primary);
   border-radius: 4px;
-  box-shadow: 0 0 15px var(--accent-primary); /* Neon glow */
+  box-shadow: 0 0 15px var(--accent-primary);
 }
 
 /* --- NavBar --- */
@@ -44,15 +59,14 @@ h2::before {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.2rem 2rem;
+  padding: 1rem 2rem;
   margin-bottom: 3rem;
   
   /* Glassmorphism Effect */
-  background: rgba(9, 9, 11, 0.6); 
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  background: rgba(9, 9, 11, 0.75); 
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   
   position: sticky;
   top: 0;
@@ -60,14 +74,14 @@ h2::before {
 }
 
 .navbar .brand {
-  font-size: 2rem;
+  font-size: 1.8rem;
   font-weight: 900;
   color: var(--text-primary);
   letter-spacing: -1px;
-  /* Text Gradient */
-  background: linear-gradient(to right, var(--accent-primary), var(--accent-secondary));
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 2px rgba(139, 92, 246, 0.3));
 }
 
 .navbar-links {
@@ -89,7 +103,6 @@ h2::before {
   color: var(--text-primary);
 }
 
-/* Animated Underline */
 .navbar .nav-link::after {
   content: '';
   position: absolute;
@@ -111,14 +124,14 @@ h2::before {
   display: flex;
   gap: 0.5rem;
   width: 100%;
-  max-width: 600px;
+  max-width: 500px;
   margin: 0 2rem;
   align-items: center;
 }
 
 .navbar .search-input {
   flex-grow: 1;
-  background-color: var(--bg-surface);
+  background-color: rgba(39, 39, 42, 0.5);
   border: 1px solid var(--border-color);
   color: var(--text-primary);
   padding: 0.8rem 1.2rem;
@@ -136,7 +149,9 @@ h2::before {
 
 /* --- Filter Bar --- */
 .filter-bar {
-  background: var(--bg-surface);
+  background: rgba(24, 24, 27, 0.6);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border: 1px solid var(--border-color);
   padding: 1.5rem;
   border-radius: 16px;
@@ -145,17 +160,16 @@ h2::before {
   text-align: left;
 }
 
-/* Ensure the form inside FilterBar stacks vertically initially */
 .filter-bar .search-form {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
   width: 100%;
-  max-width: 100%; /* Use full width of container */
+  max-width: 100%;
   margin: 0;
 }
 
-/* --- 1. Search Input Merged with Icon --- */
+/* 1. Search Input Merged with Icon */
 .filter-search-input {
   position: relative;
   width: 100%;
@@ -163,10 +177,10 @@ h2::before {
 
 .filter-search-input input {
   width: 100%;
-  background-color: var(--bg-body);
+  background-color: rgba(24, 24, 27, 0.5);
   border: 1px solid var(--border-color);
   color: var(--text-primary);
-  padding: 0.8rem 1rem 0.8rem 3rem; /* Left padding creates space for icon */
+  padding: 0.8rem 1rem 0.8rem 3rem;
   border-radius: 8px;
   font-size: 1rem;
   outline: none;
@@ -183,23 +197,24 @@ h2::before {
   left: 1rem;
   top: 50%;
   transform: translateY(-50%);
-  pointer-events: none; /* Allows clicks to pass through to the input */
+  pointer-events: none;
   font-size: 1.1rem;
   opacity: 0.7;
 }
 
-/* --- 2. Horizontal Filters --- */
+/* 2. Horizontal Filters */
 .filter-bar h3 {
   margin: 0;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--text-secondary);
+  font-weight: 700;
 }
 
 .filters {
   display: flex;
-  flex-wrap: wrap; /* Allows wrapping on small screens */
+  flex-wrap: wrap;
   gap: 1rem;
   align-items: center;
   width: 100%;
@@ -214,7 +229,7 @@ h2::before {
 .filter-bar select, 
 .filter-bar input[type="number"], 
 .filter-bar input[type="text"] {
-  background-color: var(--bg-body);
+  background-color: rgba(24, 24, 27, 0.5);
   border: 1px solid var(--border-color);
   color: var(--text-primary);
   padding: 0.6rem 1rem;
@@ -222,7 +237,6 @@ h2::before {
   font-size: 0.9rem;
   outline: none;
   transition: border-color 0.2s;
-  /* Min width ensures they don't get too small */
   min-width: 120px; 
 }
 
@@ -241,22 +255,22 @@ h2::before {
   font-size: 0.95rem;
   color: var(--text-primary);
   padding: 0.5rem 1rem;
-  border-radius: 6px;
-  transition: background 0.2s;
-  background-color: var(--bg-body);
+  border-radius: 8px;
+  transition: all 0.2s;
+  background-color: rgba(255, 255, 255, 0.03);
   border: 1px solid var(--border-color);
 }
 
 .filter-bar label:hover {
-  background-color: var(--bg-surface-hover);
+  background-color: rgba(255, 255, 255, 0.08);
   border-color: var(--accent-primary);
+  box-shadow: 0 0 10px rgba(139, 92, 246, 0.1);
 }
 
-/* Filter Buttons Container */
 .filter-button-inputs {
   display: flex;
   gap: 1rem;
-  margin-left: auto; /* Pushes buttons to the right if space allows */
+  margin-left: auto;
 }
 
 .apply-filters-button {
@@ -282,11 +296,21 @@ h2::before {
 }
 
 /* --- Anime Grids --- */
-.top-anime-list, .random-anime-list, .search-results, .favorite-anime-list {
+/* Note: Added .search-results-grid to grid definition to fix layout */
+.top-anime-list, 
+.random-anime-list, 
+.search-results-grid, 
+.favorite-anime-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 2rem;
   margin-bottom: 4rem;
+}
+
+/* Resets the outer search container to block so the grid works inside it */
+.search-results {
+  display: block; 
+  width: 100%;
 }
 
 /* --- AnimeCard Component --- */
@@ -301,13 +325,14 @@ h2::before {
   display: flex;
   flex-direction: column;
   height: 100%;
+  animation: fadeInUp 0.6s ease backwards;
 }
 
 .anime-card:hover {
   transform: translateY(-8px);
   border-color: var(--accent-primary);
   box-shadow: var(--shadow-lg), var(--shadow-neon);
-  z-index: 2;
+  z-index: 5;
 }
 
 .anime-poster {
@@ -328,7 +353,7 @@ h2::before {
   transform: scale(1.1);
 }
 
-/* Heart Button */
+/* --- Heart Overlay (Top Right of Poster) --- */
 .anime-overlay {
   position: absolute;
   top: 10px;
@@ -337,7 +362,7 @@ h2::before {
 }
 
 .favorite {
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(4px);
   border: 1px solid rgba(255, 255, 255, 0.2);
   color: white;
@@ -355,36 +380,97 @@ h2::before {
 .favorite:hover {
   background: var(--accent-secondary);
   border-color: var(--accent-secondary);
-  transform: scale(1.1) rotate(10deg);
+  transform: scale(1.1);
+  box-shadow: 0 0 10px var(--accent-secondary);
 }
 
-/* Card Content */
+/* --- Info Section --- */
 .anime-info {
-  padding: 1.2rem;
+  padding: 1rem;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  background: linear-gradient(to bottom, var(--bg-surface) 0%, #131316 100%);
+  background: linear-gradient(to bottom, var(--bg-surface) 0%, #0c0c0e 100%);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .anime-info h3 {
-  font-size: 1.1rem;
+  font-size: 0.95rem;
   font-weight: 700;
-  margin-bottom: 0.75rem;
+  margin-bottom: 1rem;
   color: var(--text-primary);
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  line-height: 1.3;
+  line-height: 1.4;
+  /* Ensure title doesn't push grid too far down if short */
+  min-height: 2.8em; 
 }
 
-.anime-info p {
-  font-size: 0.9rem;
-  color: var(--text-secondary);
-  margin-bottom: 0.4rem;
-  display: flex;
-  justify-content: space-between;
+/* --- 2x2 Grid Layout for Meta --- */
+.anime-meta {
+  display: grid;
+  /* Defines the 4 corners: 
+     Year (TL) | Score (TR)
+     Eps (BL)  | Type (BR)  */
+  grid-template-areas: 
+    "year score"
+    "eps  type";
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  margin-top: auto;
+  align-items: center;
+}
+
+/* Shared badge styles */
+.anime-meta > span {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+/* --- Individual Badge Positioning & Colors --- */
+
+/* Top Left: Year */
+.badge.year {
+  grid-area: year;
+  justify-self: start;
+  color: #22d3ee; /* Cyan */
+  background: rgba(6, 182, 212, 0.1);
+  border: 1px solid rgba(6, 182, 212, 0.2);
+}
+
+/* Top Right: Score */
+.badge-score {
+  grid-area: score;
+  justify-self: end;
+  color: #fbbf24; /* Gold */
+  background: rgba(234, 179, 8, 0.1);
+  border: 1px solid rgba(234, 179, 8, 0.2);
+}
+
+/* Bottom Left: Eps */
+.badge.eps {
+  grid-area: eps;
+  justify-self: start;
+  color: #f472b6; /* Pink */
+  background: rgba(236, 72, 153, 0.1);
+  border: 1px solid rgba(236, 72, 153, 0.2);
+}
+
+/* Bottom Right: Type */
+.badge-type {
+  grid-area: type;
+  justify-self: end;
+  color: #a78bfa; /* Violet */
+  background: rgba(139, 92, 246, 0.1);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  text-transform: uppercase;
 }
 
 /* --- Pagination --- */
@@ -396,48 +482,64 @@ h2::before {
 }
 
 .load-more-button {
-  background-color: transparent;
-  border: 2px solid var(--accent-primary);
-  color: var(--text-primary);
-  padding: 1rem 3rem;
-  font-size: 1rem;
+  background: transparent;
+  border: 1px solid var(--accent-primary);
+  color: var(--accent-primary);
+  padding: 1rem 4rem;
+  font-size: 0.9rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  border-radius: 50px;
+  letter-spacing: 0.2em;
+  border-radius: 4px;
   transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.load-more-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.2), transparent);
+  transition: left 0.5s;
 }
 
 .load-more-button:hover {
-  background-color: var(--accent-primary);
-  box-shadow: 0 0 20px var(--accent-primary);
+  background: rgba(139, 92, 246, 0.1);
+  box-shadow: 0 0 30px rgba(139, 92, 246, 0.2);
   transform: translateY(-2px);
+  color: #fff;
+}
+
+.load-more-button:hover::before {
+  left: 100%;
 }
 
 .load-more-button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
-  box-shadow: none;
-  transform: none;
+  border-color: var(--border-color);
+  color: var(--text-muted);
 }
 
-/* --- States & Animations --- */
-.messages {
-  margin-bottom: 2rem;
-  font-size: 1.1rem;
-  color: var(--text-secondary);
+/* --- States --- */
+.loading-spinner {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(139, 92, 246, 0.3);
+  border-radius: 50%;
+  border-top-color: var(--accent-primary);
+  animation: spin 1s ease-in-out infinite;
+  margin-bottom: 1rem;
 }
 
-@keyframes pulse {
-  0% { opacity: 0.6; }
-  50% { opacity: 1; }
-  100% { opacity: 0.6; }
-}
-
-.loading-spinner, .loading-text {
+.loading-text {
   color: var(--accent-glow);
   font-weight: bold;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  animation: pulse 1.5s infinite ease-in-out;
 }

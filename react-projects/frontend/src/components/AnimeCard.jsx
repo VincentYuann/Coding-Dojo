@@ -3,18 +3,22 @@ import { favoritesContext } from "../App";
 
 function AnimeCard({ anime }) {
     const [favorites, setFavorites] = useContext(favoritesContext);
-
     const isFavorite = favorites.some((fav) => fav.mal_id === anime.mal_id);
 
     function handleFavoriteClick() {
         if (isFavorite) {
-            // Remove from favorites
             setFavorites(favorites.filter((fav) => fav.mal_id !== anime.mal_id));
         } else {
-            // Add the new 'anime' to favorites
             setFavorites((previousFavorites) => [...previousFavorites, anime]);
         }
     }
+
+    // Safely handle missing data
+    const title = anime.title_english || anime.title || anime.titles[0]?.title || "Untitled";
+    const year = anime.aired?.prop?.from?.year || "TbA";
+    const score = anime.score || "N/A";
+    const type = anime.type || "TV";
+    const eps = anime.episodes || "?";
 
     return (
         <div className="anime-card">
@@ -22,7 +26,7 @@ function AnimeCard({ anime }) {
                 <a href={anime.url} target="_blank" rel="noopener noreferrer">
                     <img
                         src={anime.images.webp.large_image_url}
-                        alt={anime.title_english}
+                        alt={title}
                     />
                 </a>
                 <div className="anime-overlay">
@@ -33,10 +37,22 @@ function AnimeCard({ anime }) {
             </div>
 
             <div className="anime-info">
-                <h3>{anime.title_english || anime.title || anime.titles[0].title}</h3>
-                <p>Aired: {anime.aired.prop.from.year}</p>
-                <p>Score: {anime.score || "N/A"}⭐</p>
-                <p>Type: {anime.type}</p>
+                <h3>{title}</h3>
+
+                <div className="anime-meta">
+                    <span className="badge-score">
+                        ⭐ {score}
+                    </span>
+                    <span className="badge-type">
+                        {type}
+                    </span>
+                    <span className="badge-year">
+                        📅 {year}
+                    </span>
+                    <span className="badge-eps">
+                        📺 {eps} ep
+                    </span>
+                </div>
             </div>
         </div>
     );
