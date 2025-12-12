@@ -1,7 +1,7 @@
 import { useSearchParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { toUnderScore } from "../utils/toUnderScore";
-import { getAnimeGenres } from "./services/jikanAPI";
+import { toUnderScore } from "../../utils/toUnderScore";
+import { getAnimeGenres } from "../../services/jikanAPI";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
 const INITIAL_FILTER_STATE = {

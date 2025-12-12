@@ -1,12 +1,12 @@
 import { searchAnimes } from '../../services/jikanAPI';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import AnimeCard from '../AnimeCard'
 import Pagination from '../Pagination';
-import useSuspenseQuery from '@tanstack/react-query';
 
 function SearchResultsContent({ searchQueryObject }) {
     const { data: { animes, pagination } } = useSuspenseQuery({
         queryKey: ['animes', searchQueryObject.toString()],
-        queryFn: searchAnimes(searchQueryObject)
+        queryFn: () => searchAnimes(searchQueryObject)
     });
 
     // Prevents anime duplications

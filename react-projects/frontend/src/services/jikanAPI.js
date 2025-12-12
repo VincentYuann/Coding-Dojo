@@ -20,7 +20,7 @@ export const getTopAnimes = async () => {
     
     if (!response.ok) throw new Error(`API request failed: ${response.status}`);
     const data = await response.json();
-    return data;
+    return data.data;
 };
 
 export const getRandomAnimes = async (count=3) => {
@@ -30,7 +30,7 @@ export const getRandomAnimes = async (count=3) => {
         const response = await fetch(`${BASE_URL}/random/anime`);
         if (response.ok) {
             const data = await response.json();
-            animes.push(data.data);
+            randomAnimes.push(data.data);
         } else throw new Error(`API request failed: ${response.status}`);
     }
 

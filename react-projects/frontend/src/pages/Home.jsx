@@ -1,5 +1,5 @@
-import TopAnimeSection from "../../components/home/TopAnimeSection";
-import RandomAnimeSection from "../../components/home/RandomAnimeSection"
+import TopAnimeSection from "../components/home/TopAnimeSection";
+import RandomAnimeSection from "../components/home/RandomAnimeSection"
 import QueryWrapper from "../components/QueryWraper";
 
 function Home() {
