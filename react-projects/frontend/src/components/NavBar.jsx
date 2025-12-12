@@ -6,9 +6,9 @@ export default function NavBar() {
     const navigate = useNavigate();
 
     const handleSubmit = (e) => {
-        const searchQuery = createSearchParams({ q: text }).toString();
         e.preventDefault();
-        navigate(text ? `/search` : `/search?${searchQuery}`);
+        const searchQuery = createSearchParams({ q: text }).toString();
+        navigate(text ? `/search?${searchQuery}` : `/search`);
         setText("");
     };
 

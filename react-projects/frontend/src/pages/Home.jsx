@@ -11,14 +11,14 @@ function Home() {
 
             <div className="top-anime-list">
                 <h2>Top 10 Animes</h2>
-                <QueryWrapper>
+                <QueryWrapper loadingMessage="Loading top 10 animes...">
                     <TopAnimeSection />
                 </QueryWrapper>
             </div>
 
             <div className="random-anime-list">
                 <h2>Random Animes</h2>
-                <QueryWrapper>
+                <QueryWrapper loadingMessage="Loading random animes...">
                     <RandomAnimeSection />
                 </QueryWrapper>
             </div>

@@ -17,9 +17,10 @@ function SearchResultsContent({ searchQueryObject }) {
     return (
         <>
             <div className='search-results-grid'>
-                {uniqueAnimeList.map(anime => (
-                    <AnimeCard key={anime.mal_id} anime={anime} />
-                ))}
+                {!uniqueAnimeList ? "No results found, try again." :
+                    uniqueAnimeList.map(anime => (
+                        <AnimeCard key={anime.mal_id} anime={anime} />
+                    ))}
             </div>
 
             <div className='pagination'>

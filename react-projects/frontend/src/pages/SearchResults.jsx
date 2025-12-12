@@ -16,7 +16,7 @@ function SearchResults() {
             <FilterBar searchQuery={searchQuery} />
 
             <div className="search-results">
-                <QueryWraper loadingMessage="Loading animes...">
+                <QueryWraper loadingMessage="Loading search results...">
                     <SearchResultsContent searchQueryObject={searchParams} />
                 </QueryWraper>
             </div>
