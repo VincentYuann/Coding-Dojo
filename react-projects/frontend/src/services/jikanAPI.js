@@ -8,7 +8,10 @@ export const searchAnimes = async (filterObject = {}) => {
     if (!response.ok) throw new Error(`API request failed: ${response.status}`);
     
     const data = await response.json();
-    return data.data; 
+    return {
+        animes: data.data,
+        pagination: data.pagination
+    }
 };
 
 // Max 10 top animes
@@ -20,8 +23,8 @@ export const getTopAnimes = async () => {
     return data;
 };
 
-export const getRandomAnimes = async (count=5) => {
-    const animes = [];
+export const getRandomAnimes = async (count=3) => {
+    const randomAnimes = [];
 
     for (let i=0; i < count; i++) {
         const response = await fetch(`${BASE_URL}/random/anime`);
@@ -31,7 +34,7 @@ export const getRandomAnimes = async (count=5) => {
         } else throw new Error(`API request failed: ${response.status}`);
     }
 
-    return animes;
+    return randomAnimes;
 };
 
 export const getAnimeGenres = async () => {

@@ -1,27 +1,29 @@
-import { Link, useNavigate, createSearchParams } from 'react-router-dom';
-import { useState } from 'react';
+import { Link, useNavigate, createSearchParams } from "react-router-dom";
+import { useState } from "react";
 
 export default function NavBar() {
-    const [text, setText] =  useState("");
+    const [text, setText] = useState("");
     const navigate = useNavigate();
-    
+
     const handleSubmit = (e) => {
-        const searchQuery = createSearchParams({q: text}).toString();
+        const searchQuery = createSearchParams({ q: text }).toString();
         e.preventDefault();
-        navigate(text? `/search` : `/search?${searchQuery}`);
+        navigate(text ? `/search` : `/search?${searchQuery}`);
         setText("");
     };
 
     return (
         <nav className="navbar">
-            <Link to="/" className="brand">AnimeY</Link>
+            <Link to="/" className="brand">
+                AnimeY
+            </Link>
 
             <form onSubmit={handleSubmit} className="search-form">
                 <span className="search-icon">🔍</span>
-                <input 
-                    type="text" 
-                    placeholder="Search for animes..." 
-                    className="search-input" 
+                <input
+                    type="text"
+                    placeholder="Search for animes..."
+                    className="search-input"
                     value={text}
                     onChange={(e) => setText(e.target.value)}
                 />
@@ -31,8 +33,12 @@ export default function NavBar() {
             </form>
 
             <div className="navbar-links">
-                <Link to="/" className="nav-link">Home</Link>
-                <Link to="/favorites" className="nav-link">Favorites</Link>
+                <Link to="/" className="nav-link">
+                    Home
+                </Link>
+                <Link to="/favorites" className="nav-link">
+                    Favorites
+                </Link>
             </div>
         </nav>
     );

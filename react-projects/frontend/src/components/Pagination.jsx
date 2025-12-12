@@ -1,9 +1,6 @@
 function Pagination() {
     return (
-        <button 
-            className="load-more-button"
-            disabled="loading"
-        >
+        <button className="load-more-button" disabled="loading">
             "Loading..." : "Load More"
         </button>
     );
