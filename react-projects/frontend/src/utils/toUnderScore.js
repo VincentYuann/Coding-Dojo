@@ -1,3 +1,6 @@
 export const toUnderScore = (str) => {
-    return str.replace(/([A-Z])/g, letter => letter.toLowerCase()).replace(/[\s-]+/g, '_').toLowerCase();
+    return str
+        .replace(/([A-Z])/g, (letter) => `_${letter.toLowerCase()}`)
+        .replace(/[\s-]+/g, '_')
+        .toLowerCase();
 }

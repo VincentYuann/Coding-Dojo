@@ -23,7 +23,7 @@ function SearchResultsContent({ searchQueryObject }) {
                     ))}
             </div>
 
-            <div className='pagination'>
+            <div className='pagination-container'>
                 <Pagination pagination={pagination} />
             </div>
         </>
