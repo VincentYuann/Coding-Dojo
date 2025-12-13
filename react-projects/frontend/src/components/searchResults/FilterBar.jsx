@@ -95,11 +95,10 @@ function FilterBar({ searchQuery }) {
                     <input
                         type="text"
                         name="q"
-                        placeholder="Search anime..."
+                        placeholder="Search for anime..."
                         value={filterObject.q}
                         onChange={updateFilterObject}
                     />
-                    <span className="search-icon">🔍</span>
                 </div>
 
                 <h3>Filters:</h3>

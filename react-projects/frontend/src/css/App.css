@@ -295,22 +295,19 @@ h2::before {
   color: var(--text-primary);
 }
 
-/* --- Anime Grids --- */
-/* Note: Added .search-results-grid to grid definition to fix layout */
+/* --- Anime Grids (UPDATED) --- */
 .top-anime-list, 
 .random-anime-list, 
 .search-results-grid, 
 .favorite-anime-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  /* FIX: Increased min-width from 200px to 230px to force 5 columns on desktop */
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
   gap: 2rem;
-  margin-bottom: 4rem;
-}
-
-/* Resets the outer search container to block so the grid works inside it */
-.search-results {
-  display: block; 
+  /* FIX: Reduced margin to pull pagination closer */
+  margin-bottom: 2rem;
   width: 100%;
+  justify-content: center;
 }
 
 /* --- AnimeCard Component --- */
@@ -404,16 +401,12 @@ h2::before {
   -webkit-box-orient: vertical;
   overflow: hidden;
   line-height: 1.4;
-  /* Ensure title doesn't push grid too far down if short */
   min-height: 2.8em; 
 }
 
 /* --- 2x2 Grid Layout for Meta --- */
 .anime-meta {
   display: grid;
-  /* Defines the 4 corners: 
-     Year (TL) | Score (TR)
-     Eps (BL)  | Type (BR)  */
   grid-template-areas: 
     "year score"
     "eps  type";
@@ -423,7 +416,6 @@ h2::before {
   align-items: center;
 }
 
-/* Shared badge styles */
 .anime-meta > span {
   font-size: 0.75rem;
   font-weight: 700;
@@ -434,10 +426,8 @@ h2::before {
   white-space: nowrap;
 }
 
-/* --- Individual Badge Positioning & Colors --- */
-
-/* Top Left: Year */
-.badge.year {
+/* Individual Badge Positioning & Colors */
+.badge-year {
   grid-area: year;
   justify-self: start;
   color: #22d3ee; /* Cyan */
@@ -445,7 +435,6 @@ h2::before {
   border: 1px solid rgba(6, 182, 212, 0.2);
 }
 
-/* Top Right: Score */
 .badge-score {
   grid-area: score;
   justify-self: end;
@@ -454,8 +443,7 @@ h2::before {
   border: 1px solid rgba(234, 179, 8, 0.2);
 }
 
-/* Bottom Left: Eps */
-.badge.eps {
+.badge-eps {
   grid-area: eps;
   justify-self: start;
   color: #f472b6; /* Pink */
@@ -463,7 +451,6 @@ h2::before {
   border: 1px solid rgba(236, 72, 153, 0.2);
 }
 
-/* Bottom Right: Type */
 .badge-type {
   grid-area: type;
   justify-self: end;
@@ -473,56 +460,71 @@ h2::before {
   text-transform: uppercase;
 }
 
-/* --- Pagination --- */
-.pagination {
-  margin-top: 4rem;
+/* --- Pagination (UPDATED) --- */
+.pagination-container {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  /* FIX: Reduced margin to prevent huge gap */
+  margin-top: 2rem;
   padding-bottom: 2rem;
 }
 
-.load-more-button {
-  background: transparent;
-  border: 1px solid var(--accent-primary);
-  color: var(--accent-primary);
-  padding: 1rem 4rem;
-  font-size: 0.9rem;
-  font-weight: 700;
+.page-info {
+  color: var(--text-secondary);
+  font-size: 1.5rem;
+  font-weight: 1000;
   text-transform: uppercase;
-  letter-spacing: 0.2em;
-  border-radius: 4px;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
+  letter-spacing: 0.05em;
+  margin: 0;
 }
 
-.load-more-button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.2), transparent);
-  transition: left 0.5s;
+.pagination-buttons {
+  padding: 20px 20px;
+  font-size: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  align-items: center;
 }
 
-.load-more-button:hover {
-  background: rgba(139, 92, 246, 0.1);
-  box-shadow: 0 0 30px rgba(139, 92, 246, 0.2);
-  transform: translateY(-2px);
-  color: #fff;
+/* Standard Page Button */
+.page-button {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  min-width: 40px;
+  height: 40px;
+  padding: 0 0.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.load-more-button:hover::before {
-  left: 100%;
+.page-button:hover:not(:disabled) {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
+  background-color: rgba(139, 92, 246, 0.05);
 }
 
-.load-more-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  border-color: var(--border-color);
-  color: var(--text-muted);
+.page-button.active {
+  background: var(--accent-primary);
+  color: white;
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 15px rgba(139, 92, 246, 0.4);
+}
+
+.page-button:disabled {
+  opacity: 1; /* Keep active state bright */
+  cursor: default;
 }
 
 /* --- States --- */
@@ -542,4 +544,25 @@ h2::before {
   font-weight: bold;
   letter-spacing: 0.1em;
   text-transform: uppercase;
+}
+
+.error-box {
+  background: rgba(220, 38, 38, 0.1);
+  border: 1px solid rgba(220, 38, 38, 0.3);
+  color: #fca5a5;
+  padding: 2rem;
+  border-radius: 12px;
+  max-width: 600px;
+  margin: 2rem auto;
+}
+
+.btn-retry {
+  background: rgba(220, 38, 38, 0.2);
+  border: 1px solid rgba(220, 38, 38, 0.5);
+  color: white;
+  margin-top: 1rem;
+}
+
+.btn-retry:hover {
+  background: rgba(220, 38, 38, 0.4);
 }
