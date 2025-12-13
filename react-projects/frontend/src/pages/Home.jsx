@@ -10,7 +10,7 @@ function Home() {
             </div>
 
             <div className="top-anime-list">
-                <h2>Top 10 Animes</h2>
+                <h2>Top Animes</h2>
                 <QueryWrapper loadingMessage="Loading top 10 animes...">
                     <TopAnimeSection />
                 </QueryWrapper>

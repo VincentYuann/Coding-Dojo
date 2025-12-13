@@ -14,9 +14,8 @@ export const searchAnimes = async (filterObject = {}) => {
     }
 };
 
-// Max 10 top animes
-export const getTopAnimes = async () => {
-    const response = await fetch(`${BASE_URL}/top/anime?limit=10&`);
+export const getTopAnimes = async (count=10) => {
+    const response = await fetch(`${BASE_URL}/top/anime?limit=${count}`);
     
     if (!response.ok) throw new Error(`API request failed: ${response.status}`);
     const data = await response.json();

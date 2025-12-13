@@ -5,7 +5,7 @@ import AnimeCard from "../AnimeCard";
 function TopAnimeSection() {
     const { data: topAnimes } = useSuspenseQuery({
         queryKey: ["topAnimes"],
-        queryFn: getTopAnimes,
+        queryFn: () => getTopAnimes(14),
     });
 
     return (

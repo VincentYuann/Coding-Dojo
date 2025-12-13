@@ -1,8 +1,10 @@
 import { useSearchParams } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { toUnderScore } from "../../utils/toUnderScore";
 import { getAnimeGenres } from "../../services/jikanAPI";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { selectDropDownCheckBox } from "../filterBar/SelectDropDownCheckbox"
+
 
 const INITIAL_FILTER_STATE = {
     q: "",
@@ -20,6 +22,30 @@ const INITIAL_FILTER_STATE = {
     startDate: "",
     endDate: "",
 };
+
+const TYPE_OPTIONS = [
+    { value: "tv", label: "TV" },
+    { value: "movie", label: "Movie" },
+    { value: "ova", label: "OVA" },
+    { value: "ona", label: "ONA" },
+    { value: "special", label: "Special" },
+    { value: "music", label: "Music" },
+];
+
+const STATUS_OPTIONS = [
+    { value: "airing", label: "Airing" },
+    { value: "complete", label: "Completed" },
+    { value: "upcoming", label: "Upcoming" },
+];
+
+const RATING_OPTIONS = [
+    { value: "g", label: "G - All Ages" },
+    { value: "pg", label: "PG - Children" },
+    { value: "pg13", label: "PG-13 - Teens" },
+    { value: "r17", label: "R - Violence" },
+    { value: "r", label: "R+ - Mild Nudity" },
+    { value: "rx", label: "Rx - Hentai" },
+];
 
 function FilterBar({ searchQuery }) {
     const [, setSearchParams] = useSearchParams();
@@ -61,7 +87,6 @@ function FilterBar({ searchQuery }) {
             ...prev,
             [name]: newValue, // Use the determined newValue directly
         }));
-        console.log(name, newValue);
     };
 
     // Creates a URL using the filterobject, passing it to the searchResults page to fetch anime API data
@@ -81,7 +106,9 @@ function FilterBar({ searchQuery }) {
 
     const handleFilterReset = (e) => {
         e.preventDefault();
-        setFilterObject(INITIAL_FILTER_STATE);
+        setFilterObject({
+            ...INITIAL_FILTER_STATE, q: filterObject.q
+        });
     };
 
     return (
@@ -102,47 +129,11 @@ function FilterBar({ searchQuery }) {
                 </div>
 
                 <h3>Filters:</h3>
-                <div className="filters">
-                    <div className="filter-group">
-                        <select
-                            name="type"
-                            value={filterObject.type}
-                            onChange={updateFilterObject}
-                        >
-                            <option value="" selected disabled hidden>
-                                Type
-                            </option>
-                            <option value="tv">Tv</option>
-                            <option value="movie">Movie</option>
-                            <option value="ova">OVA</option>
-                            <option value="ona">ONA</option>
-                            <option value="special">Special</option>
-                            <option value="tv_special">Tv special</option>
-                            <option value="music">Music</option>
-                            <option value="cm">CM</option>
-                            <option value="pv">PV</option>
-                        </select>
-                    </div>
+                <div className="filters-grid">
+                    <SelectDropDownCheckbox />Type
+                    <SelectDropDownCheckbox />Genres
 
-                    <div className="filter-group">
-                        <select
-                            name="genres"
-                            value={filterObject.genres}
-                            onChange={updateFilterObject}
-                            multiple
-                        >
-                            <option value="" selected disabled hidden>
-                                Genres
-                            </option>
-                            {genres.map((genre) => (
-                                <option key={genre.mal_id} value={genre.mal_id}>
-                                    {genre.name}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-
-                    <div className="filter-group">
+                    <div className="filter-score">
                         <input
                             id="min-score"
                             name="minScore"
@@ -164,6 +155,7 @@ function FilterBar({ searchQuery }) {
                                 }
                             }}
                         />
+
                         <input
                             id="max-score"
                             name="maxScore"
@@ -187,40 +179,10 @@ function FilterBar({ searchQuery }) {
                         />
                     </div>
 
-                    <div className="filter-group">
-                        <select
-                            name="status"
-                            value={filterObject.status}
-                            onChange={updateFilterObject}
-                        >
-                            <option value="" selected disabled hidden>
-                                Status
-                            </option>
-                            <option value="airing">Airing</option>
-                            <option value="complete">Completed</option>
-                            <option value="upcoming">Upcoming</option>
-                        </select>
-                    </div>
+                    <SelectDropDownCheckbox />Rating
+                    <SelectDropDownCheckbox />Status
 
-                    <div className="filter-group">
-                        <select
-                            name="rating"
-                            value={filterObject.rating}
-                            onChange={updateFilterObject}
-                        >
-                            <option value="" selected disabled hidden>
-                                Ratings
-                            </option>
-                            <option value="g">G - All ages</option>
-                            <option value="pg">PG - Children</option>
-                            <option value="pg13">PG-13 - Teens 13+</option>
-                            <option value="r17">R - Violence & profanity</option>
-                            <option value="r">R+ - Mild Nudity</option>
-                            <option value="rx">Rx - Hentai</option>
-                        </select>
-                    </div>
-
-                    <div className="filter-group">
+                    <div className="filter-sfw">
                         <label>
                             <input
                                 id="sfw"

@@ -17,7 +17,11 @@ function SearchResultsContent({ searchQueryObject }) {
     return (
         <>
             <div className='search-results-grid'>
-                {!uniqueAnimeList ? "No results found, try again." :
+                {(uniqueAnimeList.length === 0) ?
+                    <div className='page-info'>
+                        No results found, try again.
+                    </div>
+                    :
                     uniqueAnimeList.map(anime => (
                         <AnimeCard key={anime.mal_id} anime={anime} />
                     ))}

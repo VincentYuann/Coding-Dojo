@@ -5,7 +5,7 @@ import AnimeCard from "../AnimeCard";
 function RandomAnimeSection() {
     const { data: randomAnimes } = useSuspenseQuery({
         queryKey: ["randomAnimes"],
-        queryFn: () => getRandomAnimes(10),
+        queryFn: () => getRandomAnimes(14),
     });
 
     return (
