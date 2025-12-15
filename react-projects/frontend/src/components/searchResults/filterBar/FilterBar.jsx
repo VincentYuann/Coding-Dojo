@@ -1,10 +1,9 @@
 import { useSearchParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { toUnderScore } from "../../utils/toUnderScore";
-import { getAnimeGenres } from "../../services/jikanAPI";
-import { selectDropDownCheckBox } from "../filterBar/SelectDropDownCheckbox"
-
+import { toUnderScore } from "../../../utils/toUnderScore";
+import { getAnimeGenres } from "../../../services/jikanAPI";
+import SelectDropDownCheckbox from "../filterBar/SelectDropDownCheckbox"
 
 const INITIAL_FILTER_STATE = {
     q: "",
@@ -14,7 +13,7 @@ const INITIAL_FILTER_STATE = {
     status: "",
     rating: "",
     sfw: false, //Filter out Adult entries
-    genres: "", //Filter by genre(s) IDs. Can pass multiple with a comma as a delimiter. e.g 1,2,3
+    genres: [], //Filter by genre(s) IDs. Can pass multiple with a comma as a delimiter. e.g 1,2,3
     genresExclude: "", //Exclude genre(s) IDs. Can pass multiple with a comma as a delimiter. e.g 1,2,3
     orderBy: "",
     sort: "",
@@ -50,11 +49,16 @@ const RATING_OPTIONS = [
 function FilterBar({ searchQuery }) {
     const [, setSearchParams] = useSearchParams();
     const [filterObject, setFilterObject] = useState(INITIAL_FILTER_STATE);
+
     const { data: genres } = useSuspenseQuery({
         queryKey: ["genres"],
         queryFn: getAnimeGenres,
         staleTime: Infinity,
     });
+    const genreOptions = genres.map((genre) => ({
+        value: genre.mal_id,
+        label: genre.name
+    }));
 
     // Sync the navBar search query with the filterBar search query
     useEffect(() => {
@@ -64,31 +68,48 @@ function FilterBar({ searchQuery }) {
         }));
     }, [searchQuery]);
 
-    const updateFilterObject = (e) => {
-        const { name, value, type, checked, options, multiple } = e.target;
+    const updateFilterObject = (e, multiSelect = false) => {
+        const { name, value, type, checked } = e.target;
 
-        let newValue;
+        setFilterObject((prev) => {
+            let newValue;
 
-        if (type === "checkbox") {
-            // Handles a checkbox
-            newValue = checked;
-        } else if (multiple) {
-            // Handles multi-select filters
-            newValue = Array.from(options)
-                .filter((option) => option.selected)
-                .map((option) => option.value)
-                .join(",");
-        } else {
-            // Handles a single-select filter
-            newValue = value;
-        }
+            // Checkbox
+            if (type === "checkbox") {
+                // Multiselect genre checkbox
+                if (multiSelect) {
+                    const currentList = [...prev.genres]
 
-        setFilterObject((prev) => ({
-            ...prev,
-            [name]: newValue, // Use the determined newValue directly
-        }));
+                    if (checked) {
+                        newValue = [...currentList, value]
+                    } else {
+                        newValue = currentList.filter(genreID => genreID !== value).map(genreID => genreID)
+                    }
+                }
+                // sfw checkbox
+                else if (name === "sfw") {
+                    newValue = checked;
+                }
+
+                // Single select checkbox
+                else {
+                    newValue = checked ? value : ""
+                }
+            }
+            // Text or integer
+            else {
+                newValue = value
+            }
+
+            console.log(newValue)
+            return ({
+                ...prev,
+                [name]: newValue
+            });
+        });
     };
 
+    // -----------------------------------------------------------------------------------------------------------
     // Creates a URL using the filterobject, passing it to the searchResults page to fetch anime API data
     const handleFilterSubmit = (e) => {
         e.preventDefault();
@@ -130,18 +151,29 @@ function FilterBar({ searchQuery }) {
 
                 <h3>Filters:</h3>
                 <div className="filters-grid">
-                    <SelectDropDownCheckbox />Type
-                    <SelectDropDownCheckbox />Genres
+                    <SelectDropDownCheckbox
+                        label="Type"
+                        name="type"
+                        options={TYPE_OPTIONS}
+                        selectedValue={filterObject.type}
+                        onChange={updateFilterObject}
+                    />
+
+                    <SelectDropDownCheckbox
+                        label="Genres"
+                        name="genres"
+                        options={genreOptions}
+                        selectedValue={filterObject.genres}
+                        onChange={e => updateFilterObject(e, true)}
+                        multiSelect={true}
+                    />
 
                     <div className="filter-score">
                         <input
-                            id="min-score"
                             name="minScore"
                             placeholder="Min score"
                             type="number"
-                            min="1"
-                            max="10"
-                            step="0.1"
+                            min="1" max="10" step="0.1"
                             value={filterObject.minScore}
                             onChange={(e) => {
                                 const min = parseFloat(e.target.value);
@@ -155,15 +187,12 @@ function FilterBar({ searchQuery }) {
                                 }
                             }}
                         />
-
+                        <span>-</span>
                         <input
-                            id="max-score"
                             name="maxScore"
                             placeholder="Max score"
                             type="number"
-                            min="1"
-                            max="10"
-                            step="0.1"
+                            min="1" max="10" step="0.1"
                             value={filterObject.maxScore}
                             onChange={(e) => {
                                 const min = parseFloat(filterObject.minScore);
@@ -179,13 +208,25 @@ function FilterBar({ searchQuery }) {
                         />
                     </div>
 
-                    <SelectDropDownCheckbox />Rating
-                    <SelectDropDownCheckbox />Status
+                    <SelectDropDownCheckbox
+                        label="Rating"
+                        name="rating"
+                        options={RATING_OPTIONS}
+                        selectedValue={filterObject.genres}
+                        onChange={updateFilterObject}
+                    />
+
+                    <SelectDropDownCheckbox
+                        label="Status"
+                        name="status"
+                        options={STATUS_OPTIONS}
+                        selectedValue={filterObject.status}
+                        onChange={updateFilterObject}
+                    />
 
                     <div className="filter-sfw">
                         <label>
                             <input
-                                id="sfw"
                                 name="sfw"
                                 type="checkbox"
                                 checked={filterObject.sfw}
