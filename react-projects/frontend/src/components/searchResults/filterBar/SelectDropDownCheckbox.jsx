@@ -1,8 +1,17 @@
 import { useState, useRef, useEffect } from "react";
 
-function SelectDropDownCheckbox({ label, name, options, selectedValue, onChange, multiSelect = false }) {
+function SelectDropDownCheckbox({ label, name, options, selectedValue, onChange, multiselect = false }) {
     const [isOpen, setIsOpen] = useState(false)
     const dropDownDivRef = useRef(null)
+
+    // DATA: Always treat as an array
+    const selectedArray = [].concat(selectedValue)
+        .filter(value =>
+            value !== null &&
+            value !== undefined
+        )
+        .map(String);
+    console.log(selectedArray)
 
     // Toggle the div that shows all the options
     useEffect(() => {
@@ -16,27 +25,20 @@ function SelectDropDownCheckbox({ label, name, options, selectedValue, onChange,
 
         document.addEventListener("mousedown", handleClickOutside)
 
+        // Deletes the event so it doesn't stack up overtime
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, [isOpen]);
 
     const getButtonLabel = () => {
-        // Nothing selected
-        if (!selectedValue || selectedValue.length === 0) return label;
+        if (selectedArray.length === 0 || selectedValue === "") return label
 
-        if (multiSelect) {
-            const constFirstGenreID = selectedValue[0];
-            return `${options.find(option => option.label === constFirstGenreID)} + [${selectedValue.length - 1}]`;
-        } else {
-            const option = options.find(option => option.value === selectedValue);
-            return option ? option.label : label;
-        }
-    }
+        const firstMatchingLabel = options.find(option => String(option.value) === selectedArray[0]).label;
+        console.log(firstMatchingLabel)
 
-    const isChecked = (value) => {
-        if (multiSelect) {
-            return selectedValue.contains(value) ? True : False
+        if (multiselect) {
+            return `${firstMatchingLabel} (${selectedArray.length})`
         } else {
-            return (selectedValue === value) ? True : False
+            return firstMatchingLabel
         }
     }
 
@@ -48,7 +50,7 @@ function SelectDropDownCheckbox({ label, name, options, selectedValue, onChange,
                 onClick={() => setIsOpen(!isOpen)}
             >
                 <span>{getButtonLabel()}</span>
-                <span className="arrow">▼</span>
+                <span className="arrow"> ▼</span>
             </button>
 
             {isOpen &&
@@ -59,7 +61,7 @@ function SelectDropDownCheckbox({ label, name, options, selectedValue, onChange,
                                 name={name}
                                 value={option.value}
                                 type="checkbox"
-                                checked={() => isChecked(option.value)}
+                                checked={selectedArray.includes(String(option.value))}
                                 onChange={onChange}
                             />
                             {option.label}

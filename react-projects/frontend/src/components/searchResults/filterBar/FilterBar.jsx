@@ -1,7 +1,7 @@
 import { useSearchParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { toUnderScore } from "../../../utils/toUnderScore";
+import { toUnderscore } from "../../../utils/toUnderscore";
 import { getAnimeGenres } from "../../../services/jikanAPI";
 import SelectDropDownCheckbox from "../filterBar/SelectDropDownCheckbox"
 
@@ -66,6 +66,8 @@ function FilterBar({ searchQuery }) {
             ...prev,
             q: searchQuery,
         }));
+
+        handleFilterReset;
     }, [searchQuery]);
 
     const updateFilterObject = (e, multiSelect = false) => {
@@ -101,7 +103,6 @@ function FilterBar({ searchQuery }) {
                 newValue = value
             }
 
-            console.log(newValue)
             return ({
                 ...prev,
                 [name]: newValue
@@ -118,7 +119,7 @@ function FilterBar({ searchQuery }) {
 
         Object.entries(filterObject).forEach(([key, value]) => {
             if (value && value.length !== 0) {
-                params.append(toUnderScore(key), value);
+                params.append(toUnderscore(key), value);
             }
         });
 
@@ -165,7 +166,7 @@ function FilterBar({ searchQuery }) {
                         options={genreOptions}
                         selectedValue={filterObject.genres}
                         onChange={e => updateFilterObject(e, true)}
-                        multiSelect={true}
+                        multiselect={true}
                     />
 
                     <div className="filter-score">
@@ -212,7 +213,7 @@ function FilterBar({ searchQuery }) {
                         label="Rating"
                         name="rating"
                         options={RATING_OPTIONS}
-                        selectedValue={filterObject.genres}
+                        selectedValue={filterObject.rating}
                         onChange={updateFilterObject}
                     />
 

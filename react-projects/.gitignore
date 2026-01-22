@@ -1,0 +1,14 @@
+# --- Dependencies ---
+node_modules/
+
+# --- Secrets & Environment Variables ---
+.env
+
+# --- Operating System Files ---
+.DS_Store
+Thumbs.db
+
+# --- IDE Configs ---
+.vscode/
+.idea/
+*.swp

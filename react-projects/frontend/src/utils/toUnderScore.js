@@ -1,4 +1,4 @@
-export const toUnderScore = (str) => {
+export const toUnderscore = (str) => {
     return str
         .replace(/([A-Z])/g, (letter) => `_${letter.toLowerCase()}`)
         .replace(/[\s-]+/g, '_')

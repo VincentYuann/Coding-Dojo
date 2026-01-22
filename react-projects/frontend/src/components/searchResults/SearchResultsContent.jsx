@@ -5,7 +5,7 @@ import Pagination from '../Pagination';
 
 function SearchResultsContent({ searchQueryObject }) {
     const { data: { animes, pagination } } = useSuspenseQuery({
-        queryKey: ['animes', searchQueryObject.toString()],
+        queryKey: ['animes', String(searchQueryObject)],
         queryFn: () => searchAnimes(searchQueryObject)
     });
 
