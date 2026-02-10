@@ -1,4 +1,4 @@
-import { getRandomAnimes } from "../../services/jikanAPI";
+import { getRandomAnimes } from "../../services/animeService";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import AnimeCard from "../AnimeCard";
 

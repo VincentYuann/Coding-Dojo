@@ -2,7 +2,7 @@ import { useSearchParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { toUnderscore } from "../../../utils/toUnderscore";
-import { getAnimeGenres } from "../../../services/jikanAPI";
+import { getAnimeGenres } from "../../../services/animeService";
 import SelectDropDownCheckbox from "../filterBar/SelectDropDownCheckbox"
 
 const INITIAL_FILTER_STATE = {

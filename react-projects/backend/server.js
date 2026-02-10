@@ -1,9 +1,10 @@
-import likesRouter from './routes/likesRoute.js';
-import animeRouter from './routes/animeRoute.js';
+import likesRouter from './routes/likes.route.js';
+import animeRouter from './routes/anime.route.js';
+import cors from 'cors'
 import express from 'express';
 const app = express();
 
-// Middleware to parse JSON bodies
+app.use(cors());
 app.use(express.json());
 
 app.get('/', (req, res) => {
@@ -16,7 +17,7 @@ app.get('/', (req, res) => {
 })
 
 app.use('/api/likes', likesRouter);
-app.use('/api/anime', animeRouter)
+app.use('/api/anime', animeRouter);
 
 const PORT = process.env.PORT || 3000;
 

@@ -1,4 +1,4 @@
-import { searchAnimes } from '../../services/jikanAPI';
+import { searchAnimes } from '../../services/animeService';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import AnimeCard from '../AnimeCard'
 import Pagination from '../Pagination';
