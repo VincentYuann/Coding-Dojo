@@ -5,24 +5,26 @@ const jikanAPI = axios.create({
 })
 
 const jikanService = {
-    // Max 25 results per page
-    searchAnimes: async (filterObject={}) => {
-        console.log('Filter Object:', filterObject);
+    searchAnimes: async ( filterObject = {} ) => {
         try {
             const res = await jikanAPI.get('/anime', {
-                params:  { ...filterObject }
+                params:  { 
+                    order_by: 'popularity',
+                    sort: 'asc',
+                    ...filterObject 
+                }
             });
             
             return {
                 animes: res.data.data,
                 pagination: res.data.pagination
             }
-        } 
-        catch (error) {
+        } catch (error) {
             throw new Error(`API request failed: ${error.response.status}`);
         }
     },
-    getTopAnimes: async (limit=10) => {
+
+    getTopAnimes: async ( limit = 14 ) => {
         try {
             const res = await jikanAPI.get('/top/anime', {
                 params: { limit: limit }
@@ -33,17 +35,69 @@ const jikanService = {
             throw new Error(`API request failed: ${error.response.status}`);
         }
     },
-    getRandomAnimes: async () => {
+
+    getRandomAnimes: async ( limit = 14 ) => {
         try {
-            const res = await jikanAPI.get(`/random/anime`);
+            const RELEVANT_PAGE_LIMIT = 400; 
+            const randomPage = Math.floor(Math.random() * RELEVANT_PAGE_LIMIT) + 1; 
+            
+            const res = await jikanAPI.get('/anime', {
+                params: {
+                    page: randomPage,
+                    sfw: true, // Exclude NSFW content on the home page
+                    order_by: 'popularity',
+                    sort: 'asc'
+                }
+            });
+            
+            const allAnime = res.data.data;
+            return allAnime.slice(0, limit);
+            
+        } catch (error) {
+            throw new Error(`API request failed: ${error.response?.status}`);
+        }
+    },
+
+    getAnimeGenres: async () => {
+        try {
+            const res = await jikanAPI.get(`/genres/anime`);
             return res.data.data;
         } catch (error) {
             throw new Error(`API request failed: ${error.response.status}`);
         }
     },
-    getAnimeGenres: async () => {
+    
+    // --------------------------------New functions to fetch anime seasons ----------------------------------------
+    getSeasonList: async () => {
         try {
-            const res = await jikanAPI.get(`/genres/anime`);
+            const res = await jikanAPI.get('/seasons')
+            return res.data.data;
+        } catch (error) {
+            throw new Error(`API request failed: ${error.response.status}`);
+        }
+    },
+    
+    getCurrentSeason: async () => {
+        try {
+            const res = await jikanAPI.get(`/seasons/now`);
+            return res.data.data;
+        } catch (error) {
+            throw new Error(`API request failed: ${error.response.status}`);
+        }
+    },
+
+    getUpcomingSeasons: async () => {
+        try {
+            const res = await jikanAPI.get(`/seasons/upcoming`);
+            return res.data.data;
+        } catch (error) {
+            throw new Error(`API request failed: ${error.response.status}`);
+        }
+    },
+
+    getSeason: async (year, season) => {
+        try {
+            const res = await jikanAPI.get(`/seasons/${year}/${season}`);
             return res.data.data;
         } catch (error) {
             throw new Error(`API request failed: ${error.response.status}`);

@@ -36,6 +36,9 @@ export default function NavBar() {
                 <Link to="/" className="nav-link">
                     Home
                 </Link>
+                <Link to="/seasons" className="nav-link">
+                    Seasons
+                </Link>
                 <Link to="/favorites" className="nav-link">
                     Favorites
                 </Link>

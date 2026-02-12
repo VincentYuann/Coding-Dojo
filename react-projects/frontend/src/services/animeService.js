@@ -5,7 +5,6 @@ export const searchAnimes = async (filterObject={}) => {
     try {
         const res = await serverClient.get('/anime/search', {
             params: {
-                limit: 25,
                 ...Object.fromEntries(filterObject)
             }
         });
@@ -19,7 +18,7 @@ export const searchAnimes = async (filterObject={}) => {
     }
 };
 
-export const getTopAnimes = async (limit=10) => {
+export const getTopAnimes = async (limit=14) => {
     try {
         const res = await serverClient.get('/anime/top', {
             params: { limit: limit }
@@ -31,19 +30,16 @@ export const getTopAnimes = async (limit=10) => {
     }
 };
 
-export const getRandomAnimes = async (count=3) => {
-    const randomAnimes = [];
+export const getRandomAnimes = async (limit=14) => {
+    try {
+        const res = await serverClient.get('/anime/random', {
+            params: { limit: limit }
+        });
 
-    for (let i=0; i < count; i++) {
-        try {
-            const res = await serverClient.get('/anime/random');
-            randomAnimes.push(res.data);
-        } catch (error) {
-            throw new Error(`API request failed: ${error.response.status}`);
-        }
+        return res.data;
+    } catch (error) {
+        throw new Error(`API request failed: ${error.response.status}`);
     }
-
-    return randomAnimes;
 };
 
 export const getAnimeGenres = async () => {
@@ -53,4 +49,43 @@ export const getAnimeGenres = async () => {
     } catch (error) {
         throw new Error(`API request failed: ${error.response.status}`);
     }
-}
+};
+
+// --------------------------------------------------New function to fetch anime seasons -------------------------------------------------
+export const animeSeasons = {
+    getSeasonList: async (year) => {
+        try {
+            const res = await serverClient.get('/anime/seasons');
+            return res.data;
+        } catch (error) {
+            throw new Error(`API request failed: ${error.response.status}`);
+        }
+    },
+    
+    getCurrentSeason: async () => {
+        try {
+            const res = await serverClient.get('/anime/seasons/current');
+            return res.data;
+        } catch (error) {
+            throw new Error(`API request failed: ${error.response.status}`);
+        }
+    },
+
+    getUpcomingSeasons: async () => {
+        try {
+            const res = await serverClient.get('/anime/seasons/upcoming');
+            return res.data;
+        } catch (error) {
+            throw new Error(`API request failed: ${error.response.status}`);
+        }
+    },
+
+    getSeason: async (year, season) => {
+        try {
+            const res = await serverClient.get(`/anime/seasons/${year}/${season}`);
+            return res.data;
+        } catch (error) {
+            throw new Error(`API request failed: ${error.response.status}`);
+        }
+    }
+};

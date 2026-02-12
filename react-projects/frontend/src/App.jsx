@@ -5,6 +5,7 @@ import NavBar from "./components/NavBar";
 import Home from "./pages/Home";
 import Favorites from "./pages/Favorites";
 import SearchResults from "./pages/SearchResults";
+import AnimeSeasons from "./pages/AnimeSeasons";
 
 // Create a context data for the grandchild component
 export const favoritesContext = createContext();
@@ -24,6 +25,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/favorites" element={<Favorites />} />
             <Route path="/search" element={<SearchResults />} />
+            <Route path="/seasons" element={<AnimeSeasons />} />
           </Routes>
         </main>
 

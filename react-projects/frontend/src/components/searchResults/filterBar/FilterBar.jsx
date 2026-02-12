@@ -111,7 +111,7 @@ function FilterBar({ searchQuery }) {
     };
 
     // -----------------------------------------------------------------------------------------------------------
-    // Creates a URL using the filterobject, passing it to the searchResults page to fetch anime API data
+    // Creates a new URL using the filterobject, passing it to the searchResults page to fetch anime API data
     const handleFilterSubmit = (e) => {
         e.preventDefault();
 
