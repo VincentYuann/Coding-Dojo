@@ -18,7 +18,7 @@ const jikanService = {
             return {
                 animes: res.data.data,
                 pagination: res.data.pagination
-            }
+            };
         } catch (error) {
             throw new Error(`API request failed: ${error.response.status}`);
         }
@@ -80,7 +80,11 @@ const jikanService = {
     getCurrentSeason: async () => {
         try {
             const res = await jikanAPI.get(`/seasons/now`);
-            return res.data.data;
+            
+            return {
+                animes: res.data.data,
+                pagination: res.data.pagination
+            };
         } catch (error) {
             throw new Error(`API request failed: ${error.response.status}`);
         }
@@ -89,7 +93,11 @@ const jikanService = {
     getUpcomingSeasons: async () => {
         try {
             const res = await jikanAPI.get(`/seasons/upcoming`);
-            return res.data.data;
+            
+            return {
+                animes: res.data.data,
+                pagination: res.data.pagination
+            };
         } catch (error) {
             throw new Error(`API request failed: ${error.response.status}`);
         }
@@ -98,7 +106,11 @@ const jikanService = {
     getSeason: async (year, season) => {
         try {
             const res = await jikanAPI.get(`/seasons/${year}/${season}`);
-            return res.data.data;
+            
+            return {
+                animes: res.data.data,
+                pagination: res.data.pagination
+            };
         } catch (error) {
             throw new Error(`API request failed: ${error.response.status}`);
         }

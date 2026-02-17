@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { toUnderscore } from "../../../utils/toUnderscore";
 import { getAnimeGenres } from "../../../services/animeService";
-import SelectDropDownCheckbox from "../filterBar/SelectDropDownCheckbox"
+import SelectDropDownCheckbox from "./DropDownCheckbox"
 
 const INITIAL_FILTER_STATE = {
     q: "",

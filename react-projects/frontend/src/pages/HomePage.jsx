@@ -1,5 +1,5 @@
-import TopAnimeSection from "../components/home/TopAnimeSection";
-import RandomAnimeSection from "../components/home/RandomAnimeSection"
+import TopAnimeGrid from "../components/homePage/TopAnimeGrid";
+import RandomAnimeGrid from "../components/homePage/RandomAnimeGrid"
 import QueryWrapper from "../components/QueryWraper";
 
 function Home() {
@@ -12,14 +12,14 @@ function Home() {
             <div className="top-anime-list">
                 <h2>Top Animes</h2>
                 <QueryWrapper loadingMessage="Loading top 10 animes...">
-                    <TopAnimeSection />
+                    <TopAnimeGrid />
                 </QueryWrapper>
             </div>
 
             <div className="random-anime-list">
                 <h2>Random Animes</h2>
                 <QueryWrapper loadingMessage="Loading random animes...">
-                    <RandomAnimeSection />
+                    <RandomAnimeGrid />
                 </QueryWrapper>
             </div>
         </div>

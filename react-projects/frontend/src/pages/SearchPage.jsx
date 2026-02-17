@@ -1,7 +1,7 @@
 import { useSearchParams } from 'react-router-dom';
 import QueryWraper from '../components/QueryWraper';
-import SearchResultsContent from '../components/searchResults/SearchResultsContent';
-import FilterBar from '../components/searchResults/filterBar/FilterBar';
+import SearchResultsContent from '../components/searchPage/SearchContent';
+import FilterBar from '../components/searchPage/filterBar/FilterBar';
 
 function SearchResults() {
     const [searchParams] = useSearchParams();

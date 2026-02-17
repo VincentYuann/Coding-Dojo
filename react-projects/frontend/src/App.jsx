@@ -2,10 +2,10 @@ import { Routes, Route } from "react-router-dom";
 import { useState, createContext } from "react";
 import "./css/App.css";
 import NavBar from "./components/NavBar";
-import Home from "./pages/Home";
-import Favorites from "./pages/Favorites";
-import SearchResults from "./pages/SearchResults";
-import AnimeSeasons from "./pages/AnimeSeasons";
+import Home from "./pages/HomePage";
+import Favorites from "./pages/FavoritesPage";
+import SearchResults from "./pages/SearchPage";
+import AnimeSeasons from "./pages/AnimeSeasonsPage";
 
 // Create a context data for the grandchild component
 export const favoritesContext = createContext();
@@ -22,10 +22,10 @@ function App() {
 
         <main className="main-content">
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/favorites" element={<Favorites />} />
-            <Route path="/search" element={<SearchResults />} />
-            <Route path="/seasons" element={<AnimeSeasons />} />
+            <Route path="/" element={<HomePage />} />
+            <Route path="/favorites" element={<FavoritesPage />} />
+            <Route path="/search" element={<SearchPage />} />
+            <Route path="/seasons" element={<AnimeSeasonsPage />} />
           </Routes>
         </main>
 

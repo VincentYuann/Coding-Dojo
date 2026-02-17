@@ -51,41 +51,40 @@ export const getAnimeGenres = async () => {
     }
 };
 
+
 // --------------------------------------------------New function to fetch anime seasons -------------------------------------------------
-export const animeSeasons = {
-    getSeasonList: async (year) => {
-        try {
-            const res = await serverClient.get('/anime/seasons');
-            return res.data;
-        } catch (error) {
-            throw new Error(`API request failed: ${error.response.status}`);
-        }
-    },
-    
-    getCurrentSeason: async () => {
-        try {
-            const res = await serverClient.get('/anime/seasons/current');
-            return res.data;
-        } catch (error) {
-            throw new Error(`API request failed: ${error.response.status}`);
-        }
-    },
-
-    getUpcomingSeasons: async () => {
-        try {
-            const res = await serverClient.get('/anime/seasons/upcoming');
-            return res.data;
-        } catch (error) {
-            throw new Error(`API request failed: ${error.response.status}`);
-        }
-    },
-
-    getSeason: async (year, season) => {
-        try {
-            const res = await serverClient.get(`/anime/seasons/${year}/${season}`);
-            return res.data;
-        } catch (error) {
-            throw new Error(`API request failed: ${error.response.status}`);
-        }
+export const getSeasonList = async (year) => {
+    try {
+        const res = await serverClient.get('/anime/seasons');
+        return res.data;
+    } catch (error) {
+        throw new Error(`API request failed: ${error.response.status}`);
     }
-};
+}
+
+export const getCurrentSeason = async () => {
+    try {
+        const res = await serverClient.get('/anime/seasons/current');
+        return res.data;
+    } catch (error) {
+        throw new Error(`API request failed: ${error.response.status}`);
+    }
+}
+
+export const getUpcomingSeasons = async () => {
+    try {
+        const res = await serverClient.get('/anime/seasons/upcoming');
+        return res.data;
+    } catch (error) {
+        throw new Error(`API request failed: ${error.response.status}`);
+    }
+}
+
+export const getSeason = async (year, season) => {
+    try {
+        const res = await serverClient.get(`/anime/seasons/${year}/${season}`);
+        return res.data;
+    } catch (error) {
+        throw new Error(`API request failed: ${error.response.status}`);
+    }
+}
