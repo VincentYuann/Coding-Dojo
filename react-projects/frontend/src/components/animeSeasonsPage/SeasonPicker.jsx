@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { getSeasonList } from "../../services/animeService";
 
 function SeasonPicker() {
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [searchParams] = useSearchParams();
     const [seasonFilters, setseasonFilters] = useState({});
     const navigate = useNavigate();
 
