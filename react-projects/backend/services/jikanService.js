@@ -77,9 +77,14 @@ const jikanService = {
         }
     },
     
-    getCurrentSeason: async () => {
+    getCurrentSeason: async (page) => {
         try {
-            const res = await jikanAPI.get(`/seasons/now`);
+            const res = await jikanAPI.get(`/seasons/now`, {
+                params: { 
+                    page: page,
+                    sfw: true
+                }
+            });
             
             return {
                 animes: res.data.data,
@@ -90,9 +95,14 @@ const jikanService = {
         }
     },
 
-    getUpcomingSeasons: async () => {
+    getUpcomingSeasons: async (page) => {
         try {
-            const res = await jikanAPI.get(`/seasons/upcoming`);
+            const res = await jikanAPI.get(`/seasons/upcoming`, {
+                params: { 
+                    page: page,
+                    sfw: true
+                }
+            });
             
             return {
                 animes: res.data.data,
@@ -103,9 +113,14 @@ const jikanService = {
         }
     },
 
-    getSeason: async (year, season) => {
+    getSeason: async (year, season, page) => {
         try {
-            const res = await jikanAPI.get(`/seasons/${year}/${season}`);
+            const res = await jikanAPI.get(`/seasons/${year}/${season}`, {
+                params: { 
+                    page: page,
+                    sfw: true
+                }
+            });
             
             return {
                 animes: res.data.data,

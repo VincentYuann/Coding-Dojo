@@ -14,7 +14,7 @@ animeRouter.get('/search', async (req, res) => {
 
 animeRouter.get('/top', async (req, res) => {
     try {
-        const limit = req.query.limit;
+        const { limit } = req.query;
         const data = await jikanService.getTopAnimes(limit);
         res.json(data);
     } catch (error) {
@@ -24,7 +24,7 @@ animeRouter.get('/top', async (req, res) => {
 
 animeRouter.get('/random', async (req, res) => {
     try {
-        const limit = req.query.limit;
+        const { limit } = req.query;
         const data = await jikanService.getRandomAnimes(limit);
         res.json(data);
     } catch (error) {
@@ -53,7 +53,8 @@ animeRouter.get('/seasons', async (req, res) => {
 
 animeRouter.get('/seasons/current', async (req, res) => {
     try {
-        const data = await jikanService.getCurrentSeason();
+        const { page } = req.query;
+        const data = await jikanService.getCurrentSeason(page);
         res.json(data);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -62,7 +63,8 @@ animeRouter.get('/seasons/current', async (req, res) => {
 
 animeRouter.get('/seasons/upcoming', async (req, res) => {
     try {
-        const data = await jikanService.getUpcomingSeasons();
+        const { page } = req.query;
+        const data = await jikanService.getUpcomingSeasons(page);
         res.json(data);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -70,9 +72,11 @@ animeRouter.get('/seasons/upcoming', async (req, res) => {
 })
 
 animeRouter.get('/seasons/:year/:season', async (req, res) => {
-    const { year, season } = req.params;
     try {
-        const data = await jikanService.getSeason(year, season);
+        const { year, season } = req.params;
+        const { page } = req.query;
+
+        const data = await jikanService.getSeason(year, season, page);
         res.json(data);
     } catch (error) {
         res.status(500).json({ error: error.message });

@@ -1,11 +1,12 @@
 import { useSearchParams } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 function Pagination({ pagination }) {
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [searchParams] = useSearchParams();
+    const pathname = useLocation().pathname;
 
     const {
         last_visible_page: totalPages,
-        has_next_page: hasNextPage,
         current_page: currentPage
     } = pagination;
 
@@ -33,12 +34,13 @@ function Pagination({ pagination }) {
     const pages = getPageNumbers();
 
     // Modifies the url by changing the 'page' parameter 
-    const handlePageChange = (pageNumber) => {
+    const getPageLink = (pageNumber) => {
         const newParams = new URLSearchParams(searchParams);
-
         newParams.set("page", pageNumber);
+        return `${pathname}?${newParams.toString()}`;
+    };
 
-        setSearchParams(newParams);
+    const scrollToTop = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
@@ -51,55 +53,60 @@ function Pagination({ pagination }) {
             <div className="pagination-buttons">
                 {/* First Page Button */}
                 {pages[0] > 1 &&
-                    <button
-                        onClick={() => handlePageChange(1)}
+                    <Link
+                        to={getPageLink(1)}
+                        onClick={scrollToTop}
                         className="page-button"
                     >
                         ⏪
-                    </button>
+                    </Link>
                 }
 
                 {/* Prev Button */}
                 {pages[0] > 1 &&
-                    <button
-                        onClick={() => handlePageChange(currentPage - 1)}
+                    <Link
+                        to={getPageLink(currentPage - 1)}
+                        onClick={scrollToTop}
                         className="page-button"
                     >
                         ◀️
-                    </button>
+                    </Link>
                 }
 
                 {/* Page Numbers */}
                 {totalPages > 1 && pages.map(page => (
-                    <button
+                    <Link
                         key={page}
-                        onClick={() => handlePageChange(page)}
+                        to={getPageLink(page)}
+                        onClick={scrollToTop}
                         className={`page-button ${page === currentPage ? "active" : ""}`}
                         disabled={page === currentPage} // Only disable active page
                         value={page}
                     >
                         {page}
-                    </button>
+                    </Link>
                 ))}
 
                 {/* Next Button */}
                 {(totalPages - currentPage > 2) &&
-                    <button
-                        onClick={() => handlePageChange(currentPage + 1)}
+                    <Link
+                        to={getPageLink(currentPage + 1)}
+                        onClick={scrollToTop}
                         className="page-button"
                     >
                         ▶️
-                    </button>
+                    </Link>
                 }
 
                 {/* Last Page Button */}
                 {(totalPages - currentPage > 2) &&
-                    <button
-                        onClick={() => handlePageChange(totalPages)}
+                    <Link
+                        to={getPageLink(totalPages)}
+                        onClick={scrollToTop}
                         className="page-button"
                     >
                         ⏩
-                    </button>
+                    </Link>
                 }
             </div>
         </>

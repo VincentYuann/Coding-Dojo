@@ -2,7 +2,7 @@ import TopAnimeGrid from "../components/homePage/TopAnimeGrid";
 import RandomAnimeGrid from "../components/homePage/RandomAnimeGrid"
 import QueryWrapper from "../components/QueryWraper";
 
-function Home() {
+function HomePage() {
     return (
         <div className="home">
             <div className="title">
@@ -26,4 +26,4 @@ function Home() {
     );
 }
 
-export default Home;
+export default HomePage;

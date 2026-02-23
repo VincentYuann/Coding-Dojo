@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { favoritesContext } from "../App";
 import AnimeCard from "../components/AnimeCard";
 
-function Favorites() {
+function FavoritesPage() {
     const [favorites] = useContext(favoritesContext);
 
     return (
@@ -24,4 +24,4 @@ function Favorites() {
     );
 }
 
-export default Favorites;
+export default FavoritesPage;

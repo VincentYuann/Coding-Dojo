@@ -115,15 +115,15 @@ function FilterBar({ searchQuery }) {
     const handleFilterSubmit = (e) => {
         e.preventDefault();
 
-        const params = new URLSearchParams();
+        const newParams = new URLSearchParams();
 
         Object.entries(filterObject).forEach(([key, value]) => {
             if (value && value.length !== 0) {
-                params.append(toUnderscore(key), value);
+                newParams.append(toUnderscore(key), value);
             }
         });
 
-        setSearchParams(params);
+        setSearchParams(newParams);
     };
 
     const handleFilterReset = (e) => {
@@ -233,7 +233,7 @@ function FilterBar({ searchQuery }) {
                                 checked={filterObject.sfw}
                                 onChange={updateFilterObject}
                             />
-                            No Adult Entries
+                            SFW
                         </label>
                     </div>
 

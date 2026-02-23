@@ -3,7 +3,7 @@ import QueryWraper from '../components/QueryWraper';
 import SearchResultsContent from '../components/searchPage/SearchContent';
 import FilterBar from '../components/searchPage/filterBar/FilterBar';
 
-function SearchResults() {
+function SearchPage({ seasonFilters }) {
     const [searchParams] = useSearchParams();
     const searchQuery = searchParams.get("q") || "";
 
@@ -24,4 +24,4 @@ function SearchResults() {
     )
 }
 
-export default SearchResults;
+export default SearchPage;

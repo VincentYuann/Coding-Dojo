@@ -13,7 +13,6 @@ function SearchResultsContent({ searchQueryObject }) {
     const uniqueAnimeList = [
         ...new Map(animes.map(item => [item.mal_id, item])).values()
     ];
-    console.log(uniqueAnimeList.length)
 
     return (
         <>
