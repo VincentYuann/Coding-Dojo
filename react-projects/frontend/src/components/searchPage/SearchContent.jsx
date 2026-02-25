@@ -1,12 +1,15 @@
 import { searchAnimes } from '../../services/animeService';
 import { useSuspenseQuery } from '@tanstack/react-query';
+import { useSearchParams } from 'react-router-dom';
 import AnimeCard from '../AnimeCard'
 import Pagination from '../Pagination';
 
-function SearchResultsContent({ searchQueryObject }) {
+function SearchResultsContent() {
+    const [searchParams] = useSearchParams();
+
     const { data: { animes, pagination } } = useSuspenseQuery({
-        queryKey: ['animes', String(searchQueryObject)],
-        queryFn: () => searchAnimes(searchQueryObject)
+        queryKey: ['animes', String(searchParams)],
+        queryFn: () => searchAnimes(searchParams)
     });
 
     // Prevents anime duplications

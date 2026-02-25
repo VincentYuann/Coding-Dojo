@@ -1,7 +1,8 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useState } from 'react';
 import { getSeasonList } from "../../services/animeService";
+import DropDownCheckbox from "../../components/DropDownCheckbox";
 
 function SeasonPicker() {
     const [searchParams] = useSearchParams();
@@ -21,7 +22,7 @@ function SeasonPicker() {
         navigate(`/seasons/${type}`);
     };
 
-    const handleSubmit = (e) => {
+    const handleSeasonSubmit = (e) => {
         e.preventDefault();
 
         const newParams = new URLSearchParams(searchParams);
@@ -34,7 +35,7 @@ function SeasonPicker() {
         navigate(`/seasons/specific?${newParams.toString()}`);
     };
 
-    const handleReset = (e) => {
+    const handleSeasonReset = (e) => {
         e.preventDefault();
         setseasonFilters({});
     };
@@ -42,8 +43,8 @@ function SeasonPicker() {
     return (
         <div className="season-picker-container">
             <form
-                onSubmit={handleSubmit}
-                onReset={handleReset}
+                onSubmit={handleSeasonSubmit}
+                onReset={handleSeasonReset}
                 className="season-picker-form"
             >
                 {/* Quick Access Group */}

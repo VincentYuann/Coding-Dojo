@@ -1,7 +1,9 @@
 import { Link, useNavigate, createSearchParams } from "react-router-dom";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { navBarSearchQueryContext } from "../App";
 
 export default function NavBar() {
+    const { setNavBarSearchQuery } = useContext(navBarSearchQueryContext);
     const [text, setText] = useState("");
     const navigate = useNavigate();
 
@@ -9,6 +11,7 @@ export default function NavBar() {
         e.preventDefault();
         const searchQuery = String(createSearchParams({ q: text }));
         navigate(text ? `/search?${searchQuery}` : `/search`);
+        setNavBarSearchQuery(text);
         setText("");
     };
 

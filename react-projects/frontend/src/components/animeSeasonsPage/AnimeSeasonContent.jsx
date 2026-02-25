@@ -30,8 +30,6 @@ function AnimeSeasonContent() {
         ...new Map(animes.map(item => [item.mal_id, item])).values()
     ];
 
-    console.log(uniqueAnimeList)
-
     return (
         <>
             <div className='search-results-grid'>

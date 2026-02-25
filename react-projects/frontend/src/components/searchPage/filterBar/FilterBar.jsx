@@ -1,9 +1,10 @@
 import { useSearchParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { toUnderscore } from "../../../utils/toUnderscore";
 import { getAnimeGenres } from "../../../services/animeService";
-import SelectDropDownCheckbox from "./DropDownCheckbox"
+import { navBarSearchQueryContext } from "../../../App";
+import SelectDropDownCheckbox from "../../../components/DropDownCheckbox"
 
 const INITIAL_FILTER_STATE = {
     q: "",
@@ -46,9 +47,10 @@ const RATING_OPTIONS = [
     { value: "rx", label: "Rx - Hentai" },
 ];
 
-function FilterBar({ searchQuery }) {
-    const [, setSearchParams] = useSearchParams();
-    const [filterObject, setFilterObject] = useState(INITIAL_FILTER_STATE);
+function FilterBar() {
+    const { navBarSearchQuery } = useContext(navBarSearchQueryContext);
+    const [searchParams, setSearchParams] = useSearchParams();
+    const [filterObject, setFilterObject] = useState({ ...INITIAL_FILTER_STATE, ...Object.fromEntries(searchParams.entries()) });
 
     const { data: genres } = useSuspenseQuery({
         queryKey: ["genres"],
@@ -60,55 +62,10 @@ function FilterBar({ searchQuery }) {
         label: genre.name
     }));
 
-    // Sync the navBar search query with the filterBar search query
+    // Resets the filter object when searched through the NavBar search input, but keeps the search query parameter (q)
     useEffect(() => {
-        setFilterObject((prev) => ({
-            ...prev,
-            q: searchQuery,
-        }));
-
-        handleFilterReset;
-    }, [searchQuery]);
-
-    const updateFilterObject = (e, multiSelect = false) => {
-        const { name, value, type, checked } = e.target;
-
-        setFilterObject((prev) => {
-            let newValue;
-
-            // Checkbox
-            if (type === "checkbox") {
-                // Multiselect genre checkbox
-                if (multiSelect) {
-                    const currentList = [...prev.genres]
-
-                    if (checked) {
-                        newValue = [...currentList, value]
-                    } else {
-                        newValue = currentList.filter(genreID => genreID !== value).map(genreID => genreID)
-                    }
-                }
-                // sfw checkbox
-                else if (name === "sfw") {
-                    newValue = checked;
-                }
-
-                // Single select checkbox
-                else {
-                    newValue = checked ? value : ""
-                }
-            }
-            // Text or integer
-            else {
-                newValue = value
-            }
-
-            return ({
-                ...prev,
-                [name]: newValue
-            });
-        });
-    };
+        setFilterObject({ ...INITIAL_FILTER_STATE, q: navBarSearchQuery });
+    }, [navBarSearchQuery]);
 
     // -----------------------------------------------------------------------------------------------------------
     // Creates a new URL using the filterobject, passing it to the searchResults page to fetch anime API data
@@ -146,26 +103,24 @@ function FilterBar({ searchQuery }) {
                         name="q"
                         placeholder="Search for anime..."
                         value={filterObject.q}
-                        onChange={updateFilterObject}
+                        onChange={e => setFilterObject((prev) => ({ ...prev, q: e.target.value }))}
                     />
                 </div>
 
                 <h3>Filters:</h3>
                 <div className="filters-grid">
                     <SelectDropDownCheckbox
-                        label="Type"
-                        name="type"
+                        filterParamKey="type"
                         options={TYPE_OPTIONS}
-                        selectedValue={filterObject.type}
-                        onChange={updateFilterObject}
+                        value={filterObject.type}
+                        onChange={setFilterObject}
                     />
 
                     <SelectDropDownCheckbox
-                        label="Genres"
-                        name="genres"
+                        filterParamKey="genres"
                         options={genreOptions}
-                        selectedValue={filterObject.genres}
-                        onChange={e => updateFilterObject(e, true)}
+                        value={filterObject.genres}
+                        onChange={setFilterObject}
                         multiselect={true}
                     />
 
@@ -184,7 +139,7 @@ function FilterBar({ searchQuery }) {
                                 if (Number.isFinite(min) && Number.isFinite(max) && min > max) {
                                     setFilterObject((prev) => ({ ...prev, minScore: max }));
                                 } else {
-                                    updateFilterObject(e);
+                                    setFilterObject((prev) => ({ ...prev, minScore: e.target.value }));
                                 }
                             }}
                         />
@@ -203,26 +158,24 @@ function FilterBar({ searchQuery }) {
                                 if (Number.isFinite(min) && Number.isFinite(max) && max < min) {
                                     setFilterObject((prev) => ({ ...prev, maxScore: min }));
                                 } else {
-                                    updateFilterObject(e);
+                                    setFilterObject((prev) => ({ ...prev, maxScore: e.target.value }));
                                 }
                             }}
                         />
                     </div>
 
                     <SelectDropDownCheckbox
-                        label="Rating"
-                        name="rating"
+                        filterParamKey="rating"
                         options={RATING_OPTIONS}
-                        selectedValue={filterObject.rating}
-                        onChange={updateFilterObject}
+                        value={filterObject.rating}
+                        onChange={setFilterObject}
                     />
 
                     <SelectDropDownCheckbox
-                        label="Status"
-                        name="status"
+                        filterParamKey="status"
                         options={STATUS_OPTIONS}
-                        selectedValue={filterObject.status}
-                        onChange={updateFilterObject}
+                        value={filterObject.status}
+                        onChange={setFilterObject}
                     />
 
                     <div className="filter-sfw">
@@ -231,7 +184,7 @@ function FilterBar({ searchQuery }) {
                                 name="sfw"
                                 type="checkbox"
                                 checked={filterObject.sfw}
-                                onChange={updateFilterObject}
+                                onChange={() => setFilterObject(prev => ({ ...prev, sfw: !prev.sfw }))}
                             />
                             SFW
                         </label>

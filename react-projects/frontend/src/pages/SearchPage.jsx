@@ -3,21 +3,18 @@ import QueryWraper from '../components/QueryWraper';
 import SearchResultsContent from '../components/searchPage/SearchContent';
 import FilterBar from '../components/searchPage/filterBar/FilterBar';
 
-function SearchPage({ seasonFilters }) {
-    const [searchParams] = useSearchParams();
-    const searchQuery = searchParams.get("q") || "";
-
+function SearchPage() {
     return (
         <div className="search">
             <div className="title">
                 <h2>Search Results Page</h2>
             </div>
 
-            <FilterBar searchQuery={searchQuery} />
+            <FilterBar />
 
             <div className="search-results">
                 <QueryWraper loadingMessage="Loading search results...">
-                    <SearchResultsContent searchQueryObject={searchParams} />
+                    <SearchResultsContent />
                 </QueryWraper>
             </div>
         </div>
