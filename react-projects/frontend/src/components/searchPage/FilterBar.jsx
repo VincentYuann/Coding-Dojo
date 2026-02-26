@@ -1,10 +1,10 @@
 import { useSearchParams } from "react-router-dom";
 import { useState, useEffect, useContext } from "react";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { toUnderscore } from "../../../utils/toUnderscore";
-import { getAnimeGenres } from "../../../services/animeService";
-import { navBarSearchQueryContext } from "../../../App";
-import SelectDropDownCheckbox from "../../../components/DropDownCheckbox"
+import { toUnderscore } from "../../utils/toUnderscore";
+import { getAnimeGenres } from "../../services/animeService";
+import { navBarSearchQueryContext } from "../../App";
+import SelectDropDownCheckbox from "../DropDownCheckbox"
 
 const INITIAL_FILTER_STATE = {
     q: "",
