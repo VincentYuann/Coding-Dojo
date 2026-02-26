@@ -1,12 +1,17 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { getSeasonList } from "../../services/animeService";
 import DropDownCheckbox from "../../components/DropDownCheckbox";
 
+const INITIAL_FILTER_STATE = {
+    year: "",
+    season: "",
+};
+
 function SeasonPicker() {
     const [searchParams] = useSearchParams();
-    const [seasonFilters, setseasonFilters] = useState({});
+    const [seasonFilters, setseasonFilters] = useState({ ...INITIAL_FILTER_STATE, ...Object.fromEntries(searchParams.entries()) });
     const navigate = useNavigate();
 
     const { data: seasonList } = useSuspenseQuery({
@@ -15,17 +20,30 @@ function SeasonPicker() {
         staleTime: Infinity,
     });
 
-    const isFormValid = seasonFilters.year && seasonFilters.season;
+    const yearOptions = seasonList.map(item => ({
+        value: item.year,
+        label: item.year
+    }));
 
+    const selectedYear = seasonList.find(item => item.year == seasonFilters.year);
+
+    const seasonOptions = selectedYear ? selectedYear
+        .seasons.map(season => ({
+            value: season,
+            label: season.charAt(0).toUpperCase() + season.slice(1)
+        }))
+        : [];
+
+    // -----------------------------------------------------------------------------------------------------------
     const handleQuickSeasonAcess = (type) => {
-        setseasonFilters({});
+        setseasonFilters(INITIAL_FILTER_STATE);
         navigate(`/seasons/${type}`);
     };
 
     const handleSeasonSubmit = (e) => {
         e.preventDefault();
 
-        const newParams = new URLSearchParams(searchParams);
+        const newParams = new URLSearchParams();
         Object.entries(seasonFilters).forEach(([key, value]) => {
             if (value && value.length !== 0) {
                 newParams.set(key, value);
@@ -37,7 +55,7 @@ function SeasonPicker() {
 
     const handleSeasonReset = (e) => {
         e.preventDefault();
-        setseasonFilters({});
+        setseasonFilters(INITIAL_FILTER_STATE);
     };
 
     return (
@@ -71,35 +89,24 @@ function SeasonPicker() {
 
                 {/* Specific Search Group */}
                 <div className="specific-search">
-                    <select
-                        name="year"
-                        value={seasonFilters.year || ""}
-                        onChange={e => setseasonFilters({ year: e.target.value, season: "" })}
-                    >
-                        <option value="" disabled hidden>Select Year</option>
-                        {seasonList.map(item => (
-                            <option key={item.year} value={item.year}>{item.year}</option>
-                        ))}
-                    </select>
+                    <DropDownCheckbox
+                        filterParamKey="year"
+                        options={yearOptions}
+                        value={seasonFilters.year}
+                        onChange={setseasonFilters}
+                    />
 
                     <span>-</span>
 
-                    <select
-                        name="season"
-                        value={seasonFilters.season || ""}
-                        onChange={e => setseasonFilters({ ...seasonFilters, season: e.target.value })}
+                    <DropDownCheckbox
+                        filterParamKey={seasonFilters.year ? "season" : "Pick a year first"}
+                        options={seasonOptions}
+                        value={seasonFilters.season}
+                        onChange={setseasonFilters}
                         disabled={!seasonFilters.year}
-                    >
-                        <option value="" disabled hidden>
-                            {seasonFilters.year ? "Pick a season" : "Pick a year first"}
-                        </option>
-                        {seasonFilters.year && seasonList
-                            .find(item => item.year == seasonFilters.year)
-                            .seasons.map(season => (
-                                <option key={season} value={season}>{season}</option>))
-                        }
-                    </select>
-                    <button type="submit" className="search" disabled={!isFormValid}>Search</button>
+                    />
+
+                    <button type="submit" className="search" disabled={!(seasonFilters.year && seasonFilters.season)}>Search</button>
                     <button type="reset" className="reset">Reset</button>
                 </div>
             </form >

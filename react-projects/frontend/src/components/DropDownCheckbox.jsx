@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 
-function DropDownCheckbox({ filterParamKey, options, value, onChange: setFilterObject, multiselect = false }) {
+function DropDownCheckbox({ filterParamKey, options, value, onChange: setFilterObject, multiselect = false, disabled = false }) {
     const [isOpen, setIsOpen] = useState(false)
     const dropDownDivRef = useRef(null)
 
@@ -72,6 +72,7 @@ function DropDownCheckbox({ filterParamKey, options, value, onChange: setFilterO
                 type="button"
                 className="filter-dropdown-button"
                 onClick={() => setIsOpen(!isOpen)}
+                disabled={disabled}
             >
                 <span>{getButtonLabel()}</span>
                 <span className="arrow">{isOpen ? " ▲" : " ▼"}</span>
@@ -86,7 +87,10 @@ function DropDownCheckbox({ filterParamKey, options, value, onChange: setFilterO
                                 value={option.value}
                                 type="checkbox"
                                 checked={selectedArray.includes(String(option.value))}
-                                onChange={e => handleFilterObjectUpdate(e)}
+                                onChange={e => {
+                                    handleFilterObjectUpdate(e);
+                                    if (!multiselect) setIsOpen(false);
+                                }}
                             />
                             {option.label}
                         </label>

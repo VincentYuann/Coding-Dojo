@@ -57,6 +57,7 @@ function FilterBar() {
         queryFn: getAnimeGenres,
         staleTime: Infinity,
     });
+
     const genreOptions = genres.map((genre) => ({
         value: genre.mal_id,
         label: genre.name
@@ -68,7 +69,6 @@ function FilterBar() {
     }, [navBarSearchQuery]);
 
     // -----------------------------------------------------------------------------------------------------------
-    // Creates a new URL using the filterobject, passing it to the searchResults page to fetch anime API data
     const handleFilterSubmit = (e) => {
         e.preventDefault();
 
