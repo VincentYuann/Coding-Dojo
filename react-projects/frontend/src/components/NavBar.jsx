@@ -2,6 +2,14 @@ import { Link, useNavigate, createSearchParams } from "react-router-dom";
 import { useContext, useState } from "react";
 import { navBarSearchQueryContext } from "../App";
 
+const imageStyle = {
+    width: "40px",
+    height: "40px",
+    borderRadius: "50%",
+    objectFit: "cover",
+    border: "2px solid #ddd"
+};
+
 export default function NavBar() {
     const { setNavBarSearchQuery } = useContext(navBarSearchQueryContext);
     const [text, setText] = useState("");
@@ -44,6 +52,9 @@ export default function NavBar() {
                 </Link>
                 <Link to="/favorites" className="nav-link">
                     Favorites
+                </Link>
+                <Link to="/profile" className="nav-link">
+                    <img src="/profile-placeholder.jpg" alt="Profile" style={imageStyle} />
                 </Link>
             </div>
         </nav>
