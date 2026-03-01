@@ -1,6 +1,6 @@
 import TopAnimeGrid from "../components/homePage/TopAnimeGrid";
 import RandomAnimeGrid from "../components/homePage/RandomAnimeGrid"
-import QueryWrapper from "../components/QueryWraper";
+import QueryWrapper from "../components/QueryWrapper";
 
 function HomePage() {
     return (

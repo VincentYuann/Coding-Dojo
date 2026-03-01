@@ -1,4 +1,4 @@
-import QueryWraper from '../components/QueryWraper';
+import QueryWrapper from '../components/QueryWrapper';
 import SeasonPicker from '../components/animeSeasonsPage/SeasonPicker';
 import AnimeSeasonContent from '../components/animeSeasonsPage/AnimeSeasonContent'
 
@@ -7,15 +7,15 @@ const AnimeSeasonsPage = () => {
         <main>
             <h1>Explore Seasons</h1>
 
-            <QueryWraper loadingMessage="Loading season options...">
+            <QueryWrapper loadingMessage="Loading season options...">
                 <SeasonPicker />
-            </QueryWraper>
+            </QueryWrapper>
 
             <hr />
 
-            <QueryWraper loadingMessage="Loading season content...">
+            <QueryWrapper loadingMessage="Loading season content...">
                 <AnimeSeasonContent />
-            </QueryWraper>
+            </QueryWrapper>
         </main>
     );
 };

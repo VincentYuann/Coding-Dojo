@@ -1,4 +1,4 @@
-import QueryWraper from '../components/QueryWraper';
+import QueryWrapper from '../components/QueryWrapper';
 import SearchResultsContent from '../components/searchPage/SearchContent';
 import FilterBar from '../components/searchPage/FilterBar';
 
@@ -12,9 +12,9 @@ function SearchPage() {
             <FilterBar />
 
             <div className="search-results">
-                <QueryWraper loadingMessage="Loading search results...">
+                <QueryWrapper loadingMessage="Loading search results...">
                     <SearchResultsContent />
-                </QueryWraper>
+                </QueryWrapper>
             </div>
         </div>
     )
