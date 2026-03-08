@@ -7,7 +7,7 @@ function LoginForm() {
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
 
-    const { mutate: login, error } = useMutation({
+    const { mutate: login, data, error } = useMutation({
         mutationFn: ({ email, password }) => loginWithPassword(email, password),
         onSuccess: () => navigate("/home"),
         onError: (error) => alert(error.message)

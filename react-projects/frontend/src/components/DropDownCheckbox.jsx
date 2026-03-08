@@ -65,7 +65,6 @@ function DropDownCheckbox({ filterParamKey, options, value, onChange: setFilterO
         }
     }
 
-
     return (
         <div className="filter-dropdown" ref={dropDownDivRef}>
             <button
@@ -87,8 +86,8 @@ function DropDownCheckbox({ filterParamKey, options, value, onChange: setFilterO
                                 value={option.value}
                                 type="checkbox"
                                 checked={selectedArray.includes(String(option.value))}
-                                onChange={() => {
-                                    handleFilterObjectUpdate;
+                                onChange={(e) => {
+                                    handleFilterObjectUpdate(e);
                                     if (!multiselect) setIsOpen(false);
                                 }}
                             />
