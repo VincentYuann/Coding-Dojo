@@ -1,11 +1,15 @@
 import { useContext } from "react";
 import { favoritesContext } from "../App";
+import { useAuth } from "../context/AuthContext";
 
 function AnimeCard({ anime }) {
+    const { user } = useAuth();
     const [favorites, setFavorites] = useContext(favoritesContext);
     const isFavorite = favorites.some((fav) => fav.mal_id === anime.mal_id);
 
     function handleFavoriteClick() {
+        if (!user) return alert("Please log in to add to favorites.");
+
         if (isFavorite) {
             setFavorites(favorites.filter((fav) => fav.mal_id !== anime.mal_id));
         } else {

@@ -21,8 +21,10 @@ function AuthProvider({ children }) {
                 // handle initial session
             } else if (event === 'SIGNED_IN') {
                 setUser(session.user);
+                console.log("User signed in");
             } else if (event === 'SIGNED_OUT') {
                 setUser(null);
+                console.log("User signed out");
             } else if (event === 'PASSWORD_RECOVERY') {
                 // handle password recovery event
             } else if (event === 'TOKEN_REFRESHED') {

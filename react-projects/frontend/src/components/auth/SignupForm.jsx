@@ -4,6 +4,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { signupWithPassword } from "../../services/authService";
 
 function SignupForm() {
+    const [credentials, setCredentials] = useState({ email: "", password: "" });
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
 
@@ -16,8 +17,8 @@ function SignupForm() {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        const email = e.target.email.value;
-        const password = e.target.password.value;
+        const email = credentials.email;
+        const password = credentials.password;
 
         login({ email, password });
     }
@@ -26,16 +27,18 @@ function SignupForm() {
         <form onSubmit={handleSubmit} className="auth-form">
             <input
                 type="email"
-                name="email"
                 placeholder="Email"
                 className="auth-input"
+                value={credentials.email}
+                onChange={(e) => setCredentials(prev => ({ ...prev, email: e.target.value }))}
                 required
             />
             <input
                 type={showPassword ? "text" : "password"}
-                name="password"
                 placeholder="Password"
                 className="auth-input"
+                value={credentials.password}
+                onChange={(e) => setCredentials(prev => ({ ...prev, password: e.target.value }))}
                 required
             />
 

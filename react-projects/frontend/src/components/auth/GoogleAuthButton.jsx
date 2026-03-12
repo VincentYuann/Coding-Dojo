@@ -1,18 +1,23 @@
-import supabase from "../../services/supabaseClient";
 import { loginWithGoogle } from "../../services/authService";
+import toast from "react-hot-toast";
 
 function GoogleAuthButton() {
-    const handleSubmit = (e) => {
+    const handleGoogleLogin = (e) => {
         try {
             loginWithGoogle();
         }
-        catch (error) {
-            console.error("Error during Google Login:", error.message);
+        catch (e) {
+            toast.error("Error during Google Login:", e.message);
         }
     }
 
     return (
-        <button onClick={handleSubmit}></button>
+        <button
+            onClick={handleGoogleLogin} className="google-btn"
+        >
+            <img src="/google-icon.svg" alt="Google Logo" className="google-icon" />
+            <span>Sign in with Google</span>
+        </button>
     );
 }
 

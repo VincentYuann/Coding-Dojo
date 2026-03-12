@@ -26,7 +26,7 @@ export default function NavBar() {
     return (
         <nav className="navbar">
             <Link to="/" className="brand">
-                AnimeY
+                AnimY ☆
             </Link>
 
             <form onSubmit={handleSubmit} className="search-form">

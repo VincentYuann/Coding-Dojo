@@ -12,12 +12,6 @@ function AuthPage() {
             <div className="main-login">
                 <Outlet />
             </div>
-
-            <div>
-
-                Login with other options? Google, email, etc.
-
-            </div>
         </main>
     );
 }

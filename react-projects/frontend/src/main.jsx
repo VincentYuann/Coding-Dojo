@@ -1,9 +1,10 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { BrowserRouter} from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import './css/index.css';
 import App from './App.jsx';
+import { Toaster } from 'react-hot-toast';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -18,6 +19,7 @@ createRoot(document.getElementById('root')).render(
   <QueryClientProvider client={queryClient}>
     <StrictMode>
       <BrowserRouter>
+        <Toaster position='bottom-right' reverseOrder={false} />  {/* Toaster component for displaying custom pop-up notifications */}
         <App />
       </BrowserRouter>
     </StrictMode>

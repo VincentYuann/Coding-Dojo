@@ -3,9 +3,10 @@ import { Routes, Route } from "react-router-dom";
 import { useState, createContext } from "react";
 import NavBar from "./components/NavBar";
 import PrivateRouteWrapper from "./components/auth/PrivateRouteWrapper"
-import { LoginForm, SignupForm, ForgetPasswordForm } from "./components/auth";
+import { LoginForm, SignupForm, ForgotPasswordForm } from "./components/auth";
 import { HomePage, SearchPage, AnimeSeasonsPage, ProfilePage, FavoritesPage, AuthPage, UpdatePasswordPage } from "./pages";
 import AuthProvider from "./context/AuthContext";
+import toast from 'react-hot-toast';
 
 // Create a context data for the grandchild component
 export const favoritesContext = createContext();
@@ -20,6 +21,7 @@ function App() {
       <AuthProvider>
         <favoritesContext.Provider value={[favorites, setFavorites]}>
           <navBarSearchQueryContext.Provider value={{ navBarSearchQuery, setNavBarSearchQuery }}>
+            <button onClick={() => toast('Here is your toast.')}>Make me a toast</button>
 
             <header className="header">
               <NavBar />
@@ -45,13 +47,13 @@ function App() {
                   <Route index element={<LoginForm />} />
                   <Route path="login" element={<LoginForm />} />
                   <Route path="signup" element={<SignupForm />} />
-                  <Route path="forget-password" element={<ForgetPasswordForm />} />
+                  <Route path="forgot-password" element={<ForgotPasswordForm />} />
                 </Route>
               </Routes>
             </main>
 
             <footer className="footer">
-              <p>© 2025 AnimeY - Vincent Yuan.</p>
+              <p>© {new Date().getFullYear()} AnimY - Vincent Yuan.</p>
             </footer>
 
           </navBarSearchQueryContext.Provider>

@@ -23,6 +23,22 @@ export const loginWithGoogle = async () => {
 }
 
 export const signOut = async () => {
-    const { error } = await supabase.auth.signOut()
+    const { error } = await supabase.auth.signOut();
     if (error) throw error;
+}
+
+export const forgotPassword = async (email) => {
+    const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: 'http://localhost:5173/update-password'
+    });
+    if (error) throw error;
+    return data;
+}
+
+export const updatePassword = async (newPassword) => {
+    const { data, error } = await supabase.auth.updateUser({
+        password: newPassword
+    });
+    if (error) throw error;
+    return data;
 }
