@@ -3,7 +3,6 @@ import { useAuth } from "../../context/AuthContext";
 
 function PrivateRouteWrapper() {
     const { user, loading } = useAuth();
-    console.log(user, loading)
 
     if (loading) {
         return <div>Loading ...</div>

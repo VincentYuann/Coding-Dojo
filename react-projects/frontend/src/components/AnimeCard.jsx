@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { favoritesContext } from "../App";
 import { useAuth } from "../context/AuthContext";
+import { toast } from "react-hot-toast";
 
 function AnimeCard({ anime }) {
     const { user } = useAuth();
@@ -8,7 +9,7 @@ function AnimeCard({ anime }) {
     const isFavorite = favorites.some((fav) => fav.mal_id === anime.mal_id);
 
     function handleFavoriteClick() {
-        if (!user) return alert("Please log in to add to favorites.");
+        if (!user) return toast("Login to save animes.", { icon: "🔒", });
 
         if (isFavorite) {
             setFavorites(favorites.filter((fav) => fav.mal_id !== anime.mal_id));

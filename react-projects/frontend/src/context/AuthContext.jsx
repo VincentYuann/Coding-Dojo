@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
+import { toast } from "react-hot-toast";
 import supabase from "../services/supabaseClient"
 
 const AuthContext = createContext();
@@ -8,37 +9,39 @@ function AuthProvider({ children }) {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const getSession = async () => {
-            const { data: { session } } = await supabase.auth.getSession();
-            setUser(session?.user ?? null);
-            setLoading(false);
-        }
-
-        const { data } = supabase.auth.onAuthStateChange((event, session) => {
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
             console.log(event, session)
 
             if (event === 'INITIAL_SESSION') {
-                // handle initial session
+                const currentUser = session?.user ?? null;
+                setUser(currentUser);
+                setLoading(false);
+
+                if (currentUser) {
+                    const name = currentUser.user_metadata?.full_name || "User";
+                    toast(<span>Welcome back! <b>{currentUser.user_metadata?.full_name}</b> </span>, { icon: '👋' });
+                }
+
             } else if (event === 'SIGNED_IN') {
                 setUser(session.user);
                 console.log("User signed in");
+
             } else if (event === 'SIGNED_OUT') {
                 setUser(null);
                 console.log("User signed out");
-            } else if (event === 'PASSWORD_RECOVERY') {
-                // handle password recovery event
-            } else if (event === 'TOKEN_REFRESHED') {
-                // handle token refreshed event
-            } else if (event === 'USER_UPDATED') {
 
+            } else if (event === 'PASSWORD_RECOVERY') {
+                console.log("User signed out");
+
+            } else if (event === 'USER_UPDATED') {
+                console.log("User updated");
             }
         })
 
-        console.log(data);
-        getSession();
+        console.log("User:", user)
 
         return () => {
-            data.subscription.unsubscribe()
+            subscription.unsubscribe()
         };
     }, []);
 

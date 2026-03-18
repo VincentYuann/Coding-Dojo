@@ -1,10 +1,11 @@
 import { Link, useNavigate, createSearchParams } from "react-router-dom";
 import { useContext, useState } from "react";
 import { navBarSearchQueryContext } from "../App";
+import { useAuth } from "../context/AuthContext";
 
 const imageStyle = {
-    width: "40px",
-    height: "40px",
+    width: "45px",
+    height: "45px",
     borderRadius: "50%",
     objectFit: "cover",
     border: "2px solid #ddd"
@@ -12,6 +13,7 @@ const imageStyle = {
 
 export default function NavBar() {
     const { setNavBarSearchQuery } = useContext(navBarSearchQueryContext);
+    const { user } = useAuth();
     const [text, setText] = useState("");
     const navigate = useNavigate();
 
@@ -54,7 +56,11 @@ export default function NavBar() {
                     Favorites
                 </Link>
                 <Link to="/profile" className="nav-link">
-                    <img src="/profile-placeholder.jpg" alt="Profile" style={imageStyle} />
+                    <img
+                        src={user?.user_metadata?.avatar_url || "/profile-placeholder.jpg"}
+                        referrerPolicy="no-referrer"
+                        alt="Profile"
+                        style={imageStyle} />
                 </Link>
             </div>
         </nav>

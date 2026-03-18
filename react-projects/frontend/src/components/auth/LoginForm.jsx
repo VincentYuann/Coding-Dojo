@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate, Link } from "react-router-dom";
 import { loginWithPassword } from "../../services/authService";
+import { toast } from "react-hot-toast";
 
 function LoginForm() {
     const [credentials, setCredentials] = useState({ email: "", password: "" });
@@ -11,7 +12,7 @@ function LoginForm() {
     const { mutate: login, data, error } = useMutation({
         mutationFn: ({ email, password }) => loginWithPassword(email, password),
         onSuccess: () => navigate("/home"),
-        onError: (error) => alert(error.message)
+        onError: () => toast.error("Error logging in.")
     })
 
     const handleSubmit = (e) => {

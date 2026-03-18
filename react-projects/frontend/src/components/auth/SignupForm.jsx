@@ -2,17 +2,31 @@ import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate, Link } from "react-router-dom";
 import { signupWithPassword } from "../../services/authService";
+import { toast } from "react-hot-toast";
 
 function SignupForm() {
     const [credentials, setCredentials] = useState({ email: "", password: "" });
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
 
-    const { mutate: login, data, error } = useMutation({
+    const { mutate: login, error } = useMutation({
         mutationFn: ({ email, password }) => signupWithPassword(email, password),
-        onSuccess: () => navigate("/profile"),
-        onError: (error) => alert(error.message)
-    })
+        onSuccess: (data) => {
+            const isExistingUser = data?.user?.identities?.length === 0;
+
+            if (isExistingUser) {
+                toast.error("This email is already registered. Try logging in.", {
+                    duration: 5000,
+                    icon: '📩'
+                });
+
+            } else {
+                toast.success("Account created successfully!");
+                navigate("/auth/login");
+            }
+        },
+        onError: (err) => toast.error(err.message || "Error signing up.")
+    });
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -50,7 +64,7 @@ function SignupForm() {
                 </label>
                 <button type="submit" className="btn-login">Sign up</button>
 
-                <p>Don’t have an account? <Link to="/auth/login">Sign in</Link></p>
+                <p>Don’t have an account? <Link to="/auth/login">Log in</Link></p>
             </div>
         </form>
     );

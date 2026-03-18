@@ -4,10 +4,11 @@ import { GoogleAuthButton } from '../components/auth';
 function AuthPage() {
     return (
         <main>
-            <h1>Auth Page</h1>
             <div>
                 <GoogleAuthButton />
             </div>
+
+            <hr />
 
             <div className="main-login">
                 <Outlet />
