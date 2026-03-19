@@ -27,7 +27,7 @@ function UpdatePasswordPage() {
         }
     }, [loginMethod])
 
-    const { mutate: handlePasswordUpdate, error } = useMutation({
+    const { mutate: handlePasswordUpdate, error, isPending } = useMutation({
         mutationFn: ({ newPassword }) => updatePassword(newPassword),
         onError: () => toast.error("Error updating password"),
         onSuccess: async () => {
@@ -64,8 +64,8 @@ function UpdatePasswordPage() {
                 </label>
                 <div>
                     {error && <p className="">{error.message}</p>}
-                    <button>
-                        Update Password
+                    <button disabled={isPending}>
+                        {isPending ? "Upading..." : "Update password"}
                     </button>
                 </div>
             </form>

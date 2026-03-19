@@ -9,7 +9,7 @@ function SignupForm() {
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
 
-    const { mutate: login, error } = useMutation({
+    const { mutate: login, error, isPending } = useMutation({
         mutationFn: ({ email, password }) => signupWithPassword(email, password),
         onSuccess: (data) => {
             const isExistingUser = data?.user?.identities?.length === 0;
@@ -62,7 +62,9 @@ function SignupForm() {
                 <label className="show-password">
                     <input type="checkbox" onClick={() => setShowPassword(!showPassword)} /> Show password
                 </label>
-                <button type="submit" className="btn-login">Sign up</button>
+                <button type="submit" className="btn-login" disabled={isPending}>
+                    {isPending ? "Signing up..." : "Sign up"}
+                </button>
 
                 <p>Don’t have an account? <Link to="/auth/login">Log in</Link></p>
             </div>

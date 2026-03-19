@@ -1,14 +1,13 @@
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { useNavigate, Link, data } from "react-router-dom";
+import { Link, data } from "react-router-dom";
 import { forgotPassword } from "../../services/authService";
 import { toast } from "react-hot-toast";
 
 function ForgotPasswordForm() {
     const [email, setEmail] = useState("");
-    const navigate = useNavigate();
 
-    const { mutate: login, error } = useMutation({
+    const { mutate: login, error, isPending } = useMutation({
         mutationFn: ({ email }) => forgotPassword(email),
         onSuccess: () => toast.success("Link sent to email!"),
         onError: () => toast.error("Error sending link.")
@@ -36,7 +35,9 @@ function ForgotPasswordForm() {
                 {error && <p className="error-message">{error.message}</p>}
 
                 <div className="auth-footer">
-                    <button type="submit" className="btn-login">Send to email</button>
+                    <button type="submit" className="btn-login" disabled={isPending}>
+                        {isPending ? "Sending..." : "Send to email"}
+                    </button>
 
                     <p>Already have an account? <Link to="/auth/login">Log in</Link></p>
                 </div>

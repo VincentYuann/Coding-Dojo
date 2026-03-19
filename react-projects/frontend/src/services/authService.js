@@ -28,9 +28,12 @@ export const signOut = async () => {
 }
 
 export const forgotPassword = async (email) => {
+    const siteUrl = window.location.origin;
+
     const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: 'http://localhost:5173/update-password'
+        redirectTo: `${siteUrl}/`
     });
+
     if (error) throw error;
     return data;
 }

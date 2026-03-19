@@ -1,37 +1,40 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import supabase from "../services/supabaseClient"
 
 const AuthContext = createContext();
 
 function AuthProvider({ children }) {
+    const navigate = useNavigate();
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
+    const welcomeMessage = useRef(false);
+
     useEffect(() => {
         const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+            const currentUser = session?.user ?? null;
+            setUser(currentUser);
+            setLoading(false);
+
             console.log(event, session)
 
-            if (event === 'INITIAL_SESSION') {
-                const currentUser = session?.user ?? null;
+            if (event === 'SIGNED_IN') {
                 setUser(currentUser);
-                setLoading(false);
 
-                if (currentUser) {
+                if (currentUser && !welcomeMessage.current) {
                     const name = currentUser.user_metadata?.full_name || "User";
-                    toast(<span>Welcome back! <b>{currentUser.user_metadata?.full_name}</b> </span>, { icon: '👋' });
+                    toast(<span>Welcome back! <b>{name}</b> </span>, { icon: '👋' });
+                    welcomeMessage.current = true;
                 }
-
-            } else if (event === 'SIGNED_IN') {
-                setUser(session.user);
-                console.log("User signed in");
 
             } else if (event === 'SIGNED_OUT') {
                 setUser(null);
-                console.log("User signed out");
+                welcomeMessage.current = false;
 
             } else if (event === 'PASSWORD_RECOVERY') {
-                console.log("User signed out");
+                navigate("update-password")
 
             } else if (event === 'USER_UPDATED') {
                 console.log("User updated");
