@@ -30,6 +30,7 @@ function AuthProvider({ children }) {
                 }
 
             } else if (event === 'SIGNED_OUT') {
+                toast("You've been logged out.", { icon: '🔒' });
                 setUser(null);
                 welcomeMessage.current = false;
 

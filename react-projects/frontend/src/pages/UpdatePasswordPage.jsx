@@ -22,7 +22,7 @@ function UpdatePasswordPage() {
         return async () => {
             if (loginMethod == "otp") {
                 await signOut();
-                toast("Security: Session cleared as reset was not finished.", { icon: '🔒', })
+                toast("You've been logged out as password reset was not finished.", { icon: '🔒', })
             }
         }
     }, [loginMethod])

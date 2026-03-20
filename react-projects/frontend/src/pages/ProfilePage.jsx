@@ -9,7 +9,10 @@ function ProfilePage() {
 
     const { mutate: handleSignOut } = useMutation({
         mutationFn: signOut,
-        onSuccess: () => navigate("/", { replace: true }),
+        onSuccess: () => {
+            navigate("/", { replace: true })
+            toast.success("You've been logged out.")
+        },
         onError: (error) => new Error(error.message)
     })
 

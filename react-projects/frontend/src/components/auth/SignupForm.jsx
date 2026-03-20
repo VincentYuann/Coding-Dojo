@@ -15,10 +15,7 @@ function SignupForm() {
             const isExistingUser = data?.user?.identities?.length === 0;
 
             if (isExistingUser) {
-                toast.error("This email is already registered. Try logging in.", {
-                    duration: 5000,
-                    icon: '📩'
-                });
+                toast.error("This email is already registered. Try logging in.", { icon: '📩' });
 
             } else {
                 toast.success("Account created successfully!");

@@ -19,7 +19,7 @@ createRoot(document.getElementById('root')).render(
   <QueryClientProvider client={queryClient}>
     <StrictMode>
       <BrowserRouter>
-        <Toaster position='bottom-right' reverseOrder={false} />  {/* Toaster component for displaying custom pop-up notifications */}
+        <Toaster position='bottom-right' reverseOrder={false} toastOptions={{ duration: 7000 }} />  {/* Toaster component for displaying custom pop-up notifications */}
         <App />
       </BrowserRouter>
     </StrictMode>
