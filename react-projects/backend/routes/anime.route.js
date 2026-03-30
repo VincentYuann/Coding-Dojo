@@ -1,35 +1,49 @@
 import jikanService from '../services/jikanService.js';
+import cacheAnimeService from "../services/cacheAnimeService.js";
 import express from 'express';
+
 const animeRouter = express.Router();
 
 animeRouter.get('/search', async (req, res) => {
+    let data;
+
     try {
         const searchQueryObject = req.query;
-        const data = await jikanService.searchAnimes(searchQueryObject);
+        data = await jikanService.searchAnimes(searchQueryObject);
         res.json(data);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        return res.status(500).json({ error: error.message });
     }
+
+    cacheAnimeService.upsertAnimes(data.animes)
 })
 
 animeRouter.get('/top', async (req, res) => {
+    let data;
+
     try {
         const { limit } = req.query;
-        const data = await jikanService.getTopAnimes(limit);
+         data = await jikanService.getTopAnimes(limit);
         res.json(data);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        return res.status(500).json({ error: error.message });
     }
+
+    cacheAnimeService.upsertAnimes(data)
 })
 
 animeRouter.get('/random', async (req, res) => {
+    let data;
+
     try {
         const { limit } = req.query;
-        const data = await jikanService.getRandomAnimes(limit);
+        data = await jikanService.getRandomAnimes(limit);
         res.json(data);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        return res.status(500).json({ error: error.message });
     }
+
+    cacheAnimeService.upsertAnimes(data)
 })
 
 animeRouter.get('/genres', async (req, res) => {
@@ -52,35 +66,47 @@ animeRouter.get('/seasons', async (req, res) => {
 })
 
 animeRouter.get('/seasons/current', async (req, res) => {
+    let data;
+    
     try {
         const { page } = req.query;
-        const data = await jikanService.getCurrentSeason(page);
+        data = await jikanService.getCurrentSeason(page);
         res.json(data);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        return res.status(500).json({ error: error.message });
     }
+
+    cacheAnimeService.upsertAnimes(data.animes);
 })
 
 animeRouter.get('/seasons/upcoming', async (req, res) => {
+    let data;
+    
     try {
         const { page } = req.query;
-        const data = await jikanService.getUpcomingSeasons(page);
+        data = await jikanService.getUpcomingSeasons(page);
         res.json(data);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        return res.status(500).json({ error: error.message });
     }
+
+    cacheAnimeService.upsertAnimes(data.animes);
 })
 
 animeRouter.get('/seasons/:year/:season', async (req, res) => {
+    let data;
+    
     try {
         const { year, season } = req.params;
         const { page } = req.query;
 
-        const data = await jikanService.getSeason(year, season, page);
+        data = await jikanService.getSeason(year, season, page);
         res.json(data);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        return res.status(500).json({ error: error.message });
     }
+
+    cacheAnimeService.upsertAnimes(data.animes);
 })
 
 animeRouter.get('/:animeId', async (req, res) => {

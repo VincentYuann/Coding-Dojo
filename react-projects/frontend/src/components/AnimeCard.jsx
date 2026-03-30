@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { favoritesContext } from "../App";
 import { useAuth } from "../context/AuthContext";
 import { toast } from "react-hot-toast";
+import favoritesService from "../services/favoritesService";
 
 function AnimeCard({ anime }) {
     const { user } = useAuth();
@@ -13,6 +14,7 @@ function AnimeCard({ anime }) {
 
         if (isFavorite) {
             setFavorites(favorites.filter((fav) => fav.mal_id !== anime.mal_id));
+            favoritesService.insert(user.id, anime);
         } else {
             setFavorites((previousFavorites) => [...previousFavorites, anime]);
         }

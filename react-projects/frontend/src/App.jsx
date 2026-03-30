@@ -6,7 +6,6 @@ import PrivateRouteWrapper from "./components/auth/PrivateRouteWrapper"
 import { LoginForm, SignupForm, ForgotPasswordForm } from "./components/auth";
 import { HomePage, SearchPage, AnimeSeasonsPage, ProfilePage, FavoritesPage, AuthPage, UpdatePasswordPage } from "./pages";
 import AuthProvider from "./context/AuthContext";
-import toast from 'react-hot-toast';
 
 // Create a context data for the grandchild component
 export const favoritesContext = createContext();
@@ -21,7 +20,6 @@ function App() {
       <AuthProvider>
         <favoritesContext.Provider value={[favorites, setFavorites]}>
           <navBarSearchQueryContext.Provider value={{ navBarSearchQuery, setNavBarSearchQuery }}>
-            <button onClick={() => toast('Here is your toast.')}>Make me a toast</button>
 
             <header className="header">
               <NavBar />

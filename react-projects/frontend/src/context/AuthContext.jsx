@@ -59,7 +59,6 @@ function AuthProvider({ children }) {
 }
 
 export const useAuth = () => {
-    const userContext = useContext(AuthContext);
-    return userContext;
+    return useContext(AuthContext);
 }
 export default AuthProvider;

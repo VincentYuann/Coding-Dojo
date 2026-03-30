@@ -1,7 +1,8 @@
-import likesRouter from './routes/likes.route.js';
-import animeRouter from './routes/anime.route.js';
+import 'dotenv/config';
 import cors from 'cors'
 import express from 'express';
+import animeRouter from './routes/anime.route.js';
+
 const app = express();
 
 app.use(cors());
@@ -16,7 +17,6 @@ app.get('/', (req, res) => {
         });
 })
 
-app.use('/api/likes', likesRouter);
 app.use('/api/anime', animeRouter);
 
 const PORT = process.env.PORT || 3000;
