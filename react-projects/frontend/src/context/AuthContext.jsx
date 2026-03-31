@@ -49,10 +49,8 @@ function AuthProvider({ children }) {
         };
     }, []);
 
-    const userContext = { user, loading };
-
     return (
-        <AuthContext.Provider value={userContext}>
+        <AuthContext.Provider value={{ user, loading }}>
             {children}
         </AuthContext.Provider>
     );

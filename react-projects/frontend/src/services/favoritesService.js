@@ -1,22 +1,8 @@
+
 import supabase from "./supabaseClient";
 
 const favoritesService = {
-    insert: async (userID, anime) => {
-        const { data, error } = await supabase
-            .from("favorites")
-            .insert({
-                user_id: userId,
-                anime_object: anime,
-            });
-
-        if (error) {
-            console.error("Database Error:", error.message);
-            return { success: false, error };
-        }
-
-        return { success: true, data };
-    },
-    get: async () => {
+    get: async (userId) => {
         const { data, error } = await supabase
             .from("favorites")
             .select("anime_object")
@@ -29,7 +15,22 @@ const favoritesService = {
 
         return { success: true, data };
     },
-    delete: async (animeId) => {
+    upsert: async (userId, anime) => {
+        const { data, error } = await supabase
+            .from("favorites")
+            .upsert({
+                user_id: userId,
+                anime_object: anime,
+            });
+
+        if (error) {
+            console.error("Database Error:", error.message);
+            return { success: false, error };
+        }
+
+        return { success: true, data };
+    },
+    delete: async (userId, animeId) => {
         const { data, error } = await supabase
             .from("favorites")
             .delete()
