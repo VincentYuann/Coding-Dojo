@@ -7,29 +7,18 @@ function AnimeCard({ anime }) {
     const { user } = useAuth();
     const { favorites, addFavorite, removeFavorite } = useFavorites();
     const isFavorite = favorites.some((fav) => fav.mal_id === anime.mal_id);
-    const [instantUI, setInstantUI] = useState(isFavorite)
+
+    const [heartUI, setheartUI] = useState(isFavorite)
 
     function handleFavoriteClick() {
         if (!user) return toast("Login to save animes.", { icon: "🔒", });
 
         if (isFavorite) {
-            addFavorite(anime.mal_id, {
-                onError: () => {
-                    // 3. Rollback if it fails!
-                    setInstantUI(false);
-                }
-            });
-            setInstantUI(false);
-            console.log("Removed", anime.title_english);
+            setheartUI(false);
+            removeFavorite(anime.mal_id);
         } else {
-            addFavorite(anime.mal_id, {
-                onError: () => {
-                    // 3. Rollback if it fails!
-                    setInstantUI(false);
-                }
-            });
-            setInstantUI(true);
-            console.log("Addd", anime.title_english);
+            setheartUI(true);
+            addFavorite(anime.mal_id);
         }
     }
 
@@ -51,7 +40,7 @@ function AnimeCard({ anime }) {
                 </a>
                 <div className="anime-overlay">
                     <button className="favorite" onClick={handleFavoriteClick}>
-                        {instantUI ? "❤️" : "🤍"}
+                        {heartUI ? "❤️" : "🤍"}
                     </button>
                 </div>
             </div>

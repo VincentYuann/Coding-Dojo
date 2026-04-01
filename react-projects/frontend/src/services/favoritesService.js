@@ -14,7 +14,6 @@ const favoritesService = {
         } 
         
         const animeObjects = data.map(animeObject => animeObject.cached_animes.anime_object)
-        console.log(animeObjects)
         return animeObjects
     },
     upsert: async (userId, animeId) => {

@@ -1,4 +1,3 @@
-import { useContext } from "react";
 import { useFavorites } from "../context/FavoritesContext";
 import AnimeCard from "../components/AnimeCard";
 
