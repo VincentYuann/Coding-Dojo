@@ -1,44 +1,31 @@
-import { useState, useContext, createContext, useEffect, useMutation } from "react";
+import { useState, useContext, createContext, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
-import supabase from "../services/supabaseClient";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import favoritesService from "../services/favoritesService";
 import { toast } from "react-hot-toast";
 
 const favoritesContext = createContext();
 
-function favoritesProvider() {
+function favoritesProvider({ children }) {
     const { user } = useAuth();
-    const [favorites, setFavorites] = useState([]);
+    const queryClient = useQueryClient();
 
-    const { mutate: getFavorites } = useMutation({
-        mutationFn: async () => {
-            favoritesService.get(user.id);
-        },
-        onSucess: (data) => setFavorites(data),
-        onError: (error) => {
-            toast.error("Failed to get favorites: " + error.message);
-        },
+    const { data: favorites = [] } = useQuery({
+        queryKey: ['favorites', user?.id],
+        queryFn: () => favoritesService.get(user.id),
         enabled: !!user,
     });
 
     const { mutate: addFavorite } = useMutation({
-        mutationFn: async (animeId) => {
-            favoritesService.upsert(user.id, animeId);
-        },
-        onError: (error) => {
-            toast.error("Failed to add favorite: " + error.message);
-        },
-        enabled: !!user,
+        mutationFn: (animeId) => favoritesService.upsert(user.id, animeId),
+        onSuccess: () => queryClient.invalidateQueries({ queryKey: ['favorites', user?.id] }),
+        onError: () => toast.error("Failed to add favorite"),
     });
 
     const { mutate: removeFavorite } = useMutation({
-        mutationFn: async (animeId) => {
-            favoritesService.delete(user.id, animeId);
-        },
-        onError: (error) => {
-            toast.error("Failed to remove favorite: " + error.message);
-        },
-        enabled: !!user,
+        mutationFn: (animeId) => favoritesService.delete(user.id, animeId),
+        onSuccess: () => queryClient.invalidateQueries({ queryKey: ['favorites', user?.id] }),
+        onError: () => toast.error("Failed to remove favorite"),
     });
 
     return (

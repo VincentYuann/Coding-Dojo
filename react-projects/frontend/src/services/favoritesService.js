@@ -5,37 +5,48 @@ const favoritesService = {
     get: async (userId) => {
         const { data, error } = await supabase
             .from("favorites")
-            .select("anime_object")
+            .select(`cached_animes (anime_object)`)
             .eq("user_id", userId);
-
+        
         if (error) {
-            console.error("Database Error:", error.message);
-            return { success: false, error };
-        }
-
-        return { success: true, data };
+            console.error(error.message);
+            throw error;
+        } 
+        
+        const animeObjects = data.map(animeObject => animeObject.cached_animes.anime_object)
+        console.log(animeObjects)
+        return animeObjects
     },
-    upsert: async (userId, anime) => {
+    upsert: async (userId, animeId) => {
         const { data, error } = await supabase
             .from("favorites")
             .upsert({
                 user_id: userId,
-                anime_object: anime,
-            });
-
+                anime_id: animeId,
+            })
+            .select();
+        
         if (error) {
-            console.error("Database Error:", error.message);
-            return { success: false, error };
-        }
+            console.error(error.message);
+            throw error;
+        } 
 
-        return { success: true, data };
+        return data;
     },
     delete: async (userId, animeId) => {
         const { data, error } = await supabase
             .from("favorites")
             .delete()
             .eq("user_id", userId)
-            .eq("anime_object->>mal_id", String(animeId));
+            .eq("anime_id", animeId)
+            .select();
+        
+        if (error) {
+            console.error(error.message);
+            throw error;
+        } 
+
+        return data;
     }
 }
 

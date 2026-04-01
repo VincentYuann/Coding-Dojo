@@ -1,9 +1,9 @@
 import { useContext } from "react";
-import { favoritesContext } from "../App";
+import { useFavorites } from "../context/FavoritesContext";
 import AnimeCard from "../components/AnimeCard";
 
 function FavoritesPage() {
-    const [favorites] = useContext(favoritesContext);
+    const { favorites } = useFavorites();
 
     return (
         <div className="favorites">

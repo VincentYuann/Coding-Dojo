@@ -5,20 +5,18 @@ import NavBar from "./components/NavBar";
 import PrivateRouteWrapper from "./components/auth/PrivateRouteWrapper"
 import { LoginForm, SignupForm, ForgotPasswordForm } from "./components/auth";
 import { HomePage, SearchPage, AnimeSeasonsPage, ProfilePage, FavoritesPage, AuthPage, UpdatePasswordPage } from "./pages";
-import AuthProvider from "./context/AuthContext";
+import { AuthProvider, FavoritesProvider } from "./context";
 
 // Create a context data for the grandchild component
-export const favoritesContext = createContext();
 export const navBarSearchQueryContext = createContext();
 
 function App() {
-  const [favorites, setFavorites] = useState([]);
   const [navBarSearchQuery, setNavBarSearchQuery] = useState("");
 
   return (
     <>
       <AuthProvider>
-        <favoritesContext.Provider value={[favorites, setFavorites]}>
+        <FavoritesProvider>
           <navBarSearchQueryContext.Provider value={{ navBarSearchQuery, setNavBarSearchQuery }}>
 
             <header className="header">
@@ -55,7 +53,7 @@ function App() {
             </footer>
 
           </navBarSearchQueryContext.Provider>
-        </favoritesContext.Provider>
+        </FavoritesProvider>
       </AuthProvider>
     </>
   );

@@ -1,22 +1,35 @@
-import { useContext } from "react";
-import { favoritesContext } from "../App";
+import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { toast } from "react-hot-toast";
-import favoritesService from "../services/favoritesService";
+import { useFavorites } from "../context/FavoritesContext";
 
 function AnimeCard({ anime }) {
     const { user } = useAuth();
-    const [favorites, setFavorites] = useContext(favoritesContext);
+    const { favorites, addFavorite, removeFavorite } = useFavorites();
     const isFavorite = favorites.some((fav) => fav.mal_id === anime.mal_id);
+    const [instantUI, setInstantUI] = useState(isFavorite)
 
     function handleFavoriteClick() {
         if (!user) return toast("Login to save animes.", { icon: "🔒", });
 
         if (isFavorite) {
-            setFavorites(favorites.filter((fav) => fav.mal_id !== anime.mal_id));
-            favoritesService.insert(user.id, anime);
+            addFavorite(anime.mal_id, {
+                onError: () => {
+                    // 3. Rollback if it fails!
+                    setInstantUI(false);
+                }
+            });
+            setInstantUI(false);
+            console.log("Removed", anime.title_english);
         } else {
-            setFavorites((previousFavorites) => [...previousFavorites, anime]);
+            addFavorite(anime.mal_id, {
+                onError: () => {
+                    // 3. Rollback if it fails!
+                    setInstantUI(false);
+                }
+            });
+            setInstantUI(true);
+            console.log("Addd", anime.title_english);
         }
     }
 
@@ -38,7 +51,7 @@ function AnimeCard({ anime }) {
                 </a>
                 <div className="anime-overlay">
                     <button className="favorite" onClick={handleFavoriteClick}>
-                        {isFavorite ? "❤️" : "🤍"}
+                        {instantUI ? "❤️" : "🤍"}
                     </button>
                 </div>
             </div>
